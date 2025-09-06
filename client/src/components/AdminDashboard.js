@@ -312,6 +312,27 @@ const AdminDashboard = () => {
     setOpenUploadDialog(true);
   };
 
+  const handleDeleteLecture = async (lectureFileName) => {
+    try {
+      setError('');
+      setSuccess('');
+
+      if (!window.confirm(`Are you sure you want to delete the lecture "${lectureFileName}"?`)) {
+        return;
+      }
+
+      const response = await axios.delete(`/api/admin/lectures/${encodeURIComponent(lectureFileName)}`);
+
+      // Remove the deleted lecture from the list
+      setLectures(lectures.filter(lecture => lecture.fileName !== lectureFileName));
+
+      setSuccess('Lecture deleted successfully');
+    } catch (err) {
+      console.error('Error deleting lecture:', err);
+      setError(err.response?.data?.message || 'Failed to delete lecture');
+    }
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5', py: 3 }}>
       <Container maxWidth="xl">
@@ -587,7 +608,15 @@ const AdminDashboard = () => {
                         field: 'actions',
                         headerName: 'Actions',
                         flex: 0.5,
-                        renderCell: () => <IconButton color="error"><DeleteIcon /></IconButton>
+                        renderCell: (params) => (
+                          <IconButton
+                            color="error"
+                            onClick={() => handleDeleteLecture(params.row.fileName || params.row.id)}
+                            title="Delete Lecture"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )
                       }
                     ]}
                     components={{ Toolbar: GridToolbarExport }}
