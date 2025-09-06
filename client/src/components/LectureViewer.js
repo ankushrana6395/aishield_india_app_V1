@@ -137,9 +137,9 @@ const LectureViewer = () => {
       setLoading(true);
       setError('');
       
-      // Fetch the lecture content with authorization header
+      // Fetch the lecture content with authorization header using lecture route without CSP
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures/${filename}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures-no-csp/${filename}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
