@@ -22,7 +22,11 @@ import {
   Grid,
   Chip,
   Avatar,
-  InputAdornment
+  InputAdornment,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select
 } from '@mui/material';
 import {
   Upload as UploadIcon,
@@ -66,6 +70,18 @@ const AdminDashboard = () => {
   const [categories, setCategories] = useState([]);
   const [openCategoryDialog, setOpenCategoryDialog] = useState(false);
   const [currentCategory, setCurrentCategory] = useState(null);
+  const [categoryForm, setCategoryForm] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    order: 0
+  });
+  const [uploadForm, setUploadForm] = useState({
+    file: null,
+    category: '',
+    title: '',
+    description: ''
+  });
 
   useEffect(() => {
     loadData();
@@ -150,6 +166,150 @@ const AdminDashboard = () => {
       console.error('Error updating subscription:', err);
       setError(err.response?.data?.message || 'Failed to update subscription');
     }
+  };
+
+  const handleCategoryFormChange = (event) => {
+    const { name, value } = event.target;
+    setCategoryForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Auto-generate slug from name
+    if (name === 'name') {
+      const slug = value
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9\s]/g, '')
+        .replace(/\s+/g, '-');
+      setCategoryForm(prev => ({
+        ...prev,
+        slug: slug
+      }));
+    }
+  };
+
+  const handleCategorySubmit = async () => {
+    try {
+      setError('');
+      setSuccess('');
+
+      // Validate required fields
+      if (!categoryForm.name || !categoryForm.slug) {
+        setError('Category name and slug are required');
+        return;
+      }
+
+      const response = await axios.post('/api/admin/categories', categoryForm);
+
+      // Add the new category to the list
+      setCategories([...categories, response.data.category]);
+
+      // Reset form and close dialog
+      setCategoryForm({
+        name: '',
+        slug: '',
+        description: '',
+        order: 0
+      });
+      setOpenCategoryDialog(false);
+
+      setSuccess('Category created successfully');
+    } catch (err) {
+      console.error('Error creating category:', err);
+      setError(err.response?.data?.message || 'Failed to create category');
+    }
+  };
+
+  const handleOpenCategoryDialog = () => {
+    setCurrentCategory(null);
+    setCategoryForm({
+      name: '',
+      slug: '',
+      description: '',
+      order: 0
+    });
+    setOpenCategoryDialog(true);
+  };
+
+  const handleUploadFormChange = (event) => {
+    const { name, value } = event.target;
+    setUploadForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFileChange = (event) => {
+    setUploadForm(prev => ({
+      ...prev,
+      file: event.target.files[0]
+    }));
+  };
+
+  const handleUploadSubmit = async () => {
+    try {
+      setError('');
+      setSuccess('');
+
+      // Validate required fields
+      if (!uploadForm.file) {
+        setError('Please select a file to upload');
+        return;
+      }
+      if (!uploadForm.category) {
+        setError('Please select a category');
+        return;
+      }
+
+      // Create form data for file upload
+      const formData = new FormData();
+      formData.append('lecture', uploadForm.file);
+      formData.append('category', uploadForm.category);
+      if (uploadForm.title) {
+        formData.append('title', uploadForm.title);
+      }
+      if (uploadForm.description) {
+        formData.append('description', uploadForm.description);
+      }
+
+      const response = await axios.post('/api/admin/upload-lecture', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      // Reload lectures list
+      const lecturesResponse = await axios.get('/api/admin/lectures');
+      setLectures(lecturesResponse.data);
+
+      // Reset form and close dialog
+      setUploadForm({
+        file: null,
+        category: '',
+        title: '',
+        description: ''
+      });
+      setOpenUploadDialog(false);
+
+      setSuccess('Lecture uploaded successfully');
+    } catch (err) {
+      console.error('Error uploading lecture:', err);
+      setError(err.response?.data?.message || 'Failed to upload lecture');
+    }
+  };
+
+  const handleOpenUploadDialog = () => {
+    // Ensure categories are loaded
+    if (categories.length === 0) {
+      axios.get('/api/admin/categories').then(res => setCategories(res.data));
+    }
+    setUploadForm({
+      file: null,
+      category: '',
+      title: '',
+      description: ''
+    });
+    setOpenUploadDialog(true);
   };
 
   return (
@@ -407,7 +567,7 @@ const AdminDashboard = () => {
               <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
                   <Typography variant="h6">Lectures ({lectures.length})</Typography>
-                  <Button variant="contained" startIcon={<CloudUploadIcon />} onClick={() => setOpenUploadDialog(true)}>
+                  <Button variant="contained" startIcon={<CloudUploadIcon />} onClick={handleOpenUploadDialog}>
                     Upload Lecture
                   </Button>
                 </Box>
@@ -440,7 +600,7 @@ const AdminDashboard = () => {
               <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
                   <Typography variant="h6">Categories ({categories.length})</Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenCategoryDialog(true)}>
+                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCategoryDialog}>
                     Add Category
                   </Button>
                 </Box>
@@ -477,6 +637,186 @@ const AdminDashboard = () => {
             )}
           </Paper>
         )}
+
+        {/* Upload Dialog */}
+        <Dialog open={openUploadDialog} onClose={() => setOpenUploadDialog(false)} maxWidth="md" fullWidth>
+          <DialogTitle>Upload Lecture</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    fullWidth
+                    startIcon={<UploadIcon />}
+                    sx={{ py: 3 }}
+                  >
+                    {uploadForm.file ? uploadForm.file.name : 'Select Lecture File'}
+                    <input
+                      type="file"
+                      hidden
+                      accept=".html"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
+                  {uploadForm.file && (
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                      Selected: {uploadForm.file.name} ({Math.round(uploadForm.file.size / 1024)} KB)
+                    </Typography>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel>Category *</InputLabel>
+                    <Select
+                      name="category"
+                      value={uploadForm.category}
+                      onChange={handleUploadFormChange}
+                      label="Category *"
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <CategoryIcon />
+                        </InputAdornment>
+                      }
+                    >
+                      {categories.map((category) => (
+                        <MenuItem key={category._id} value={category._id}>
+                          {category.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Title (Optional)"
+                    name="title"
+                    value={uploadForm.title}
+                    onChange={handleUploadFormChange}
+                    helperText="Leave empty to auto-generate from filename"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    label="Description (Optional)"
+                    name="description"
+                    value={uploadForm.description}
+                    onChange={handleUploadFormChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenUploadDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleUploadSubmit}>
+              Upload Lecture
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Category Dialog */}
+        <Dialog open={openCategoryDialog} onClose={() => setOpenCategoryDialog(false)} maxWidth="md" fullWidth>
+          <DialogTitle>
+            {currentCategory ? 'Edit Category' : 'Create New Category'}
+          </DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Category Name"
+                    name="name"
+                    value={categoryForm.name}
+                    onChange={handleCategoryFormChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CategoryIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Slug"
+                    name="slug"
+                    value={categoryForm.slug}
+                    onChange={handleCategoryFormChange}
+                    helperText="URL-friendly name (auto-generated from category name)"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          #
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    label="Description"
+                    name="description"
+                    value={categoryForm.description}
+                    onChange={handleCategoryFormChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="Order"
+                    name="order"
+                    value={categoryForm.order}
+                    onChange={handleCategoryFormChange}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenCategoryDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleCategorySubmit}>
+              {currentCategory ? 'Update Category' : 'Create Category'}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </Box>
   );
