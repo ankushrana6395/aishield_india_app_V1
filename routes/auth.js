@@ -144,7 +144,8 @@ router.get('/google/callback',
   }
 );
 
-// NOTE: Temporary admin creation route has been removed for security
-// Only existing admins can create new admin users through secure routes
+// TEMPORARY ADMIN CREATION ROUTE REMOVED FOR SECURITY
+// All admin creation must now go through secure admin dashboard
+// or direct database manipulation by authorized administrators only
 
 module.exports = router;

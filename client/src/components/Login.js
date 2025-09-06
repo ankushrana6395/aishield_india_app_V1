@@ -311,7 +311,7 @@ const Login = () => {
           </div>
 
           <a
-            href="http://localhost:5002/api/auth/google"
+            href={`${process.env.REACT_APP_API_URL}/api/auth/google`}
             className="google-button"
             style={{ display: 'block', textDecoration: 'none' }}
             target="_blank"

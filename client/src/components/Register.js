@@ -49,7 +49,7 @@ const Register = () => {
 
   const handleGoogleClick = (e) => {
     e.preventDefault();
-    window.location.href = '/api/auth/google';
+    window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/google`;
   };
 
   return (

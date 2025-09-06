@@ -365,6 +365,47 @@ router.get('/lectures/database/:id', auth, adminAuth, async (req, res) => {
   }
 });
 
+// Secure admin user creation (requires existing admin)
+router.post('/create-admin', auth, adminAuth, async (req, res) => {
+  try {
+    const { email, password, name = 'Admin User' } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists with this email' });
+    }
+
+    // Create new admin user
+    const adminUser = new User({
+      name,
+      email,
+      password, // Will be hashed by User model
+      role: 'admin',
+      isSubscribed: false
+    });
+
+    await adminUser.save();
+
+    res.status(201).json({
+      message: 'Admin user created successfully!',
+      user: {
+        _id: adminUser._id,
+        name: adminUser.name,
+        email: adminUser.email,
+        role: adminUser.role
+      }
+    });
+  } catch (error) {
+    console.error('Error creating admin:', error);
+    res.status(500).json({ message: 'Error creating admin user' });
+  }
+});
+
 // Category management routes
 
 // Create a new category
