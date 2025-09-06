@@ -137,9 +137,15 @@ const LectureViewer = () => {
       setLoading(true);
       setError('');
       
-      // Fetch the lecture content
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures/${filename}`);
-      
+      // Fetch the lecture content with authorization header
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures/${filename}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
       if (!response.ok) {
         throw new Error(`Failed to load lecture: ${response.status}`);
       }
