@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
@@ -17,7 +18,9 @@ console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
 
 // Create Express app
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 5002;
+console.log('process.env.PORT:', process.env.PORT);
+console.log('Using PORT:', PORT);
 
 // Security middleware
 app.use(helmet());
