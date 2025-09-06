@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "npm install && cd client && npm install && npm run build",
+    "build": "echo 'Installing root dependencies...' && npm install && echo 'Installing client dependencies...' && cd client && npm install && echo 'Building React app...' && npm run build && echo 'Build completed successfully'",
     "client": "cd client && npm start",
     "dev:client": "cd client && npm run dev",
     "dev:server": "nodemon server.js"

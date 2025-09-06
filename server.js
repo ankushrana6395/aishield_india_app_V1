@@ -84,10 +84,26 @@ app.use('/lectures', require('./middleware/auth'), require('./middleware/subscri
 
 // Serve React frontend
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
+  console.log('Checking for client build...');
+  if (require('fs').existsSync('client/build/index.html')) {
+    console.log('✅ Client build found, serving static files');
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+  } else {
+    console.error('❌ Client build not found at client/build/index.html');
+    // Fallback: serve a simple HTML page
+    app.get('*', (req, res) => {
+      res.send(`
+        <html><body>
+        <h1>App Loading...</h1>
+        <p>Please wait while we build your application.</p>
+        <p>If this persists, check the build logs.</p>
+        </body></html>
+      `);
+    });
+  }
 }
 
 // Health check endpoint
