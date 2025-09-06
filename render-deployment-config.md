@@ -4,7 +4,7 @@
 - **Repository**: https://github.com/ankushrana6395/aishield_india_app_V1.git
 - **Branch**: main
 - **Runtime**: Node
-- **Build Command**: npm run build
+- **Build Command**: cd client && npm install && npm run build && cd .. && npm run build
 - **Start Command**: npm start
 
 ## Environment Variables (Replace placeholders with production values)

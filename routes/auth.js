@@ -139,7 +139,11 @@ router.get('/google/callback',
   (req, res) => {
     // Successful authentication, generate JWT and redirect to client
     const token = generateToken(req.user._id);
-    const redirectUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/?token=${token}`;
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? 'https://aishield-india-app-v1.onrender.com'
+      : (process.env.CLIENT_URL || 'http://localhost:3000');
+    const redirectUrl = `${baseUrl}/?token=${token}`;
+    console.log('OAuth redirect URL:', redirectUrl);
     res.redirect(redirectUrl);
   }
 );
