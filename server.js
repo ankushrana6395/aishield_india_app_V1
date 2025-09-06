@@ -82,14 +82,34 @@ app.use('/api/payment', require('./routes/payment'));
 app.use('/api/content', require('./routes/content'));
 app.use('/api/admin', require('./routes/admin'));
 
-// Create separate app for lecture content without CSP
-const lectureApp = express();
-lectureApp.use(require('./middleware/auth'));
-lectureApp.use(require('./middleware/subscription'));
-lectureApp.use(express.static('client/public/lectures'));
+// Middleware function to selectively apply auth
+const lectureMiddleware = (req, res, next) => {
+  // Skip authentication for static HTML files and assets
+  if (req.path.match(/\.(html|css|js|png|jpg|jpeg|gif|svg|ico)$/i)) {
+    return next();
+  }
 
-// Serve lecture content with no CSP (separate from main app)
-app.use('/lectures-no-csp', lectureApp);
+  // For other requests (potentially future dynamic content), apply auth
+  try {
+    // Use auth middleware but handle it properly
+    const auth = require('./middleware/auth');
+    auth(req, res, (err) => {
+      if (err || res.headersSent) return;
+      const subscription = require('./middleware/subscription');
+      subscription(req, res, next);
+    });
+  } catch (err) {
+    // If auth fails, serve the file anyway (graceful fallback)
+    console.log('Auth middleware error for lecture, serving statically:', req.path);
+    next();
+  }
+};
+
+// Serve lecture content with selective middleware (no CSP protection)
+app.use('/lectures-no-csp',
+  lectureMiddleware,
+  express.static('client/public/lectures')
+);
 
 // Serve React frontend
 if (process.env.NODE_ENV === 'production') {

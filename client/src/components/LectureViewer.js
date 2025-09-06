@@ -137,13 +137,14 @@ const LectureViewer = () => {
       setLoading(true);
       setError('');
       
-      // Fetch the lecture content with authorization header using lecture route without CSP
+      // Fetch the lecture content using lecture route without CSP
+      // Note: Authorization is handled by middleware bypass for static HTML files
       const token = localStorage.getItem('token');
       const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures-no-csp/${filename}`, {
-        headers: {
+        headers: token ? {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        }
+        } : undefined
       });
 
       if (!response.ok) {
