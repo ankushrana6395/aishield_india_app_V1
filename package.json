@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "echo 'Installing root dependencies...' && npm install && echo 'Installing client dependencies...' && cd client && npm install && echo 'Building React app...' && npm run build",
+    "build": "echo 'Installing root dependencies...' && npm install && echo 'Installing client dependencies...' && cd client && npm install --legacy-peer-deps && echo 'Building React app...' && npm run build",
     "client": "cd client && npm start",
     "dev:client": "cd client && npm run dev",
     "dev:server": "nodemon server.js"
