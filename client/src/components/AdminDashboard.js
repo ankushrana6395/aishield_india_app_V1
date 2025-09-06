@@ -118,6 +118,40 @@ const AdminDashboard = () => {
     { name: 'Free Users', value: users.length - subscribers.length, color: '#ffc658' },
   ];
 
+  const handleSubscriptionAction = async (userId, action) => {
+    try {
+      setError('');
+      setSuccess('');
+
+      const response = await axios.put(`/api/admin/subscription/${userId}`, { action });
+
+      // Update the users list locally
+      setUsers(users.map(user =>
+        user._id === userId
+          ? { ...user, isSubscribed: action === 'verify', subscription: response.data.user.subscription }
+          : user
+      ));
+
+      // Update subscribers list if needed
+      if (action === 'verify') {
+        // Add to subscribers if not already there
+        const userExists = subscribers.some(sub => sub._id === userId);
+        if (!userExists) {
+          const updatedUser = users.find(u => u._id === userId);
+          setSubscribers([...subscribers, { ...updatedUser, isSubscribed: true, subscription: response.data.user.subscription }]);
+        }
+      } else if (action === 'revoke') {
+        // Remove from subscribers
+        setSubscribers(subscribers.filter(sub => sub._id !== userId));
+      }
+
+      setSuccess(`Subscription ${action}ed successfully`);
+    } catch (err) {
+      console.error('Error updating subscription:', err);
+      setError(err.response?.data?.message || 'Failed to update subscription');
+    }
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5', py: 3 }}>
       <Container maxWidth="xl">
@@ -221,6 +255,7 @@ const AdminDashboard = () => {
         )}
 
         {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+        {success && <Alert severity="success" sx={{ mb: 3 }}>{success}</Alert>}
 
         <Paper sx={{ width: '100%', mb: 3 }}>
           <Tabs value={tabValue} onChange={handleTabChange} variant="scrollable">
@@ -280,6 +315,34 @@ const AdminDashboard = () => {
                             color={params.value ? 'success' : 'default'}
                             size="small"
                           />
+                        )
+                      },
+                      {
+                        field: 'actions',
+                        headerName: 'Actions',
+                        flex: 1,
+                        renderCell: (params) => (
+                          <Box sx={{ display: 'flex', gap: 1 }}>
+                            {!params.row.isSubscribed ? (
+                              <Button
+                                variant="contained"
+                                color="success"
+                                size="small"
+                                onClick={() => handleSubscriptionAction(params.row.id, 'verify')}
+                              >
+                                Subscribe
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="contained"
+                                color="error"
+                                size="small"
+                                onClick={() => handleSubscriptionAction(params.row.id, 'revoke')}
+                              >
+                                Revoke
+                              </Button>
+                            )}
+                          </Box>
                         )
                       }
                     ]}
