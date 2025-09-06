@@ -34,19 +34,29 @@ passport.use(
           // User exists, update Google ID if not set
           if (!existingUser.googleId) {
             existingUser.googleId = profile.id;
-            await existingUser.save();
           }
+
+          // Ensure admin role for specific email
+          const userEmail = profile.emails[0].value;
+          if (userEmail === 'ankushrana6395@gmail.com' && existingUser.role !== 'admin') {
+            existingUser.role = 'admin';
+          }
+
+          await existingUser.save();
           return done(null, existingUser);
         }
 
         // Create new user if doesn't exist
+        const userEmail = profile.emails[0].value;
+        const isAdminUser = userEmail === 'ankushrana6395@gmail.com';
+
         const newUser = new User({
           name: profile.displayName,
-          email: profile.emails[0].value,
+          email: userEmail,
           googleId: profile.id,
           // Set a random password for Google users (they won't use it)
           password: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-          role: 'user', // Default role
+          role: isAdminUser ? 'admin' : 'user', // Give admin role to specific email
           isSubscribed: false,
         });
 
