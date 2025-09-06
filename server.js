@@ -26,9 +26,18 @@ console.log('Using PORT:', PORT);
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.NODE_ENV === 'production'
+    ? [process.env.CLIENT_URL, 'https://aishield-india-app-v1.onrender.com']
+    : ['http://localhost:3000', 'http://localhost:5000'],
   credentials: true
 }));
+
+// Configure CORS for static files and resources
+app.use('/favicon.ico', cors({ origin: '*' }));
+app.use('/favicon.*', cors({ origin: '*' }));
+app.use('/robots.txt', cors({ origin: '*' }));
+app.use('/manifest.json', cors({ origin: '*' }));
+app.use('/static/', cors({ origin: '*' }));
 
 // Rate limiting
 const limiter = rateLimit({
