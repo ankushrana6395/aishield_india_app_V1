@@ -18,8 +18,9 @@ console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
 
 // Create Express app
 const app = express();
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 5002;
+const PORT = process.env.PORT && !isNaN(parseInt(process.env.PORT)) ? parseInt(process.env.PORT) : 5000;
 console.log('process.env.PORT:', process.env.PORT);
+console.log('Parsed PORT value:', parseInt(process.env.PORT) || 'NaN');
 console.log('Using PORT:', PORT);
 
 // Security middleware
