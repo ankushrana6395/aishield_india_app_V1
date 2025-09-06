@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Interactive Path Traversal Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>Path Traversal | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the Path Traversal Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content"><!-- English Version -->
+        <div class="en">
+          <h1>Path <span>Traversal</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>A deep dive into directory traversal attacks, file inclusion vulnerabilities, and bypassing file restrictions — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>Path <span>Traversal</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Directory traversal attacks, file inclusion vulnerabilities, aur file restrictions ko bypass karne mein gahrai se jaane — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Right Corner</strong>
+        <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="hero-translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is Path Traversal? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What is Path Traversal?</h2>
+      <h2 class="section-title hi" style="display:none;">Path Traversal Kya Hai?</h2>
+
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Attack Vectors</div>
+          <div class="step-title hi" style="display:none;">Hamlawar Ke Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Techniques</div>
+          <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding Path Traversal</h3>
+        <h3 class="hi" style="display:none;">Path Traversal Ki Samajh</h3>
+        <p class="en">Path traversal (also known as directory traversal) is a vulnerability that allows attackers to access files and directories outside the intended directory by manipulating file paths using special characters like "../".</p>
+        <p class="hi" style="display:none;">Path traversal (directory traversal ke naam se bhi jana jata hai) ek vulnerability hai jo attackers ko special characters jaise "../" ka istemaal karke intended directory ke bahar files aur directories tak access karne ki anumati deta hai।</p>
+        <p class="en"><strong>Real Analogy:</strong> Like a visitor in a mall who discovers they can use the emergency stairs to access restricted floors by bypassing the main entrance controls.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Ek mall mein ek visitor ki tarah jo paata hai ki woh main entrance controls ko bypass karke emergency stairs ka istemaal karke restricted floors tak pahunch sakta hai।</p>
+        <p class="en">Path traversal attacks can lead to sensitive information disclosure, code execution, and complete system compromise when combined with other vulnerabilities.</p>
+        <p class="hi" style="display:none;">Path traversal attacks sensitive information disclose kar sakte hain, aur jab doosre vulnerabilities ke saath combine hote hain toh code execution aur pure system ko compromise kar sakte hain।</p>
+        <p class="en"><span class="keyword" data-title="Path Traversal" data-content="A vulnerability allowing access to files outside intended directory using ../ sequences">Path Traversal</span> is particularly dangerous in file upload and download functionality where user input controls file paths.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="Path Traversal" data-content="../ sequences ka istemaal karke intended directory ke bahar files tak access ki anumati dene wali vulnerability">Path Traversal</span> tab khas khatre se bhara hai jab user input file upload aur download functionality mein file paths control karta hai।</p>
+      </div>
+
+      <!-- Path Traversal Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How Path Traversal Works - Visualization</h3>
+        <h3 class="hi" style="display:none;">Path Traversal Kaise Kaam Karta Hai - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">User Input</div>
+            <div class="hi" style="display:none;">Upyogkartri Input</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">../../../etc/passwd</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">File System Access</div>
+            <div class="hi" style="display:none;">File System Pravesh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">No Path Validation</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">Sensitive File Access</div>
+            <div class="hi" style="display:none;">Sanvedansheel File Pravesh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Security Breach</div>
+          </div>
+        </div>
+        <p class="en">The application fails to validate user-controlled file paths, allowing traversal outside the web root directory. Without proper sanitization, attackers can access any file on the server.</p>
+        <p class="hi" style="display:none;">Application user-controlled file paths ko validate karne mein fail hoti hai, jo web root directory ke bahar traversal ki anumati deta hai। Appropriately sanitization ke bina attackers server par kisi bhi file tak pahunch sakte hain।</p>
+      </div>
+
+      <!-- Types of Path Traversal -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Types of Path Traversal</h3>
+        <h3 class="hi" style="display:none;">Path Traversal Ke Prakar</h3>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="Local File Inclusion (LFI)" data-content="Including local files from the server in an application response">Local File Inclusion (LFI)</span>: Accessing local files on the server (e.g., ../../../etc/passwd)</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Local File Inclusion (LFI)" data-content="Server par local files ko application response mein include karna">Local File Inclusion (LFI)</span>: Server par local files tak pahuchna (e.g., ../../../etc/passwd)</li>
+          <li class="en"><span class="keyword" data-title="Remote File Inclusion (RFI)" data-content="Including remote files via HTTP/FTP protocols">Remote File Inclusion (RFI)</span>: Including files from remote servers via HTTP/FTP</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Remote File Inclusion (RFI)" data-content="HTTP/FTP protocols ke zariye remote servers se files ko include karna">Remote File Inclusion (RFI)</span>: HTTP/FTP ke zariye remote servers se files include karna</li>
+          <li class="en"><span class="keyword" data-title="Directory Traversal" data-content="Browsing and accessing directory contents outside web root">Directory Traversal</span>: Browsing directory structures and accessing forbidden paths</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Directory Traversal" data-content="Web root ke bahar directory contents ko browse karna aur forbidden paths tak pahuchna">Directory Traversal</span>: Directory structures ko browse karna aur forbidden paths tak pahuchna</li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">Critical</div>
+          <div class="stat-number hi" style="display:none;">Khatarnaak</div>
+          <div class="stat-label en">severity level</div>
+          <div class="stat-label hi" style="display:none;">khatre ka level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">80%</div>
+          <div class="stat-label en">of applications vulnerable</div>
+          <div class="stat-label hi" style="display:none;">applications vulnerable hain</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$50K+</div>
+          <div class="stat-label en">average bounty payout</div>
+          <div class="stat-label hi" style="display:none;">average bounty payout</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Path Traversal -->
+  <section id="try-path">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Path Traversal Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Path Traversal Doharpan</h2>
+
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Mool Se Uchatam</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Basic LFI</div>
+            <div class="step-title hi" style="display:none;">Mool LFI</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Directory Listing</div>
+            <div class="step-title hi" style="display:none;">Directory Listing</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Advanced Bypass</div>
+            <div class="step-title hi" style="display:none;">Uchatam Bypass</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic LFI Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: Basic Local File Inclusion</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: Mool Local File Inclusion</h3>
+        <p class="en">Try to include sensitive files using path traversal sequences.</p>
+        <p class="hi" style="display:none;">Path traversal sequences ka istemaal karke sensitive files ko include karne ki koshish karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="lfi-input" class="en">File Path:</label>
+            <label for="lfi-input" class="hi" style="display:none;">File Path:</label>
+            <input type="text" id="lfi-input" value="../../../etc/passwd">
+          </div>
+          <button class="button" onclick="runLFIExploit()">Include File</button>
+          <div class="result-box" id="lfi-result">
+// Try different path traversal sequences
+          </div>
+        </div>
+      </div>
+
+      <!-- Directory Listing Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: Directory Listing & Traversal</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: Directory Listing aur Traversal</h3>
+        <p class="en">Browse directory structures and access files outside the web root.</p>
+        <p class="hi" style="display:none;">Directory structures ko browse karein aur web root ke bahar files tak pahunchen.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="dir-input" class="en">Directory Path:</label>
+            <label for="dir-input" class="hi" style="display:none;">Directory Path:</label>
+            <input type="text" id="dir-input" value="..//..//..//var/www" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Alternative path notations:
+// /../../../../var/log/apache2/access.log
+// ..%2f..%2f..%2fetc%2fpasswd
+// ....//....//....//etc//passwd
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Bypass Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Bypassing Path Restrictions</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Path Restrictions Ko Bypass Karna</h3>
+        <p class="en">Use encoding, null bytes, and other techniques to bypass input validation.</p>
+        <p class="hi" style="display:none;">Input validation ko bypass karne ke liye encoding, null bytes, aur doosre tarikon ka istemaal karo.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="bypass-input" class="en">Bypass Payload:</label>
+            <label for="bypass-input" class="hi" style="display:none;">Bypass Payload:</label>
+            <input type="text" id="bypass-input" value="../../../etc/passwd%00.jpg" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Common bypass techniques:
+// 1. URL encoding: ..%2f..%2f..%2f
+// 2. Double encoding: ..%252f..%252f..%252f
+// 3. Null bytes: ../../../etc/passwd%00
+// 4. Path normalization: /./../../../etc/passwd
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Bypass Techniques -->
+  <section id="bypass">
+    <div class="container">
+      <h2 class="section-title en">Bypassing Path Protection</h2>
+      <h2 class="section-title hi" style="display:none;">Path Protection Ko Kaise Bypass Karein</h2>
+
+      <!-- Attack Vector Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Path Traversal Bypass - Visualization</h3>
+        <h3 class="hi" style="display:none;">Path Traversal Bypass - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Blocked Request</div>
+            <div class="hi" style="display:none;">Rukawat Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">403 Forbidden</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Bypass Techniques</div>
+            <div class="hi" style="display:none;">Bypass Tarika</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Encoding, Null Bytes</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">File Access Success</div>
+            <div class="hi" style="display:none;">File Pravesh Safal</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Sensitive Data</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bypass Techniques with Examples -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Advanced Bypass Techniques for Path Traversal</h3>
+        <h3 class="hi" style="display:none;">Path Traversal Ke Liye Uchatam Bypass Tarika</h3>
+
+        <!-- URL Encoding -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. URL Encoding Bypass</h4>
+          <p class="en">Use URL encoding to bypass basic filters that block "../" sequences.</p>
+          <p class="hi" style="display:none;">Basic filters ko bypass karne ke liye "../" sequences ko block karne wali URL encoding ka istemaal karein.</p>
+          <div class="code-block">
+// URL encoding examples:
+// Original: ../../../etc/passwd
+// Encoded: ..%2f..%2f..%2fetc%2fpasswd
+// Double encoded: ..%252f..%252f..%252fetc%252fpasswd
+          </div>
+        </div>
+
+        <!-- Null Byte Injection -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Null Byte Injection</h4>
+          <p class="en">Inject null bytes to terminate file extension checks and access restricted file types.</p>
+          <p class="hi" style="display:none;">File extension checks ko terminate karne aur restricted file types tak pahuchne ke liye null bytes inject karein.</p>
+          <div class="code-block">
+// Null byte examples:
+// ../../../etc/passwd%00
+// ../../../etc/passwd%00.jpg
+// ../../../etc/passwd%00png
+          </div>
+        </div>
+
+        <!-- Path Normalization -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Path Normalization Techniques</h4>
+          <p class="en">Use various path normalization tricks to manipulate how the server processes URLs.</p>
+          <p class="hi" style="display:none;">Server ke URLs ko kaise process karta hai usse manipulate karne ke liye various path normalization tricks ka istemaal karein.</p>
+          <div class="code-block">
+// Path normalization examples:
+// /./../../../etc/passwd
+// ../../.././etc/passwd
+// ..\/..\/..\/etc/passwd (Windows-style)
+// ../../../etc/passwd/.
+          </div>
+        </div>
+
+        <!-- Case Manipulation -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Case Manipulation</h4>
+          <p class="en">Exploit case-insensitive file systems by using different case variations.</p>
+          <p class="hi" style="display:none;">Different case variations ka istemaal karke case-insensitive file systems ko exploit karein.</p>
+          <div class="code-block">
+// Case manipulation examples:
+// ../../etc/PASSWD
+// ../../etc/pasSwoRd
+// ../../etc/pAsSwD
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Case Studies -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Real-World Path Traversal Attacks</h3>
+        <h3 class="hi" style="display:none;">Vastavik Duniya Mein Path Traversal Attacks</h3>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--neon-green);">Case Study: Apache HTTP Server Vulnerability</h4>
+          <p class="en"><strong>Scenario:</strong> Apache servers had a path traversal bug allowing access to configuration files.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Apache servers mein configuration files tak access karne ka mazooriyat tha।</p>
+          <p class="en"><strong>Exploit:</strong> Used URL encoding and null bytes to bypass path restrictions.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Path restrictions ko bypass karne ke liye URL encoding aur null bytes ka istemaal kiya गया।</p>
+          <p class="en"><strong>Impact:</strong> Full server configuration disclosure and potential remote code execution.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Full server configuration ka disclosure aur potential remote code execution।</p>
+        </div>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--electric-blue);">Case Study: WordPress File Upload Vulnerability</h4>
+          <p class="en"><strong>Scenario:</strong> WordPress plugins had insecure file upload handling.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> WordPress plugins mein insecure file upload handling tha।</p>
+          <p class="en"><strong>Exploit:</strong> Path traversal bypassed file type restrictions allowing shell uploads.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Path traversal ne file type restrictions ko bypass kiya allowing shell uploads।</p>
+          <p class="en"><strong>Impact:</strong> Thousands of WordPress sites compromised with webshells.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Thousands of WordPress sites webshells ke saath compromised ho गए।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">Path Traversal Prevention</h2>
+      <h2 class="section-title hi" style="display:none;">Path Traversal Ka Bachav Kaise Karein</h2>
+
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Path Traversal Prevention - Visualization</h3>
+        <h3 class="hi" style="display:none;">Path Traversal Bachav - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Malicious Input</div>
+            <div class="hi" style="display:none;">Dushit Input</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">../../../etc/passwd</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Security Controls</div>
+            <div class="hi" style="display:none;">Suraksha Controls</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Validation, Sanitization</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Access Blocked</div>
+            <div class="hi" style="display:none;">Pravesh Blocked</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">403 Forbidden</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Coding Practices -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Secure Coding Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Coding Abhyas</h3>
+
+        <!-- Input Validation -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Strict Input Validation</h4>
+          <p class="en">Validate and sanitize all user inputs that could affect file paths.</p>
+          <p class="hi" style="display:none;">File paths ko affect karne walo sabhi user inputs ko validate aur sanitize karein.</p>
+          <div class="code-block">
+// Input validation example:
+// Whitelist allowed characters only
+function isValidPath($path) {
+    return preg_match('/^[a-zA-Z0-9_\-\.\/]+$/', $path);
+}
+
+// Remove dangerous path components
+function sanitizePath($path) {
+    return str_replace(['../', '..\\', './'], '', $path);
+}
+          </div>
+        </div>
+
+        <!-- Avoid Direct File Access -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Use Absolute Paths & Whitelisting</h4>
+          <p class="en">Use absolute paths and maintain whitelists of allowed file extensions and locations.</p>
+          <p class="hi" style="display:none;">Absolute paths ka istemaal karein aur allowed file extensions aur locations ke whitelists banayein rakhein.</p>
+          <div class="code-block">
+// Secure file access example:
+$allowedExtensions = ['txt', 'jpg', 'png', 'pdf'];
+$allowedDir = '/var/www/uploads/';
+
+function secureFileAccess($filename) {
+    if (!in_array(pathinfo($filename, PATHINFO_EXTENSION), $allowedExtensions)) {
+        return false;
+    }
+    $fullPath = $allowedDir . basename($filename);
+    return $fullPath;
+}
+          </div>
+        </div>
+
+        <!-- Proper Encoding -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Path Canonicalization</h4>
+          <p class="en">Convert all paths to canonical form to prevent traversal sequences.</p>
+          <p class="hi" style="display:none;">Traversal sequences ko rokne ke liye sabhi paths ko canonical form mein convert karein.</p>
+          <div class="code-block">
+// Path canonicalization:
+function canonicalizePath($path) {
+    $path = realpath($path);
+    return $path ? $path : false;
+}
+
+// Check if path is within allowed directory
+function isPathSafe($path, $baseDir) {
+    $realPath = realpath($path);
+    $realBase = realpath($baseDir);
+    return strpos($realPath, $realBase) === 0;
+}
+          </div>
+        </div>
+
+        <!-- Security Headers -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Security Headers & Controls</h4>
+          <p class="en">Implement security headers and use built-in web server protections.</p>
+          <p class="hi" style="display:none;">Security headers implement karein aur built-in web server protections ka istemaal karein.</p>
+          <div class="code-block">
+// Apache .htaccess protection:
+<Files "*.php">
+    php_admin_flag engine on
+</Files>
+
+order deny,allow
+deny from all
+allow from 127.0.0.1
+
+// Web server configuration:
+Disable directory listing
+Use chroot for file operations
+Enable security modules (ModSecurity)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    let isHinglish = false;
+
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+    });
+
+    function initializeApp() {
+      // Initialize Three.js
+      const canvas = document.getElementById('three-canvas');
+      if (canvas) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+        gridHelper.position.z = -20;
+        scene.add(gridHelper);
+
+        // Floating Points
+        const geometry = new THREE.BufferGeometry();
+        const count = 500;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+          positions[i] = (Math.random() - 0.5) * 100;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // Add floating cubes
+        const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const cubeMaterial = new THREE.MeshBasicMaterial({
+          color: 0x00aaff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5
+        });
+        const cubes = [];
+        for (let i = 0; i < 10; i++) {
+          const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+          cube.position.x = (Math.random() - 0.5) * 50;
+          cube.position.y = (Math.random() - 0.5) * 50;
+          cube.position.z = (Math.random() - 0.5) * 50;
+          cube.rotation.x = Math.random() * Math.PI;
+          cube.rotation.y = Math.random() * Math.PI;
+          cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+          scene.add(cube);
+        }
+
+        camera.position.z = 30;
+
+        // Animation
+        function animate() {
+          requestAnimationFrame(animate);
+          gridHelper.rotation.y += 0.005;
+          points.rotation.y += 0.003;
+          cubes.forEach(cube => {
+            cube.mesh.rotation.x += cube.speed;
+            cube.mesh.rotation.y += cube.speed;
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      // Initialize keyword modal
+      const keywordModal = document.getElementById('keyword-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const modalClose = document.getElementById('modal-close');
+
+      if (keywordModal && modalTitle && modalBody && modalClose) {
+        document.querySelectorAll('.keyword').forEach(keyword => {
+          keyword.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalTitle.textContent = this.getAttribute('data-title');
+            modalBody.textContent = this.getAttribute('data-content');
+            keywordModal.classList.add('active');
+          });
+        });
+
+        modalClose.addEventListener('click', () => {
+          keywordModal.classList.remove('active');
+        });
+
+        keywordModal.addEventListener('click', (e) => {
+          if (e.target === keywordModal) {
+            keywordModal.classList.remove('active');
+          }
+        });
+      }
+
+      // Initialize quiz
+      renderQuiz();
+
+      // Initialize scroll animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // Card Interaction Functions
+    function highlightCard(card) {
+      if (card) {
+        card.classList.add('pop-out');
+        showNotification('Hovering: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    function unhighlightCard(card) {
+      if (card && !card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    }
+
+    function focusCard(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+
+      if (card) {
+        card.classList.add('focused');
+        card.classList.add('pop-out');
+        showNotification('Focused on: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    // Language Toggle
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+
+      enElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'none' : 'block';
+      });
+
+      hiElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'block' : 'none';
+      });
+
+      // Update both translator buttons
+      const translatorBtns = document.querySelectorAll('.translator-btn');
+      translatorBtns.forEach(btn => {
+        if (btn) btn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      });
+
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+
+      // Re-render quiz with new language
+      renderQuiz();
+    }
+
+    // Quiz Questions
+    const quizQuestions = [
+      {
+        question: {
+          en: "What is the primary goal of a path traversal attack?",
+          hi: "Path traversal attack ka primary uddeshya kya hota hai?"
+        },
+        options: {
+          en: [
+            "To steal user passwords",
+            "To access files outside intended directory",
+            "To crash the server",
+            "To redirect users to malicious sites"
+          ],
+          hi: [
+            "User passwords ko steal karna",
+            "Intended directory ke bahar files tak pahuchna",
+            "Server ko crash karna",
+            "Users ko malicious sites par redirect karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Path traversal attacks aim to access files and directories outside the web root.",
+          hi: "Path traversal attacks web root ke bahar files aur directories tak pahuchne ka aim karte hain."
+        }
+      },
+      {
+        question: {
+          en: "What sequence is commonly used for path traversal?",
+          hi: "Path traversal ke liye kaunsa sequence commonly used hota hai?"
+        },
+        options: {
+          en: [
+            "--",
+            "++",
+            "../",
+            "//"
+          ],
+          hi: [
+            "--",
+            "++",
+            "../",
+            "//"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "../ sequences tell the file system to move up one directory level.",
+          hi: "../ sequences file system ko ek directory level up karne ko kahate hain."
+        }
+      },
+      {
+        question: {
+          en: "Which encoding technique can bypass path filters?",
+          hi: "Kaunsa encoding technique path filters ko bypass kar sakta hai?"
+        },
+        options: {
+          en: [
+            "HTML encoding",
+            "URL encoding",
+            "Base64 encoding",
+            "ROT13 encoding"
+          ],
+          hi: [
+            "HTML encoding",
+            "URL encoding",
+            "Base64 encoding",
+            "ROT13 encoding"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "URL encoding can bypass filters by representing characters like %2f for /.",
+          hi: "URL encoding filters ko bypass kar sakta hai jaise %2f for / ke through."
+        }
+      },
+      {
+        question: {
+          en: "What is null byte injection used for in path traversal?",
+          hi: "Path traversal mein null byte injection kaise use hota hai?"
+        },
+        options: {
+          en: [
+            "To encrypt file content",
+            "To terminate string processing",
+            "To compress file sizes",
+            "To create backups"
+          ],
+          hi: [
+            "File content ko encrypt karne ke liye",
+            "String processing ko terminate karne ke liye",
+            "File sizes ko compress karne ke liye",
+            "Backups create karne ke liye"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Null bytes terminate string operations and can bypass extension checks.",
+          hi: "Null bytes string operations ko terminate karte hain aur extension checks ko bypass kar sakte hain."
+        }
+      },
+      {
+        question: {
+          en: "Which is a prevention method for path traversal?",
+          hi: "Path traversal ka prevention method kaunsa hai?"
+        },
+        options: {
+          en: [
+            "Allow all file access",
+            "Use input sanitization",
+            "Disable HTTPS",
+            "Enable verbose error messages"
+          ],
+          hi: [
+            "Sabhi file access allow karna",
+            "Input sanitization use karna",
+            "HTTPS disable karna",
+            "Verbose error messages enable karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Input sanitization and validation prevent malicious path traversals.",
+          hi: "Input sanitization aur validation malicious path traversals ko prevent karte hain."
+        }
+      },
+      {
+        question: {
+          en: "What does LFI stand for in web security?",
+          hi: "Web security mein LFI ka kya matlab hai?"
+        },
+        options: {
+          en: [
+            "Local File Injection",
+            "Local File Inclusion",
+            "Log File Import",
+            "Legacy File Integration"
+          ],
+          hi: [
+            "Local File Injection",
+            "Local File Inclusion",
+            "Log File Import",
+            "Legacy File Integration"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "LFI stands for Local File Inclusion, allowing attackers to include local files.",
+          hi: "LFI Local File Inclusion ka matlab hai, jo attackers ko local files include karne ki anumati deta hai."
+        }
+      },
+      {
+        question: {
+          en: "Which file system traversal works on Windows systems?",
+          hi: "Kaunsi file system traversal Windows systems par kaam karta hai?"
+        },
+        options: {
+          en: [
+            "/../",
+            "../../",
+            "..\\..\\",
+            "....\\"
+          ],
+          hi: [
+            "/../",
+            "../../",
+            "..\\..\\",
+            "....\\"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "..\\ is the Windows path separator for directory traversal.",
+          hi: "..\\ Windows mein directory traversal ke liye path separator hai."
+        }
+      },
+      {
+        question: {
+          en: "What is double encoding in path traversal?",
+          hi: "Path traversal mein double encoding kya hota hai?"
+        },
+        options: {
+          en: [
+            "Using two different encryption methods",
+            "Encoding characters twice",
+            "Encoding files in ZIP format",
+            "Using double slashes in paths"
+          ],
+          hi: [
+            "Do alag encryption methods use karna",
+            "Characters ko twice encode karna",
+            "Files ko ZIP format mein encode karna",
+            "Paths mein double slashes use karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Double encoding bypasses WAFs by encoding already encoded data.",
+          hi: "Double encoding WAFs ko bypass karta hai already encoded data ko encode karke."
+        }
+      },
+      {
+        question: {
+          en: "Which is a dangerous configuration for file uploads?",
+          hi: "File uploads ke liye kaunsi configuration dangerous hai?"
+        },
+        options: {
+          en: [
+            "Renaming uploaded files",
+            "Storing uploads in web root",
+            "Validating file types by content",
+            "Using absolute paths"
+          ],
+          hi: [
+            "Uploaded files ko rename karna",
+            "Uploads ko web root mein store karna",
+            "File types ko content se validate karna",
+            "Absolute paths use karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Storing uploads in web root allows directory traversal attacks.",
+          hi: "Uploads ko web root mein store karna directory traversal attacks ki anumati deta hai."
+        }
+      },
+      {
+        question: {
+          en: "What function should you use to prevent path traversal?",
+          hi: "Path traversal ko prevent karne ke liye kaunsa function use karna chahiye?"
+        },
+        options: {
+          en: [
+            "eval()",
+            "require()",
+            "realpath()",
+            "include()"
+          ],
+          hi: [
+            "eval()",
+            "require()",
+            "realpath()",
+            "include()"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "realpath() resolves relative paths and prevents traversal attacks.",
+          hi: "realpath() relative paths ko resolve karta hai aur traversal attacks ko prevent karta hai."
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      if (!quizContainer) return;
+
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedAnswers = new Array(quizQuestions.length).fill(-1);
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      const optionsContainer = document.getElementById(`options-${questionIndex}`);
+      if (!optionsContainer) return;
+
+      optionsContainer.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      optionsContainer.querySelectorAll('.option')[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      console.log('Quiz submit triggered');
+      let score = 0;
+      const scoreDisplay = document.getElementById('score-display');
+
+      if (!scoreDisplay) {
+        console.error('Score display element not found');
+        return;
+      }
+
+      console.log('Processing quiz answers:', selectedAnswers);
+
+      quizQuestions.forEach((q, index) => {
+        const optionsContainer = document.getElementById(`options-${index}`);
+        if (!optionsContainer) {
+          console.warn(`Options container for question ${index} not found`);
+          return;
+        }
+
+        const options = optionsContainer.querySelectorAll('.option');
+        if (options.length === 0) {
+          console.warn(`No options found for question ${index}`);
+          return;
+        }
+
+        // Highlight correct answer
+        if (options[q.correct]) {
+          options[q.correct].classList.add('correct');
+        }
+
+        // Handle user's answer
+        if (selectedAnswers[index] !== -1 && selectedAnswers[index] !== q.correct) {
+          // Wrong answer - mark as incorrect
+          if (options[selectedAnswers[index]]) {
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        } else if (selectedAnswers[index] === q.correct) {
+          // Correct answer - mark as correct
+          score++;
+          if (options[selectedAnswers[index]]) {
+            options[selectedAnswers[index]].classList.add('correct');
+          }
+        }
+      });
+
+      scoreDisplay.textContent = `Score: ${score} / ${quizQuestions.length}`;
+      console.log(`Final score: ${score} / ${quizQuestions.length}`);
+
+      const message = isHinglish ? `Quiz pura! Score: ${score}/${quizQuestions.length}`
+                                 : `Quiz complete! You scored ${score}/${quizQuestions.length}`;
+      showNotification(message);
+
+      // Disable submit button to prevent multiple submissions
+      const submitBtn = document.querySelector('.quiz-submit');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = isHinglish ? '✅ पुरा हुआ' : '✅ Completed';
+        submitBtn.style.background = 'var(--neon-green)';
+      }
+    };
+
+    // Notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const progressBar = document.getElementById('progress-bar');
+      if (!progressBar) return;
+
+      const winHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset;
+      const trackLength = docHeight - winHeight;
+      const progress = scrollTop / trackLength * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    // Interactive Demo Functions
+    function runLFIExploit() {
+      const input = document.getElementById('lfi-input');
+      const result = document.getElementById('lfi-result');
+
+      if (!input || !result) return;
+
+      const path = input.value;
+
+      if (path.includes('../')) {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #00ff88">🎯 POTENTIAL VULNERABILITY DETECTED:</span><br>LFI exploit possible at:<br><code>${path}</code><br>❌ In a real vulnerability, this path would access system files.`
+          : `<span style="color: #00ff88">🎯 POTENTIAL VULNERABILITY DETECTED:</span><br>LFI exploit possible at:<br><code>${path}</code><br>❌ In a real vulnerability, this path would access system files.`;
+      } else {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #88ff00">✅ SECURE</span>: No traversal characters detected.`
+          : `<span style="color: #88ff00">✅ SECURE</span>: No traversal characters detected.`;
+      }
+      showNotification(isHinglish ? 'LFI attempt simulated!' : 'LFI attempt simulated!');
+    }
+
+    function runIdorExploit() {
+      const input = document.getElementById('idor-input');
+      const result = document.getElementById('idor-result');
+
+      if (!input || !result) return;
+
+      const url = input.value;
+
+      if (url.includes('../')) {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #00ff88">🔍 PATH TRAVERSAL DETECTED:</span> Trying path:<br><code>${url}</code><br>❌ This would attempt file system traversal.`
+          : `<span style="color: #00ff88">🔍 PATH TRAVERSAL DETECTED:</span> Trying path:<br><code>${url}</code><br>❌ This would attempt file system traversal.`;
+      } else {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #88ff00">✅ PATH SECURE</span>: No traversal sequences found.`
+          : `<span style="color: #88ff00">✅ PATH SECURE</span>: No traversal sequences found.`;
+      }
+      showNotification(isHinglish ? 'IDOR demo simulated!' : 'IDOR demo simulated!');
+    }
+
+    function runPrivilegeEscalation() {
+      const input = document.getElementById('privilege-input');
+      const result = document.getElementById('privilege-result');
+
+      if (!input || !result) return;
+
+      const url = input.value;
+
+      result.innerHTML = isHinglish
+        ? `<span style="color: #00ff88">🚀 PRIVILEGE ESCALATION ATTEMPT:</span><br>📍 Target: Admin Path<br>❌ ACCESS DENIED (Simulation)<br><br>Common LFI paths:<br>• /etc/passwd<br>• /proc/version<br>• /var/log/apache2/access.log`
+        : `<span style="color: #00ff88">🚀 PRIVILEGE ESCALATION ATTEMPT:</span><br>📍 Target: Admin Path<br>❌ ACCESS DENIED (Simulation)<br><br>Common LFI paths:<br>• /etc/passwd<br>• /proc/version<br>• /var/log/apache2/access.log`;
+
+      showNotification(isHinglish ? 'Privilege escalation simulated!' : 'Privilege escalation simulated!');
+    }
+
+    // Add missing IDOR and privilege input fields that the functions reference
+    window.addEventListener('load', function() {
+      const tryPathSection = document.getElementById('try-path');
+      if (tryPathSection) {
+        // Add missing demo inputs for consistency with demo functions
+        if (!document.getElementById('idor-input')) {
+          const demoSection = document.querySelector('.interactive-demo');
+          if (demoSection) {
+            const idorDemo = demoSection.insertAdjacentHTML('afterend', `
+              <div class="interactive-demo animate-on-scroll" style="margin-bottom: 20px;">
+                <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Enhanced Directory Traversal</h3>
+                <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Enhanced Directory Traversal</h3>
+                <div class="demo-container">
+                  <div class="input-group">
+                    <label for="idor-input" class="en">Test URL with Path Traversal:</label>
+                    <label for="idor-input" class="hi" style="display:none;">Path Traversal wale URL ko test karein:</label>
+                    <input type="text" id="idor-input" value="https://app.example.com/users/avatar/../../../etc/passwd">
+                  </div>
+                  <div class="input-group">
+                    <label for="privilege-input" class="en">Privilege Escalation URL:</label>
+                    <label for="privilege-input" class="hi" style="display:none;">Privilege Escalation URL:</label>
+                    <input type="text" id="privilege-input" value="https://app.example.com/dashboard/../../../admin/config.php">
+                  </div>
+                  <button class="button" onclick="runIdorExploit()" style="margin-right: 10px;">Test LFI</button>
+                  <button class="button" onclick="runPrivilegeEscalation()">Test Privilege</button>
+                  <div class="result-box" id="idor-result" style="margin-top: 15px;"></div>
+                  <div class="result-box" id="privilege-result" style="margin-top: 15px;"></div>
+                </div>
+              </div>
+            `);
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

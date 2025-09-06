@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Interactive SSTI Vulnerability Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>SSTI Vulnerability | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the SSTI Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content"><!-- English Version -->
+        <div class="en">
+          <h1>Server-Side <span>Template Injection</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Dive deep into SSTI vulnerabilities, template engines, and server-side RCE techniques — with interactive demos and elite-level exploitation insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>Server-Side <span>Template Injection</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>SSTI vulnerabilities, template engines, aur server-side RCE techniques mein gahrai se jaane — interactive demos aur elite-level exploitation ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Right Corner</strong>
+        <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="hero-translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is SSTI? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What is SSTI?</h2>
+      <h2 class="section-title hi" style="display:none;">SSTI Kya Hai?</h2>
+
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Template Engines</div>
+          <div class="step-title hi" style="display:none;">Template Engines</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Exploitation</div>
+          <div class="step-title hi" style="display:none;">Doharpan</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding Server-Side Template Injection</h3>
+        <h3 class="hi" style="display:none;">Server-Side Template Injection Ki Samajh</h3>
+        <p class="en">Server-Side Template Injection (SSTI) occurs when an attacker can inject template code into server-side templates. This can lead to code execution, information disclosure, and complete server compromise.</p>
+        <p class="hi" style="display:none;">Server-Side Template Injection (SSTI) tab hota hai jab koi hamlaavar server-side templates mein template code inject kar sakta hai. Ye code execution, information disclosure, aur pure server ke compromise tak lead kar sakta hai.</p>
+        <p class="en"><strong>Real Analogy:</strong> Like ordering a custom meal but instead of ingredients, you write a recipe that takes over the entire kitchen. The server follows your malicious "recipe" and executes whatever you command.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Jaise custom khana order karna, lekin ingredients ke bajaye, ek recipe likhna jo pure kitchen ko hijack kar le. Server aapke malicious "recipe" ko follow karta hai aur jo kuch aap command karte hain wo execute kar deta hai.</p>
+        <p class="en">SSTI is devastating because template engines have full access to server-side code and can execute arbitrary code, read files, and make system calls.</p>
+        <p class="hi" style="display:none;">SSTI vinashkar hai kyunki template engines ko server-side code tak full access hota hai aur ye arbitrary code execute kar sakte hain, files padh sakte hain, aur system calls kar sakte hain.</p>
+        <p class="en"><span class="keyword" data-title="Server-Side Template Injection" data-content="Vulnerability allowing injection of template code that gets executed server-side, potentially leading to RCE">SSTI</span> is one of the most dangerous injection vulnerabilities when discovered in web applications.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="Server-Side Template Injection" data-content="Web applications mein pata chalna par sabse khatarnaak injection vulnerabilities mein se ek">SSTI</span> hai.</p>
+      </div>
+
+      <!-- SSTI Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How SSTI Works - Visualization</h3>
+        <h3 class="hi" style="display:none;">SSTI Kaise Kaam Karta Hai - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">Malicious Input</div>
+            <div class="hi" style="display:none;">Dushit Input</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Hello {{7*7}}</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">Template Engine</div>
+            <div class="hi" style="display:none;">Template Engine</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Evaluates as 49</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">RCE Executed</div>
+            <div class="hi" style="display:none;">RCE Execute Hua</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Command Executed</div>
+          </div>
+        </div>
+        <p class="en">The data flows from user input through the template engine to server-side execution. When the engine processes the input without proper sanitization, it executes malicious code.</p>
+        <p class="hi" style="display:none;">Data user input se template engine ke zariye server-side execution tak flow karta hai. Jab engine input ko proper sanitization ke bina process karta hai, toh malicious code execute ho jata hai.</p>
+      </div>
+
+      <!-- Popular Template Engines -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Popular Template Engines & Their Syntax</h3>
+        <h3 class="hi" style="display:none;">Lohit Template Engines & Unki Syntax</h3>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="Twig (PHP)" data-content="PHP template engine with {{ }} delimiters">Twig (PHP)</span>: Uses <code>{{7*7}}</code> and <code>{% %}</code></li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Twig (PHP)" data-content="PHP template engine with {{ }} delimiters">Twig (PHP)</span>: Use karta hai <code>{{7*7}}</code> aur <code>{% %}</code></li>
+          <li class="en"><span class="keyword" data-title="Jinja2 (Python)" data-content="Python template engine with {{ }} delimiters">Jinja2 (Python)</span>: Uses <code>{{7*7}}</code> and <code>{% for %}</code></li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Jinja2 (Python)" data-content="Python template engine with {{ }} delimiters">Jinja2 (Python)</span>: Use karta hai <code>{{7*7}}</code> aur <code>{% for %}</code></li>
+          <li class="en"><span class="keyword" data-title="Handlebars (JS)" data-content="JavaScript template engine with {{ }}>Handlebars (JS)</span>: Uses <code>{{value}}</code></li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Handlebars (JS)" data-content="JavaScript template engine with {{ }}">Handlebars (JS)</span>: Use karta hai <code>{{value}}</code></li>
+          <li class="en"><span class="keyword" data-title="Freemarker (Java)" data-content="Java template engine with ${ } delimiters">Freemarker (Java)</span>: Uses <code>${7*7}</code> and <code><#if></code></li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Freemarker (Java)" data-content="Java template engine with ${ } delimiters">Freemarker (Java)</span>: Use karta hai <code>${7*7}</code> aur <code><#if></code></li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">RCE</div>
+          <div class="stat-number hi" style="display:none;">RCE</div>
+          <div class="stat-label en">Can lead to full</div>
+          <div class="stat-label hi" style="display:none;">full access tak pahucha sakta hai</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">90%</div>
+          <div class="stat-label en">of template engines</div>
+          <div class="stat-label hi" style="display:none;">template engines mein paaya jata hai</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$50K+</div>
+          <div class="stat-label en">highest reported bounty</div>
+          <div class="stat-label hi" style="display:none;">sabse zyada reported bounty</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – SSTI -->
+  <section id="try-ssti">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: SSTI Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: SSTI Doharpan</h2>
+
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Detection to Exploitation</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Discovery Se Doharpan</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Detection</div>
+            <div class="step-title hi" style="display:none;">Discovery</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Template Engine ID</div>
+            <div class="step-title hi" style="display:none;">Engine Ki ID</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Code Execution</div>
+            <div class="step-title hi" style="display:none;">Code Execution</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic SSTI Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: SSTI Detection</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: SSTI Ki Discovery</h3>
+        <p class="en">Try common injection payloads to detect SSTI vulnerabilities.</p>
+        <p class="hi" style="display:none;">SSTI vulnerabilities ki discovery karne ke liye common injection payloads try karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="ssti-input" class="en">Template Injection Payload:</label>
+            <label for="ssti-input" class="hi" style="display:none;">Template Injection Payload:</label>
+            <input type="text" id="ssti-input" value="{{7*7}}">
+          </div>
+          <button class="button" onclick="runSstiExploit()">Test Injection</button>
+          <div class="result-box" id="ssti-result">
+// Try injection payloads here
+          </div>
+        </div>
+      </div>
+
+      <!-- Template Engine Identification -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: Template Engine Identification</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: Template Engine Ki Pahchan</h3>
+        <p class="en">Try different syntax to identify the underlying template engine.</p>
+        <p class="hi" style="display:none;">Underlying template engine ki pahchan karne ke liye alag-alag syntax try karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="engine-input" class="en">Engine Test Payload:</label>
+            <label for="engine-input" class="hi" style="display:none;">Engine Test Payload:</label>
+            <input type="text" id="engine-input" value="${7*7}" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Common identification payloads:
+// Twig/PHP: {{7*7}}
+// Flask/Jinja: {{7*7}}
+// Freemarker: ${7*7}
+// Expression Language: ${7*7}
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Execution Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Remote Code Execution</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Remote Code Execution</h3>
+        <p class="en">Advanced payloads for achieving remote code execution via SSTI.</p>
+        <p class="hi" style="display:none;">SSTI ke zariye RCE achieve karne ke liye advanced payloads.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="rce-input" class="en">RCE Payload:</label>
+            <label for="rce-input" class="hi" style="display:none;">RCE Payload:</label>
+            <input type="text" id="rce-input" value="{{'7'*7}}" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// RCE Examples:
+// Python/Jinja: {{self.__dict__}}
+// PHP/Twig: {{self}}
+// Java: ${T(java.lang.Runtime).getRuntime().exec('id')}
+// Node.js: {{global.process.mainModule.constructor._load('child_process').execSync('id').toString()}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: SSTI Bypass Techniques -->
+  <section id="bypass">
+    <div class="container">
+      <h2 class="section-title en">Bypassing SSTI Protections</h2>
+      <h2 class="section-title hi" style="display:none;">SSTI Surakshao Ko Bypass Karna</h2>
+
+      <!-- SSTI Bypass Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">SSTI Bypass - Visualization</h3>
+        <h3 class="hi" style="display:none;">SSTI Bypass - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Filtered Input</div>
+            <div class="hi" style="display:none;">Filter Hua Input</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">{{7*7}}</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Bypass Techniques</div>
+            <div class="hi" style="display:none;">Bypass Tarika</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Alternative Syntax</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Bypass Success</div>
+            <div class="hi" style="display:none;">Bypass Safal</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Code Executed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bypass Techniques with Examples -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Advanced Bypass Techniques</h3>
+        <h3 class="hi" style="display:none;">Uchatam Bypass Tarika</h3>
+
+        <!-- Alternative Syntax -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Alternative Syntax</h4>
+          <p class="en">Use different delimiters and syntax variations to bypass input filters.</p>
+          <p class="hi" style="display:none;">Input filters ko bypass karne ke liye alag-alag delimiters aur syntax variations ka upyog karein.</p>
+          <div class="code-block">
+// Examples:
+// Instead of {{7*7}} try:
+// {%%7*7%%} or {%raw%}{{7*7}}{%endraw%}
+// {{''.__class__.__mro__[2].__subclasses__()}}
+// ${7*7} for Freemarker/Java
+          </div>
+        </div>
+
+        <!-- Operator Manipulation -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Operator Manipulation</h4>
+          <p class="en">Use mathematical and string operators to construct payloads when direct syntax is blocked.</p>
+          <p class="hi" style="display:none;">Jab direct syntax blocked ho to mathematical aur string operators ka upyog karke payloads construct karein.</p>
+          <div class="code-block">
+// Examples:
+// {{7*'7'}} instead of {{777777}}
+// {{dict.__class__.__bases__[0].__subclasses__()}}
+// {{[].__class__.__bases__[0].__subclasses__()}}
+// {% for c in [1,2,3] %}{{c}}{% endfor %}
+          </div>
+        </div>
+
+        <!-- Context-Aware Injection -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Context-Aware Injection</h4>
+          <p class="en">Adapt payloads based on template context and surrounding code structure.</p>
+          <p class="hi" style="display:none;">Template context aur surrounding code structure ke aadhar par payloads adopt karein.</p>
+          <div class="code-block">
+// Examples:
+// In HTML context: {{7*7}}
+// In attribute: "{{7*7}}"
+// In script: {{JSON.stringify(7*7)}}
+// In comments: {# {{7*7}} #} for Django/Jinja
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent SSTI</h2>
+      <h2 class="section-title hi" style="display:none;">SSTI Ko Kaise Rokein</h2>
+
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">SSTI Prevention - Visualization</h3>
+        <h3 class="hi" style="display:none;">SSTI Bachav - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">User Data</div>
+            <div class="hi" style="display:none;">User Data</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">{{malicious}}</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Validation Layer</div>
+            <div class="hi" style="display:none;">Validation Perton</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Sanitize & Escaped</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Safe Template</div>
+            <div class="hi" style="display:none;">Surakshit Template</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">No Execution</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Coding Practices -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Secure Coding Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Coding Abhyas</h3>
+
+        <!-- Sandbox Templates -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Use Sandboxed Template Engines</h4>
+          <p class="en">Choose template engines that support sandboxing or have built-in security features.</p>
+          <p class="hi" style="display:none;">Sandboxing ko support karne wale ya built-in security features wale template engines choose karein.</p>
+          <div class="code-block">
+// Python - Restricted execution
+from jinja2.sandbox import SandboxedEnvironment
+env = SandboxedEnvironment()
+
+// Django template system is inherently safer
+// Avoid mustache/handlebars for dynamic templates
+          </div>
+        </div>
+
+        <!-- Input Sanitization -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Sanitize User Input</h4>
+          <p class="en">Always sanitize and validate user inputs before passing them to template engines.</p>
+          <p class="hi" style="display:none;">Template engines mein inputs pass karne se pahle hamesha user inputs ko sanitize aur validate karein.</p>
+          <div class="code-block">
+// PHP - Escape template variables
+$template_vars = [
+    'name' => htmlspecialchars($user_input, ENT_QUOTES),
+    'message' => strip_tags($user_input)
+];
+
+// Python - Custom filter
+def safe_filter(value):
+    return str(escape(value))
+
+env.filters['safe'] = safe_filter
+          </div>
+        </div>
+
+        <!-- Whitelist Approach -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Implement Whitelist Validation</h4>
+          <p class="en">Only allow predefined template variables and reject anything that looks like template syntax.</p>
+          <p class="hi" style="display:none;">Kewal predefined template variables ko allow karein aur template syntax lagne wali kisi bhi cheez ko reject karein.</p>
+          <div class="code-block">
+// Node.js - Template variable whitelist
+const allowed_vars = ['name', 'email', 'message'];
+
+function validateTemplate(data) {
+    for (let key in data) {
+        if (!allowed_vars.includes(key)) {
+            throw new Error('Invalid template variable');
+        }
+    }
+}
+          </div>
+        </div>
+
+        <!-- Template Caching -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Use Template Precompilation</h4>
+          <p class="en">Precompile templates to prevent runtime injection attacks.</p>
+          <p class="hi" style="display:none;">Runtime injection attacks ko rokne ke liye templates ko precompile karein.</p>
+          <div class="code-block">
+// Twig - Compile templates ahead of time
+$template = $twig->loadTemplate('page.html.twig');
+// Template is now compiled and safe
+
+// Angular - Use AOT compilation
+ng build --prod  // Ahead of Time compilation
+          </div>
+        </div>
+      </div>
+
+      <!-- Lab Environment Simulation -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">SSTI Prevention Testing</h3>
+        <h3 class="hi" style="display:none;">SSTI Bachav Testing</h3>
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--neon-green);">Test SSTI Prevention Techniques</h4>
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="test-ssti" class="en">Test Payload:</label>
+              <label for="test-ssti" class="hi" style="display:none;">Parikshan Payload:</label>
+              <input type="text" id="test-ssti" value="{{7*7}}">
+            </div>
+            <button class="button" onclick="testSstiPrevention()" style="position: relative; z-index: 10;">Test Prevention</button>
+            <div class="result-box" id="prevention-result">
+// Prevention test results will appear here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    let isHinglish = false;
+    let selectedAnswers = new Array(10).fill(-1); // Initialize for 10 questions
+
+    // Make functions globally available immediately (before DOMContentLoaded)
+    window.highlightCard = function(card) {
+      if (card) {
+        card.classList.add('pop-out');
+        showNotification('Hovering: ' + card.querySelector('h3').textContent);
+      }
+    };
+
+    window.unhighlightCard = function(card) {
+      if (card && !card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    };
+
+    window.focusCard = function(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+
+      if (card) {
+        card.classList.add('focused');
+        card.classList.add('pop-out');
+        showNotification('Focused on: ' + card.querySelector('h3').textContent);
+      }
+    };
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initializePage();
+    });
+
+    function initializePage() {
+      const threeCanvas = document.getElementById('three-canvas');
+      if (threeCanvas) {
+        initializeThreeJS();
+      }
+
+      initializeKeywordModal();
+      renderQuiz();
+      initializeScrollAnimation();
+    }
+
+    function initializeThreeJS() {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Grid
+      const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+      gridHelper.position.z = -20;
+      scene.add(gridHelper);
+
+      // Floating Points
+      const geometry = new THREE.BufferGeometry();
+      const count = 500;
+      const positions = new Float32Array(count * 3);
+      for (let i = 0; i < count * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 100;
+      }
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      // Add floating cubes
+      const cubes = [];
+      for (let i = 0; i < 10; i++) {
+        const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const cubeMaterial = new THREE.MeshBasicMaterial({
+          color: 0x00aaff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5
+        });
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.x = (Math.random() - 0.5) * 50;
+        cube.position.y = (Math.random() - 0.5) * 50;
+        cube.position.z = (Math.random() - 0.5) * 50;
+        cube.rotation.x = Math.random() * Math.PI;
+        cube.rotation.y = Math.random() * Math.PI;
+        cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+        scene.add(cube);
+      }
+
+      camera.position.z = 30;
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+        gridHelper.rotation.y += 0.005;
+        points.rotation.y += 0.003;
+        cubes.forEach(cube => {
+          cube.mesh.rotation.x += cube.speed;
+          cube.mesh.rotation.y += cube.speed;
+        });
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Resize handler
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    function initializeKeywordModal() {
+      const keywordModal = document.getElementById('keyword-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const modalClose = document.getElementById('modal-close');
+
+      if (keywordModal && modalTitle && modalBody && modalClose) {
+        document.querySelectorAll('.keyword').forEach(keyword => {
+          keyword.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalTitle.textContent = this.getAttribute('data-title');
+            modalBody.textContent = this.getAttribute('data-content');
+            keywordModal.classList.add('active');
+          });
+        });
+
+        modalClose.addEventListener('click', () => {
+          keywordModal.classList.remove('active');
+        });
+
+        keywordModal.addEventListener('click', (e) => {
+          if (e.target === keywordModal) {
+            keywordModal.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    function initializeScrollAnimation() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // Language Toggle
+    window.toggleLanguage = function() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+
+      enElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'none' : 'block';
+      });
+
+      hiElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'block' : 'none';
+      });
+
+      // Update both translator buttons
+      const translatorBtns = document.querySelectorAll('.translator-btn');
+      translatorBtns.forEach(btn => {
+        if (btn) btn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      });
+
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+
+      // Re-render quiz with new language
+      renderQuiz();
+    };
+
+    // Quiz Questions (10 Questions)
+    const quizQuestions = [
+      {
+        question: {
+          en: "What is the main difference between SSTI and XSS?",
+          hi: "SSTI aur XSS mein mukhya farq kya hai?"
+        },
+        options: {
+          en: [
+            "SSTI affects server-side, XSS affects client-side",
+            "XSS is more dangerous than SSTI",
+            "SSTI only works with JavaScript",
+            "XSS requires server access"
+          ],
+          hi: [
+            "SSTI server-side ko affect karta hai, XSS client-side ko",
+            "XSS SSTI se zyada khatarnaak hai",
+            "SSTI sirf JavaScript ke saath kaam karta hai",
+            "XSS ko server access chahiye"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "SSTI occurs server-side when template code is executed, while XSS is client-side JavaScript injection.",
+          hi: "SSTI server-side par hota hai jab template code execute hota hai, jabki XSS client-side JavaScript injection hai."
+        }
+      },
+      {
+        question: {
+          en: "Which template engine uses ${} syntax?",
+          hi: "Kaunsa template engine ${} syntax use karta hai?"
+        },
+        options: {
+          en: [
+            "Twig",
+            "Jinja2",
+            "FreeMarker",
+            "Handlebars"
+          ],
+          hi: [
+            "Twig",
+            "Jinja2",
+            "FreeMarker",
+            "Handlebars"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "FreeMarker uses ${variable} syntax with <> tag delimiters.",
+          hi: "FreeMarker ${variable} syntax use karta hai <> tag delimiters ke saath."
+        }
+      },
+      {
+        question: {
+          en: "What does {{self.__dict__}} exploit in Python?",
+          hi: "{{self.__dict__}} Python mein kya exploit karta hai?"
+        },
+        options: {
+          en: [
+            "Database connections",
+            "Template introspection",
+            "File system access",
+            "Network calls"
+          ],
+          hi: [
+            "Database connections",
+            "Template introspection",
+            "File system access",
+            "Network calls"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "self.__dict__ in Python templates exposes internal template object attributes.",
+          hi: "Python templates mein self.__dict__ internal template object attributes expose karta hai."
+        }
+      },
+      {
+        question: {
+          en: "How to prevent SSTI in template engines?",
+          hi: "Template engines mein SSTI ko kaise rok sakte hain?"
+        },
+        options: {
+          en: [
+            "Use only client-side rendering",
+            "Implement input sanitization and validation",
+            "Disable all template features",
+            "Switch to plain text"
+          ],
+          hi: [
+            "Kewal client-side rendering use karein",
+            "Input sanitization aur validation implement karein",
+            "Sabhi template features disable karein",
+            "Plain text par switch karein"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Proper input validation and sanitization prevents malicious template injection.",
+          hi: "Proper input validation aur sanitization malicious template injection ko rokte hain."
+        }
+      },
+      {
+        question: {
+          en: "Which is safer against SSTI?",
+          hi: "SSTI ke khilaf kaunsa zyada surakshit hai?"
+        },
+        options: {
+          en: [
+            "Dynamic string formatting",
+            "Precompiled templates",
+            "User-controlled templates",
+            "Runtime template parsing"
+          ],
+          hi: [
+            "Dynamic string formatting",
+            "Precompiled templates",
+            "User-controlled templates",
+            "Runtime template parsing"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Precompiled templates prevent runtime injection attacks.",
+          hi: "Precompiled templates runtime injection attacks ko rokte hain."
+        }
+      },
+      {
+        question: {
+          en: "What does sandboxed execution provide?",
+          hi: "Sandboxed execution kya provide karta hai?"
+        },
+        options: {
+          en: [
+            "Faster template rendering",
+            "Limited execution environment",
+            "Better UX",
+            "Reduced file size"
+          ],
+          hi: [
+            "Tezi se template rendering",
+            "Limited execution environment",
+            "Better UX",
+            "Reduced file size"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Sandboxed execution limits what dangerous operations can be performed in templates.",
+          hi: "Sandboxed execution templates mein kaunse khatarnaak operations ki ja sakti hain wo limit kar deta hai."
+        }
+      },
+      {
+        question: {
+          en: "Bypass technique: Alternative to {{7*7}} is?",
+          hi: "Bypass tarika: {{7*7}} ke alternative kya hain?"
+        },
+        options: {
+          en: [
+            "{{[49]}}",
+            "{{'7'*7}}",
+            "{{7+42}}",
+            "{{seven*seven}}"
+          ],
+          hi: [
+            "{{[49]}}",
+            "{{'7'*7}}",
+            "{{7+42}}",
+            "{{seven*seven}}"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "{{'7'*7}} achieves the same result as {{7*7}} but may bypass some filters.",
+          hi: "{{'7'*7}} {{7*7}} ke jaise hi result deta hai lekin kabhi kabhi filters ko bypass kar sakta hai."
+        }
+      },
+      {
+        question: {
+          en: "Most dangerous template engine feature?",
+          hi: "Sabse khatarnaak template engine feature kaunsa hai?"
+        },
+        options: {
+          en: [
+            "Complex expressions",
+            "ES6 arrow functions",
+            "Built-in object access",
+            "HTML escaping"
+          ],
+          hi: [
+            "Complex expressions",
+            "ES6 arrow functions",
+            "Built-in object access",
+            "HTML escaping"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "Built-in object access allows attackers to access and manipulate internal application objects.",
+          hi: "Built-in object access attackers ko application ke internal objects access aur manipulate karne deta hai."
+        }
+      },
+      {
+        question: {
+          en: "SSTI detection starts with?",
+          hi: "SSTI ki discovery kyun shuru hoti hai?"
+        },
+        options: {
+          en: [
+            "Network scanning",
+            "Testing template delimiters",
+            "Checking firewall rules",
+            "Reviewing system logs"
+          ],
+          hi: [
+            "Network scanning",
+            "Template delimiters ko test karke",
+            "Firewall rules ko check karke",
+            "System logs review karke"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "SSTI detection begins by testing common template delimiter patterns like {{ }}, ${}, etc.",
+          hi: "SSTI ki discovery common template delimiter patterns {{ }}, ${}, etc. ko test karne se shuru hoti hai."
+        }
+      },
+      {
+        question: {
+          en: "Highest impact SSTI attack vectors?",
+          hi: "Sabse zyada impact wale SSTI attack vectors?"
+        },
+        options: {
+          en: [
+            "Data exfiltration",
+            "Remote Code Execution",
+            "HTML injection",
+            "Cookie theft"
+          ],
+          hi: [
+            "Data exfiltration",
+            "Remote Code Execution",
+            "HTML injection",
+            "Cookie theft"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "RCE through SSTI provides the highest impact as it can compromise the entire server.",
+          hi: "SSTI ke zariye RCE highest impact provide karta hai kyunki ye pure server ko compromise kar sakta hai."
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      if (!quizContainer) return;
+
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      const optionsContainer = document.getElementById(`options-${questionIndex}`);
+      if (!optionsContainer) return;
+
+      optionsContainer.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      optionsContainer.querySelectorAll('.option')[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      let score = 0;
+      const scoreDisplay = document.getElementById('score-display');
+      if (!scoreDisplay) return;
+
+      quizQuestions.forEach((q, index) => {
+        const optionsContainer = document.getElementById(`options-${index}`);
+        if (!optionsContainer) return;
+
+        const options = optionsContainer.querySelectorAll('.option');
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        if (selectedAnswers[index] === q.correct) {
+          score++;
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1) options[selectedAnswers[index]].classList.add('correct');
+        } else {
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1 && selectedAnswers[index] !== q.correct) {
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        }
+      });
+
+      // Update score display
+      scoreDisplay.textContent = `Score: ${score} / ${quizQuestions.length}`;
+
+      // Create answer summary section
+      let summaryHTML = `
+        <div style="margin-top: 30px; padding: 20px; background: rgba(0, 255, 136, 0.05); border-radius: 10px; border: 1px solid var(--neon-green);">
+          <h3 style="color: var(--neon-green); margin-bottom: 20px; text-align: center; font-family: 'Orbitron', sans-serif;">
+            ${isHinglish ? '✅ सही जवाबों का सारांश' : '✅ Correct Answers Summary'}
+          </h3>
+          <div style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+      `;
+
+      quizQuestions.forEach((q, index) => {
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const correctAnswer = isHinglish ? q.options.hi[q.correct] : q.options.en[q.correct];
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+        const userAnswer = selectedAnswers[index] !== -1 ?
+          (isHinglish ? q.options.hi[selectedAnswers[index]] : q.options.en[selectedAnswers[index]]) : 'Not answered';
+        const isCorrect = selectedAnswers[index] === q.correct;
+
+        summaryHTML += `
+          <div style="margin-bottom: 20px; padding: 15px; background: ${isCorrect ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 136, 0, 0.1)'}; border-radius: 8px; border-left: 3px solid ${isCorrect ? 'var(--neon-green)' : 'var(--neon-orange)'};">
+            <h4 style="color: var(--neon-green); font-family: 'JetBrains Mono', monospace; font-size: 1rem; margin-bottom: 8px;">
+              Q${index + 1}: ${qText}
+            </h4>
+            <div style="margin-bottom: 10px;">
+              <strong style="color: var(--neon-green);">${isHinglish ? 'सही जवाब:' : 'Correct Answer:'}</strong>
+              <span style="background: var(--neon-green); color: var(--primary); padding: 3px 8px; border-radius: 4px; font-weight: bold;">${correctAnswer}</span>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <strong style="color: var(--electric-blue);">${isHinglish ? 'आपका जवाब:' : 'Your Answer:'}</strong>
+              <span style="background: ${isCorrect ? 'var(--neon-green)' : 'var(--neon-orange)'}; color: var(--primary); padding: 3px 8px; border-radius: 4px; font-weight: bold;">${userAnswer}</span>
+            </div>
+            <div style="margin-top: 10px; font-style: italic; color: var(--mid-gray);">
+              <strong style="color: var(--electric-blue);">${isHinglish ? 'विवरण:' : 'Explanation:'}</strong><br>
+              ${explanation}
+            </div>
+          </div>
+        `;
+      });
+
+      summaryHTML += `
+          </div>
+        </div>
+      `;
+
+      // Append summary to quiz container
+      const quizContainer = document.getElementById('quiz-questions').parentElement;
+      let existingSummary = quizContainer.querySelector('.answer-summary');
+      if (existingSummary) {
+        existingSummary.remove();
+      }
+
+      const summaryDiv = document.createElement('div');
+      summaryDiv.className = 'answer-summary';
+      summaryDiv.innerHTML = summaryHTML;
+      quizContainer.appendChild(summaryDiv);
+
+      // Show notification
+      showNotification(isHinglish ? `Quiz pura! Score: ${score}/${quizQuestions.length}` : `Quiz complete! You scored ${score}/${quizQuestions.length}`);
+    };
+
+    // Notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const progressBar = document.getElementById('progress-bar');
+      if (!progressBar) return;
+
+      const winHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset;
+      const trackLength = docHeight - winHeight;
+      const progress = scrollTop / trackLength * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    // Interactive Demo Functions
+    function runSstiExploit() {
+      const input = document.getElementById('ssti-input');
+      const result = document.getElementById('ssti-result');
+
+      if (!input || !result) return;
+
+      const payload = input.value;
+
+      result.innerHTML = isHinglish
+        ? `<span style="color: #00ff88">🔧 SSTI DETECTION:</span> Testing payload: ${payload}<br><br>Deposit<div style="border-left: 3px solid #00ff88; padding-left: 8px;"><br>• Python/Jinja: {{7*7}} = 49<br>• PHP/Twig: {{7*7}} = 49<br>• Freemarker: ${7*7} = 49<br>• Real attack would execute malicious code</div>`
+        : `<span style="color: #00ff88">🔧 SSTI DETECTION:</span> Testing payload: ${payload}<br><br>Test Results:<br>• Python/Jinja: {{7*7}} = 49<br>• PHP/Twig: {{7*7}} = 49<br>• Freemarker: ${7*7} = 49<br>• Real attack would execute malicious code`;
+
+      showNotification(isHinglish ? 'SSTI payload tested!' : 'SSTI payload tested!');
+    }
+
+    function testSstiPrevention() {
+      const input = document.getElementById('test-ssti');
+      const result = document.getElementById('prevention-result');
+
+      if (!input || !result) return;
+
+      const payload = input.value;
+
+      result.innerHTML = isHinglish
+        ? `<span style="color: #00ff88">🛡️ PREVENTION TEST:</span> ${payload}<br><br>Recommended Defenses:<br>✅ Input sanitization<br>✅ Template sandboxing<br>✅ Precompiled templates<br>✅ Variable whitelisting<br><span style="color: #ff8800">❌ Real attack: Would be blocked if defenses are in place.</span>`
+        : `<span style="color: #00ff88">🛡️ PREVENTION TEST:</span> ${payload}<br><br>Recommended Defenses:<br>✅ Input sanitization<br>✅ Template sandboxing<br>✅ Precompiled templates<br>✅ Variable whitelisting<br><span style="color: #ff8800">❌ Real attack: Would be blocked if defenses are in place.</span>`;
+
+      showNotification(isHinglish ? 'Prevention tested!' : 'Prevention tested!');
+    }
+
+    // Make functions globally available for onclick handlers
+    window.runSstiExploit = runSstiExploit;
+    window.testSstiPrevention = testSstiPrevention;
+    window.highlightCard = highlightCard;
+    window.unhighlightCard = unhighlightCard;
+    window.focusCard = focusCard;
+  </script>
+</body>
+</html>

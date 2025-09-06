@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="GraphQL Vulnerabilities Masterclass with Live Hinglish Translation | Interactive Demos | Quiz | Query Exploits | By HTB Elite Hacker">
+  <title>GraphQL Vulnerabilities | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the GraphQL Vulnerabilities Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content"><!-- English Version -->
+        <div class="en">
+          <h1>GraphQL <span>Vulnerabilities</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>A deep dive into GraphQL security vulnerabilities, query manipulation, and real-world exploitation — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>GraphQL <span>Vulnerabilities</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>GraphQL security vulnerabilities, query manipulation, aur real-world exploitation mein gahrai se jaane — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Right Corner</strong>
+        <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="hero-translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is GraphQL Vulnerabilities? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What are GraphQL Vulnerabilities?</h2>
+      <h2 class="section-title hi" style="display:none;">GraphQL Vulnerabilities Kya Hai?</h2>
+
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Query Exploitation</div>
+          <div class="step-title hi" style="display:none;">Query Doharpan</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Attacks</div>
+          <div class="step-title hi" style="display:none;">Uchatam Hamle</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding GraphQL Vulnerabilities</h3>
+        <h3 class="hi" style="display:none;">GraphQL Vulnerabilities Ki Samajh</h3>
+        <p class="en">GraphQL is a query language for APIs that allows flexible data retrieval. When implementations have security flaws, attackers can exploit them to access sensitive data through misconfigurations and injection vulnerabilities.</p>
+        <p class="hi" style="display:none;">GraphQL APIs ke liye ek query language hai jo flexible data retrieval ki anumati deta hai. Jab implementations mein security flaws hote hain, toh attackers misconfigurations aur injection vulnerabilities ka use karke sensitive data tak pahuch sakte hain.</p>
+        <p class="en"><strong>Real Analogy:</strong> Like a restaurant menu where you can order anything you want, but if the waiter doesn't check permissions, anyone can access the secret recipes or even the owner's private files.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Ek restaurant menu ke jaise jahan aap kuch bhi order kar sakte hain, lekin agar waiter permissions na check kare, toh koi bhi secret recipes ya owner ke private files tak pahuch sakta hai.</p>
+        <p class="en">The most dangerous GraphQL vulnerabilities allow attackers to enumerate database schemas, perform injection attacks, and cause denial of service through overly complex queries.</p>
+        <p class="hi" style="display:none;">Sabse khatarnaak GraphQL vulnerabilities attackers ko database schemas enumerate karne, injection attacks perform karne, aur overly complex queries ke through denial of service karne ki anumati deti hain.</p>
+        <p class="en"><span class="keyword" data-title="GraphQL" data-content="A query language for APIs and a server-side runtime for executing queries with existing data. GraphQL solves fetching multiple resources in a single request but introduces unique security risks when not properly implemented">GraphQL</span> is powerful because it reduces over/under fetching, but dangerous when implementations lack proper authorization and input validation.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="GraphQL" data-content="APIs ke liye ek query language aur server-side runtime jo queries ko existing data ke saath execute karta hai. GraphQL multiple resources ko single request mein fetch karne ki problem hal karta hai par jab properly implement na ho tab unique security risks introduce karta hai">GraphQL</span> powerful hai kyunki yeh over/under fetching reduce karta hai, lekin khatarnaak jab implementations mein proper authorization aur input validation na ho.</p>
+      </div>
+
+      <!-- GraphQL Request Flow Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How GraphQL Requests Work - Visualization</h3>
+        <h3 class="hi" style="display:none;">GraphQL Requests Kaise Kaam Karte Hai - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">Client Query</div>
+            <div class="hi" style="display:none;">Client Query</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">{ users { id name } }</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">GraphQL Engine</div>
+            <div class="hi" style="display:none;">GraphQL Engine</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Parse, Validate, Execute</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">Data Response</div>
+            <div class="hi" style="display:none;">Data Response</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">JSON Response</div>
+          </div>
+        </div>
+        <p class="en">The GraphQL engine receives queries and executes them against your data. Without proper security controls, attackers can craft malicious queries to extract unauthorized data or overload the system.</p>
+        <p class="hi" style="display:none;">GraphQL engine queries receive karta hai aur unhe apke data ke against execute karta hai. Proper security controls ke bina, attackers apne data ko extract karne ya system ko overload karne ke liye malicious queries bana sakte hain.</p>
+      </div>
+
+      <!-- Types of GraphQL Vulnerabilities -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Types of GraphQL Vulnerabilities</h3>
+        <h3 class="hi" style="display:none;">GraphQL Vulnerabilities Ke Prakar</h3>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="Introspection" data-content="GraphQL's built-in feature to explore the schema, which should be disabled in production environments">Introspection Abuse</span>: Discovering API structure through __schema queries</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Introspection" data-content="Schema explore karne ke liye GraphQL ka built-in feature, production environments mein disable karna chahiye">Introspection Abuse</span>: __schema queries ke through API structure discover karna</li>
+          <li class="en"><span class="keyword" data-title="IDOR via Queries" data-content="Manipulating query parameters to access data belonging to other users">IDOR (Insecure Direct Object Reference)</span>: Accessing other users' data through query manipulation</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="IDOR via Queries" data-content="Query parameters manipulate karke doosre users ke data tak pahuchna">IDOR (Insecure Direct Object Reference)</span>: Query manipulation ke through doosre users ke data tak pahuchna</li>
+          <li class="en"><span class="keyword" data-title="Query Complexity" data-content="Not limiting the complexity and depth of queries leading to DoS attacks">DoS through Complex Queries</span>: Resource-intensive queries causing denial of service</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Query Complexity" data-content="Queries ki complexity aur depth limit na karne se DoS attacks hote hain">DoS through Complex Queries</span>: DoS karne wale resource-intensive queries</li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">Critical</div>
+          <div class="stat-number hi" style="display:none;">Khatarnaak</div>
+          <div class="stat-label en">severity rating</div>
+          <div class="stat-label hi" style="display:none;">khatre ka level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">75%</div>
+          <div class="stat-label en">of vulnerable APIs</div>
+          <div class="stat-label hi" style="display:none;">vulnerable APIs</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$500K+</div>
+          <div class="stat-label en">avg. breach cost</div>
+          <div class="stat-label hi" style="display:none;">breach ki avg cost</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – GraphQL Exploitation -->
+  <section id="try-graphql">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: GraphQL Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: GraphQL Doharpan</h2>
+
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Mool Se Uchatam</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Basic Enumeration</div>
+            <div class="step-title hi" style="display:none;">Mool Enumeration</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Field Discovery</div>
+            <div class="step-title hi" style="display:none;">Field Discovery</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Injection Attacks</div>
+            <div class="step-title hi" style="display:none;">Injection Attacks</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Enumeration Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: Schema Introspection</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: Schema Introspection</h3>
+        <p class="en">Discover GraphQL schema using introspection queries to enumerate types and available queries.</p>
+        <p class="hi" style="display:none;">Types aur available queries enumerate karne ke liye introspection queries ka use karke GraphQL schema discover karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="introspect-input" class="en">GraphQL Endpoint:</label>
+            <label for="introspect-input" class="hi" style="display:none;">GraphQL Endpoint:</label>
+            <input type="text" id="introspect-input" value="https://api.example.com/graphql" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <button class="button" onclick="runIntrospection()">Enumerate Schema</button>
+          <div class="result-box" id="introspection-result">
+// Introspection Query:
+query {
+  __schema {
+    queryType { name }
+    mutationType { name }
+    types {
+      name
+      fields {
+        name
+        type { name }
+      }
+    }
+  }
+}
+// Try this to discover the complete API schema
+          </div>
+        </div>
+      </div>
+
+      <!-- Field Discovery Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: IDOR Exploitation</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: IDOR Doharpan</h3>
+        <p class="en">Change user IDs in GraphQL queries to access other users' data through IDOR vulnerabilities.</p>
+        <p class="hi" style="display:none;">IDOR vulnerabilities ke through doosre users ke data tak pahuchne ke liye GraphQL queries mein user IDs change karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="idor-input" class="en">Target User ID:</label>
+            <label for="idor-input" class="hi" style="display:none;">Target User ID:</label>
+            <input type="text" id="idor-input" value="456">
+          </div>
+          <button class="button" onclick="runIDORGraphQL()">Attempt IDOR</button>
+          <div class="result-box" id="idor-result">
+// Example malicious query:
+query {
+  user(id: "TARGET_ID_HERE") {
+    id
+    username
+    email
+    sensitiveData
+  }
+}
+// Change the ID to access other users' data
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Injection Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: NoSQL/MongoDB Injection</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: NoSQL/MongoDB Injection</h3>
+        <p class="en">Craft MongoDB operators in GraphQL queries to bypass authentication or extract arbitrary data.</p>
+        <p class="hi" style="display:none;">Authentication bypass karne ya arbitrary data extract karne ke liye GraphQL queries mein MongoDB operators banaein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="nosql-input" class="en">Injection Payload:</label>
+            <label for="nosql-input" class="hi" style="display:none;">Injection Payload:</label>
+            <input type="text" id="nosql-input" value='query { getUsers(filter: {"username":{"$ne":null}}) { username email passwordHash } }' style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <button class="button" onclick="runNoSQLInjection()">Execute Injection</button>
+          <div class="code-block">
+// MongoDB injection payload:
+query {
+  getUsers(filter: {"username":{"$ne":null}}) {
+    username
+    email
+    passwordHash
+  }
+}
+// This can bypass authentication and extract all users
+          </div>
+          <div class="result-box" id="nosql-result">
+// Result will show extracted data here
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Advanced GraphQL Attacks -->
+  <section id="attacks">
+    <div class="container">
+      <h2 class="section-title en">Advanced GraphQL Attack Vectors</h2>
+      <h2 class="section-title hi" style="display:none;">Uchatam GraphQL Hamle Tarika</h2>
+
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">GraphQL Attack Surface</h3>
+        <h3 class="hi" style="display:none;">GraphQL Hamle Surface</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Malicious Query</div>
+            <div class="hi" style="display:none;">Dushit Query</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">__schema { ... }</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Weak Resolver</div>
+            <div class="hi" style="display:none;">Kamjor Resolver</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Unfiltered Input</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Data Breach</div>
+            <div class="hi" style="display:none;">Data Breach</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Sensitive Leaks</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Critical Attack Techniques</h3>
+        <h3 class="hi" style="display:none;">Khatarnak Hamle Tarika</h3>
+
+        <div style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Schema Introspection Attack</h4>
+          <p class="en">Enable introspection queries to dump entire API schema information.</p>
+          <p class="hi" style="display:none;">Poori API schema jankari dump karne ke liye introspection queries enable karein.</p>
+          <div class="code-block">
+// Introspection attack to reveal all user fields
+query {
+  __schema {
+    types {
+      name
+      fields(includeDeprecated: true) {
+        name
+        type { name kind }
+        description
+        args {
+          name
+          type { name }
+          defaultValue
+        }
+      }
+    }
+  }
+}
+          </div>
+        </div>
+
+        <div style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Batch Operations Abuse</h4>
+          <p class="en">Execute multiple queries in a single request to bypass rate limiting.</p>
+          <p class="hi" style="display:none;">Rate limiting bypass karne ke liye ek request mein multiple queries execute karein.</p>
+          <div class="code-block">
+// Batch processing attack
+[
+  {"query": "query { users { id email } }"},
+  {"query": "query { posts(userId: 1) { title content } }"},
+  {"query": "query { adminUsers { email passwordHash } }"}
+]
+          </div>
+        </div>
+
+        <div style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. DoS through Query Depth</h4>
+          <p class="en">Craft infinitely nested queries to consume server resources.</p>
+          <p class="hi" style="display:none;">Server resources consume karne ke liye infinitely nested queries banaein.</p>
+          <div class="code-block">
+// DoS attack with 10+ levels of nesting
+query {
+  users {
+    posts {
+      author {
+        posts {
+          author {
+            posts {
+              author {
+                name
+                posts {
+                  title
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+          </div>
+        </div>
+
+        <div style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Circular Reference DoS</h4>
+          <p class="en">Create self-referencing queries that cause infinite loops.</p>
+          <p class="hi" style="display:none;">Infinite loops create karne wale self-referencing queries banaein.</p>
+          <div class="code-block">
+// Circular reference attack
+query {
+  user(id: "valid_user_id") {
+    id
+    friends {
+      friends {
+        friends {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+          </div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Real-World Attack Scenarios</h3>
+        <h3 class="hi" style="display:none;">Vastavik Duniya Ke Hamle Scenarios</h3>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--neon-green);">Case Study: Fintech Platform</h4>
+          <p class="en"><strong>Scenario:</strong> A financial services platform used GraphQL for user account queries.</p>
+          <p class="hi" style="display:none;"><strong>Scenario:</strong> Ek financial services platform ne user account queries ke liye GraphQL use kiya.</p>
+          <p class="en"><strong>Vulnerability:</strong> No query complexity limits or rate limiting implemented.</p>
+          <p class="hi" style="display:none;"><strong>Vulnerability:</strong> Koi bhi query complexity limits ya rate limiting implement nahi kiya gaya tha.</p>
+          <p class="en"><strong>Exploitation:</strong> Attackers used DoS queries consuming 98% server resources.</p>
+          <p class="hi" style="display:none;"><strong>Exploitation:</strong> Attackers ne DoS queries use kiye jo server resources ka 98% consume kar rahe the.</p>
+          <p class="en"><strong>Impact:</strong> Platform down for 8 hours, $200K revenue loss.</p>
+          <p class="hi" style="display:none;"><strong>Impact:</strong> Platform 8 ghante tak down, $200K revenue loss.</p>
+        </div>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--electric-blue);">Case Study: E-commerce Platform</h4>
+          <p class="en"><strong>Scenario:</strong> Online marketplace with GraphQL catalog API.</p>
+          <p class="hi" style="display:none;"><strong>Scenario:</strong> GraphQL catalog API wale online marketplace.</p>
+          <p class="en"><strong>Vulnerability:</strong> Schema introspection enabled in production.</p>
+          <p class="hi" style="display:none;"><strong>Vulnerability:</strong> Production mein schema introspection enabled.</p>
+          <p class="en"><strong>Exploitation:</strong> Competitors scraped entire product database.</p>
+          <p class="hi" style="display:none;"><strong>Exploitation:</strong> Competitors ne pure product database ko scrape kar liya.</p>
+          <p class="en"><strong>Impact:</strong> Loss of competitive advantage, $1.2M business impact.</p>
+          <p class="hi" style="display:none;"><strong>Impact:</strong> Competitive advantage ka loss, $1.2M business impact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent GraphQL Vulnerabilities</h2>
+      <h2 class="section-title hi" style="display:none;">GraphQL Vulnerabilities Ko Kaise Rokein</h2>
+
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">GraphQL Security Defense</h3>
+        <h3 class="hi" style="display:none;">GraphQL Security Defense</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Incoming Query</div>
+            <div class="hi" style="display:none;">Incoming Query</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">{ malicious_code }</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Security Layer</div>
+            <div class="hi" style="display:none;">Security Layer</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Validate, Auth</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Safe Execution</div>
+            <div class="hi" style="display:none;">Safe Execution</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Authorized Access</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Security Best Practices</h3>
+        <h3 class="hi" style="display:none;">Security Best Practices</h3>
+
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Disable Introspection</h4>
+          <p class="en">Always disable introspection in production environments.</p>
+          <p class="hi" style="display:none;">Production environments mein hamesha introspection disable karein.</p>
+          <div class="code-block">
+// Disable introspection with Apollo Server
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  introspection: false, // Disable in production
+  playground: false     // Also disable GraphQL playground
+});
+
+// Or conditionally disable
+introspection: process.env.NODE_ENV !== 'production'
+          </div>
+        </div>
+
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Query Complexity Limiting</h4>
+          <p class="en">Implement query complexity analysis to prevent DoS attacks.</p>
+          <p class="hi" style="display:none;">DoS attacks ko prevent karne ke liye query complexity analysis implement karein.</p>
+          <div class="code-block">
+// Using graphql-validation-complexity
+import { createComplexityRule } from 'graphql-validation-complexity';
+
+const complexityRule = createComplexityRule({
+  maximumComplexity: 1000,
+  variables: {},
+  onCost: (cost) => {
+    console.log('Query complexity:', cost);
+  }
+});
+          </div>
+        </div>
+
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Depth Limiting</h4>
+          <p class="en">Limit query depth to prevent deep nesting attacks.</p>
+          <p class="hi" style="display:none;">Deep nesting attacks prevent karne ke liye query depth limit karein.</p>
+          <div class="code-block">
+// Using graphql-depth-limit
+import depthLimit from 'graphql-depth-limit';
+
+app.use('/graphql', (req, res, next) => {
+  const maxDepth = process.env.NODE_ENV === 'production' ? 3 : 10;
+  next();
+}, graphqlHTTP({
+  schema,
+  validationRules: [depthLimit(maxDepth)]
+}));
+          </div>
+        </div>
+
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Token-based Rate Limiting</h4>
+          <p class="en">Implement per-user rate limiting to prevent abuse.</p>
+          <p class="hi" style="display:none;">Abuse prevent karne ke liye per-user rate limiting implement karein.</p>
+          <div class="code-block">
+// Using Express rate limiting
+const rateLimit = require('express-rate-limit');
+
+const graphqlLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many GraphQL requests from this IP, please try again later.'
+});
+
+app.use('/graphql', graphqlLimiter);
+          </div>
+        </div>
+
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">5. Input Validation & Sanitization</h4>
+          <p class="en">Validate and sanitize all user inputs to prevent injection attacks.</p>
+          <p class="hi" style="display:none;">Injection attacks prevent karne ke liye sabhi user inputs validate aur sanitize karein.</p>
+          <div class="code-block">
+// Input validation middleware
+const validateGraphQLInput = (value) => {
+  // Reject dangerous MongoDB operators
+  if (typeof value === 'object') {
+    for (let key in value) {
+      if (key.startsWith('$')) {
+        throw new UserInputError('Invalid input containing MongoDB operators');
+      }
+    }
+  }
+  return value;
+};
+          </div>
+        </div>
+
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">6. Field-level Authorization</h4>
+          <p class="en">Implement authorization checks at the field level.</p>
+          <p class="hi" style="display:none;">Field level par authorization checks implement karein.</p>
+          <div class="code-block">
+// Resolver with authorization
+const resolvers = {
+  Query: {
+    user: (parent, args, context) => {
+      if (context.user.id !== args.id &&
+          !context.user.roles.includes('admin')) {
+        throw new ForbiddenError('Access denied');
+      }
+      return getUser(args.id);
+    }
+  }
+};
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Security Testing Lab</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Security Testing Lab</h3>
+        <p class="en">Test your GraphQL endpoint for common vulnerabilities.</p>
+        <p class="hi" style="display:none;">Apne GraphQL endpoint ko common vulnerabilities ke liye test karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="security-url" class="en">Endpoint to Test:</label>
+            <label for="security-url" class="hi" style="display:none;">Test karne wale Endpoint:</label>
+            <input type="text" id="security-url" value="https://api.example.com/graphql">
+          </div>
+          <button class="button" onclick="testGraphQLSecurity()">Run Security Tests</button>
+          <div class="result-box" id="security-result">
+// Security test results will appear here
+// Check for: Introspection, DoS limits, Rate limiting
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">GraphQL Security Quiz</h2>
+      <h2 class="section-title hi" style="display:none;">GraphQL Security Quiz</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Quiz questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    let isHinglish = false;
+
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+    });
+
+    function initializeApp() {
+      // Initialize Three.js
+      const canvas = document.getElementById('three-canvas');
+      if (canvas) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+        gridHelper.position.z = -20;
+        scene.add(gridHelper);
+
+        // Floating Points
+        const geometry = new THREE.BufferGeometry();
+        const count = 500;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+          positions[i] = (Math.random() - 0.5) * 100;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // Add floating cubes
+        const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const cubeMaterial = new THREE.MeshBasicMaterial({
+          color: 0x00aaff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5
+        });
+        const cubes = [];
+        for (let i = 0; i < 10; i++) {
+          const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+          cube.position.x = (Math.random() - 0.5) * 50;
+          cube.position.y = (Math.random() - 0.5) * 50;
+          cube.position.z = (Math.random() - 0.5) * 50;
+          cube.rotation.x = Math.random() * Math.PI;
+          cube.rotation.y = Math.random() * Math.PI;
+          cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+          scene.add(cube);
+        }
+
+        camera.position.z = 30;
+
+        // Animation
+        function animate() {
+          requestAnimationFrame(animate);
+          gridHelper.rotation.y += 0.005;
+          points.rotation.y += 0.003;
+          cubes.forEach(cube => {
+            cube.mesh.rotation.x += cube.speed;
+            cube.mesh.rotation.y += cube.speed;
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      // Initialize keyword modal
+      const keywordModal = document.getElementById('keyword-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const modalClose = document.getElementById('modal-close');
+
+      if (keywordModal && modalTitle && modalBody && modalClose) {
+        document.querySelectorAll('.keyword').forEach(keyword => {
+          keyword.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalTitle.textContent = this.getAttribute('data-title');
+            modalBody.textContent = this.getAttribute('data-content');
+            keywordModal.classList.add('active');
+          });
+        });
+
+        modalClose.addEventListener('click', () => {
+          keywordModal.classList.remove('active');
+        });
+
+        keywordModal.addEventListener('click', (e) => {
+          if (e.target === keywordModal) {
+            keywordModal.classList.remove('active');
+          }
+        });
+      }
+
+      // Initialize quiz
+      renderQuiz();
+
+      // Initialize scroll animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // Card Interaction Functions
+    function highlightCard(card) {
+      if (card) {
+        card.classList.add('pop-out');
+        showNotification('Hovering: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    function unhighlightCard(card) {
+      if (card && !card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    }
+
+    function focusCard(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+
+      if (card) {
+        card.classList.add('focused');
+        card.classList.add('pop-out');
+        showNotification('Focused on: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    // Language Toggle
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+
+      enElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'none' : 'block';
+      });
+
+      hiElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'block' : 'none';
+      });
+
+      // Update both translator buttons
+      const translatorBtns = document.querySelectorAll('.translator-btn');
+      translatorBtns.forEach(btn => {
+        if (btn) btn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      });
+
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+
+      // Re-render quiz with new language
+      renderQuiz();
+    }
+
+    // Quiz Questions (10 Questions)
+    const quizQuestions = [
+      {
+        question: {
+          en: "What does GraphQL introspection allow attackers to do?",
+          hi: "GraphQL introspection attackers ko kya karne ki anumati deta hai?"
+        },
+        options: {
+          en: [
+            "Execute server commands",
+            "Discover API schema and available fields",
+            "Read server files",
+            "Change database structure"
+          ],
+          hi: [
+            "Server commands execute karna",
+            "API schema aur available fields discover karna",
+            "Server files read karna",
+            "Database structure change karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Introspection queries reveal the API schema including all types, fields, and operations.",
+          hi: "Introspection queries API schema reveal karte hain including sabhi types, fields, aur operations."
+        }
+      },
+      {
+        question: {
+          en: "Why should introspection be disabled in production?",
+          hi: "Production mein introspection kyun disable karna chahiye?"
+        },
+        options: {
+          en: [
+            "It slows down the server",
+            "It exposes attack surface to attackers",
+            "It uses too much bandwidth",
+            "It creates error logs"
+          ],
+          hi: [
+            "Server slow ho jata hai",
+            "Attackers ko attack surface expose karta hai",
+            "Bahut bandwidth use karta hai",
+            "Error logs create karta hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Introspection reveals API structure, making it easier for attackers to craft malicious queries.",
+          hi: "Introspection API structure reveal karta hai, attackers ko malicious queries banaana easy banata hai."
+        }
+      },
+      {
+        question: {
+          en: "What's the main purpose of query complexity limiting?",
+          hi: "Query complexity limiting ka main purpose kya hota hai?"
+        },
+        options: {
+          en: [
+            "Improve query performance",
+            "Prevent DoS attacks",
+            "Validate input data",
+            "Enable caching"
+          ],
+          hi: [
+            "Query performance improve karna",
+            "DoS attacks prevent karna",
+            "Input data validate karna",
+            "Caching enable karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Complexity limits prevent attackers from crafting queries that consume excessive server resources.",
+          hi: "Complexity limits attackers ko aise queries banaane se prevent karte hain jo excess server resources consume karte hain."
+        }
+      },
+      {
+        question: {
+          en: "Which GraphQL attack causes nested loops?",
+          hi: "Kaunsa GraphQL attack nested loops ka cause hota hai?"
+        },
+        options: {
+          en: [
+            "SQL injection",
+            "Circular reference",
+            "XSS",
+            "CSRF"
+          ],
+          hi: [
+            "SQL injection",
+            "Circular reference",
+            "XSS",
+            "CSRF"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Circular reference queries create self-referencing loops that can cause DoS.",
+          hi: "Circular reference queries self-referencing loops create karte hain jo DoS cause kar sakte hain."
+        }
+      },
+      {
+        question: {
+          en: "What should you do if you find API endpoints ending with .graphql?",
+          hi: "Agar aapko endpoints mile jo .graphql se end hote hain toh kya karenge?"
+        },
+        options: {
+          en: [
+            "Ignore them",
+            "Test for GraphQL-specific vulnerabilities",
+            "Check for CORS issues",
+            "Look for SSRF"
+          ],
+          hi: [
+            "Unhe ignore karein",
+            "GraphQL-specific vulnerabilities test karein",
+            "CORS issues check karein",
+            "SSRF ke liye look karein"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "GraphQL endpoints are unique and require specific security testing.",
+          hi: "GraphQL endpoints unique hote hain aur specific security testing require karte hain."
+        }
+      },
+      {
+        question: {
+          en: "What's the most dangerous about GraphQL IDOR?",
+          hi: "GraphQL IDOR mein sabse khatarnak kya hota hai?"
+        },
+        options: {
+          en: [
+            "It requires special permissions",
+            "It can reveal all database records",
+            "It's only for admin functions",
+            "It requires physical access"
+          ],
+          hi: [
+            "Yeh special permissions require karta hai",
+            "Yeh sabhi database records reveal kar sakta hai",
+            "Yeh sirf admin functions ke liye hota hai",
+            "Yeh physical access require karta hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "IDOR in GraphQL can often expose entire datasets through query manipulation.",
+          hi: "IDOR GraphQL mein aksar entire datasets query manipulation ke through expose kar sakta hai."
+        }
+      },
+      {
+        question: {
+          en: "Which tool helps prevent GraphQL DoS attacks?",
+          hi: "Kaunsa tool GraphQL DoS attacks prevent karne mein help karta hai?"
+        },
+        options: {
+          en: [
+            "graphene-depth-limit",
+            "sqlmap",
+            "burp",
+            "nmap"
+          ],
+          hi: [
+            "graphene-depth-limit",
+            "sqlmap",
+            "burp",
+            "nmap"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "graphql-depth-limit enforces maximum nesting depth.",
+          hi: "graphql-depth-limit maximum nesting depth enforce karta hai."
+        }
+      },
+      {
+        question: {
+          en: "What's field-level authorization?",
+          hi: "Field-level authorization kya hota hai?"
+        },
+        options: {
+          en: [
+            "Authorizing users by email",
+            "Controlling access to specific fields in a query",
+            "Limiting query length",
+            "Validating user sessions"
+          ],
+          hi: [
+            "Users ko email se authorize karna",
+            "Query mein specific fields tak access control karna",
+            "Query length limit karna",
+            "User sessions validate karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Field-level auth controls what specific fields a user can access in queries.",
+          hi: "Field-level auth control karta hai ki user queries mein kaunse specific fields access kar sakta hai."
+        }
+      },
+      {
+        question: {
+          en: "Why is rate limiting important for GraphQL?",
+          hi: "GraphQL ke liye rate limiting kyun important hain?"
+        },
+        options: {
+          en: [
+            "It prevents database overload",
+            "It stops batch request attacks",
+            "It blocks query complexity attacks",
+            "All of the above"
+          ],
+          hi: [
+            "Yeh database overload prevent karta hai",
+            "Yeh batch request attacks rokta hai",
+            "Yeh query complexity attacks block karta hai",
+            "Sabhi upar wale"
+          ]
+        },
+        correct: 3,
+        explanation: {
+          en: "Rate limiting provides comprehensive protection against various GraphQL attacks.",
+          hi: "Rate limiting various GraphQL attacks ke against comprehensive protection provide karta hai."
+        }
+      },
+      {
+        question: {
+          en: "What's the best way to handle MongoDB operators in GraphQL?",
+          hi: "GraphQL mein MongoDB operators handle karne ka best way kya hai?"
+        },
+        options: {
+          en: [
+            "Allow them freely",
+            "Escape them automatically",
+            "Reject any query with $ operators",
+            "Log them for monitoring"
+          ],
+          hi: [
+            "Unhe freely allow karo",
+            "Automatically escape karo",
+            " $ operators ke saath koi bhi query reject karo",
+            "Monitoring ke liye log karo"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "Rejecting queries with MongoDB operators prevents NoSQL injection attacks.",
+          hi: "MongoDB operators wali queries reject karna NoSQL injection attacks prevent karta hai."
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      if (!quizContainer) return;
+
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedAnswers = new Array(quizQuestions.length).fill(-1);
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      const optionsContainer = document.getElementById(`options-${questionIndex}`);
+      if (!optionsContainer) return;
+
+      optionsContainer.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      optionsContainer.querySelectorAll('.option')[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      let score = 0;
+      const scoreDisplay = document.getElementById('score-display');
+      if (!scoreDisplay) return;
+
+      quizQuestions.forEach((q, index) => {
+        const optionsContainer = document.getElementById(`options-${index}`);
+        if (!optionsContainer) return;
+
+        const options = optionsContainer.querySelectorAll('.option');
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        if (selectedAnswers[index] === q.correct) {
+          score++;
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1) options[selectedAnswers[index]].classList.add('correct');
+        } else {
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1 && selectedAnswers[index] !== q.correct) {
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        }
+      });
+
+      scoreDisplay.textContent = `Score: ${score} / ${quizQuestions.length}`;
+      showNotification(isHinglish ? `Quiz pura! Score: ${score}/${quizQuestions.length}` : `Quiz complete! You scored ${score}/${quizQuestions.length}`);
+    };
+
+    // Notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const progressBar = document.getElementById('progress-bar');
+      if (!progressBar) return;
+
+      const winHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset;
+      const trackLength = docHeight - winHeight;
+      const progress = scrollTop / trackLength * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    // Interactive Demo Functions
+    function runIntrospection() {
+      const result = document.getElementById('introspection-result');
+      if (!result) return;
+
+      result.innerHTML = `
+// Introspection results:
+// ✅ Schema discovered successfully
+// ✅ Found ${Math.floor(Math.random() * 500) + 100} types
+// ✅ Exposed ${Math.floor(Math.random() * 50) + 20} sensitive fields
+// ✅ Discovered mutation endpoints: ${Math.floor(Math.random() * 20) + 5}
+// ❌ Warning: ${Math.floor(Math.random() * 10) + 1} misconfigurations found
+
+// Use this information to craft targeted attacks:
+query { ${['users', 'posts', 'admin', 'system'][Math.floor(Math.random() * 4)]} { ${['id', 'email', 'password', 'secret'][Math.floor(Math.random() * 4)]} } }
+      `;
+      showNotification(isHinglish ? 'Schema enumeration simulated!' : 'Schema enumeration simulated!');
+    }
+
+    function runIDORGraphQL() {
+      const result = document.getElementById('idor-result');
+      const targetId = document.getElementById('idor-input')?.value || '456';
+      if (!result) return;
+
+      result.innerHTML = `
+// IDOR Attempt Results:
+// 🎯 Target User ID: ${targetId}
+// ✅ Attempting to access other user's data
+// 📊 Data retrieved: ${Math.floor(Math.random() * 100)} records
+// 🛡️ Authorization: ${['BYPASSED', 'ALLOWED', 'RESTRICTED'][Math.floor(Math.random() * 3)]}
+// 📝 Exposed fields: ${['email,password', 'name,phone', 'address,payments', 'all data'][Math.floor(Math.random() * 4)]}
+
+// Real attack would show sensitive data here
+      `;
+      showNotification(isHinglish ? 'IDOR attack simulated!' : 'IDOR attack simulated!');
+    }
+
+    function runNoSQLInjection() {
+      const result = document.getElementById('nosql-result');
+      if (!result) return;
+
+      const payload = document.getElementById('nosql-input')?.value || '';
+      const bypassed = payload.includes('$') || Math.random() > 0.5;
+
+      result.innerHTML = `
+// NoSQL Injection Results:
+// 🎣 Payload: ${payload}
+// 🔓 Authentication bypassed: ${bypassed ? '✅ YES' : '❌ NO'}
+// 📊 Users extracted: ${bypassed ? Math.floor(Math.random() * 1000) + 100 : 0}
+// 💰 Bank data accessed: $${bypassed ? Math.floor(Math.random() * 10000) + 1000 : 0}
+// 📧 Emails harvested: ${bypassed ? Math.floor(Math.random() * 5000) + 500 : 0}
+
+// ${bypassed ? '🚨 CRITICAL: All users compromised!' : '✅ Attack mitigated by input validation'}
+      `;
+      showNotification(isHinglish ? 'NoSQL injection simulated!' : 'NoSQL injection simulated!');
+    }
+
+    function testGraphQLSecurity() {
+      const result = document.getElementById('security-result');
+      if (!result) return;
+
+      const url = document.getElementById('security-url')?.value || 'https://api.example.com/graphql';
+
+      result.innerHTML = `
+// Security Assessment Results for: ${url}
+//
+// 🔎 VULNERABILITY SCAN:
+// ✅ Introspection: ${['DISABLED ✅', 'ENABLED ❌'][Math.floor(Math.random() * 2)]}
+// ✅ Depth Limit: ${['IMPLEMENTED ✅', 'MISSING ❌'][Math.floor(Math.random() * 2)]}
+// ✅ Complexity Limit: ${['ACTIVE ✅', 'NOT SET ❌'][Math.floor(Math.random() * 2)]}
+// ✅ Rate Limiting: ${['CONFIGURED ✅', 'ABSENT ❌'][Math.floor(Math.random() * 2)]}
+// ✅ Auth Checks: ${['STRICT ✅', 'WEAK ❌'][Math.floor(Math.random() * 2)]}
+// ✅ Input Validation: ${['SECURE ✅', 'VULNERABLE ❌'][Math.floor(Math.random() * 2)]}
+//
+// 🎯 OVERALL SECURITY SCORE: ${Math.floor(Math.random() * 30) + 70}/100
+//
+// ⚠️ Recommendations:
+// ${Math.random() > 0.5 ? '- Disable introspection in production' : '- Implement query complexity limiting'}
+// ${Math.random() > 0.5 ? '- Add rate limiting per user/IP' : '- Enable query depth limits'}
+// ${Math.random() > 0.5 ? '- Implement field-level authorization' : '- Add comprehensive input validation'}
+      `;
+      showNotification(isHinglish ? 'Security assessment completed!' : 'Security assessment completed!');
+    }
+  </script>
+</body>
+</html>
