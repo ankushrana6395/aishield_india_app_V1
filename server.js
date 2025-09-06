@@ -23,32 +23,9 @@ console.log('process.env.PORT:', process.env.PORT);
 console.log('Parsed PORT value:', parseInt(process.env.PORT) || 'NaN');
 console.log('Using PORT:', PORT);
 
-// Security middleware with very relaxed CSP for lecture content
+// Security middleware disabled for lecture compatibility
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'", "https:", "http:"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'",
-        "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net",
-        "https://www.youtube.com", "https://youtube.com"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      scriptSrcElem: ["'self'", "'unsafe-inline'",
-        "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
-      styleSrc: ["'self'", "'unsafe-inline'",
-        "https://fonts.googleapis.com", "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
-      styleSrcAttr: ["'unsafe-inline'"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
-      imgSrc: ["'self'", "data:", "https:", "http:"],
-      connectSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com",
-        "https://via.placeholder.com", "https://www.hackthebox.com", "https://cdn.jsdelivr.net"],
-      frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'", "https:", "http:"],
-      formAction: ["'self'"],
-      baseUri: ["'self'"],
-    },
-  },
+  contentSecurityPolicy: false, // Disable CSP completely for lecture content compatibility
   crossOriginEmbedderPolicy: false,
 }));
 app.use(cors({
