@@ -33,13 +33,19 @@ const LectureViewerNew = () => {
       setLoading(true);
       setError('');
       
-      // Fetch the lecture from the new API endpoint
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/content/lectures/database/${slug}`);
-      
+      // Fetch the lecture from the new API endpoint with authorization
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/content/lectures/database/${slug}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
       if (!response.ok) {
         throw new Error(`Failed to load lecture: ${response.status}`);
       }
-      
+
       const data = await response.json();
       setLecture(data);
     } catch (err) {
