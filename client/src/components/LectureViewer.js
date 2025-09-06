@@ -138,7 +138,7 @@ const LectureViewer = () => {
       setError('');
       
       // Fetch the lecture content
-      const response = await fetch(`/lectures/${filename}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures/${filename}`);
       
       if (!response.ok) {
         throw new Error(`Failed to load lecture: ${response.status}`);
