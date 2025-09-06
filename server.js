@@ -23,8 +23,30 @@ console.log('process.env.PORT:', process.env.PORT);
 console.log('Parsed PORT value:', parseInt(process.env.PORT) || 'NaN');
 console.log('Using PORT:', PORT);
 
-// Security middleware
-app.use(helmet());
+// Security middleware with relaxed CSP for lecture content
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'",
+        "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
+      scriptSrcAttr: ["'unsafe-hashes'"],
+      scriptSrcElem: ["'self'", "'unsafe-inline'",
+        "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
+      styleSrc: ["'self'", "'unsafe-inline'",
+        "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+      styleSrcAttr: ["'unsafe-inline'"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      connectSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com",
+        "https://via.placeholder.com", "https://www.hackthebox.com"],
+      frameSrc: ["'self'", "https://www.youtube.com", "https://youtube.com"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? [process.env.CLIENT_URL, 'https://aishield-india-app-v1.onrender.com']
