@@ -34,7 +34,7 @@ const LectureViewerNew = () => {
       setError('');
       
       // Fetch the lecture from the new API endpoint
-      const response = await fetch(`/api/content/lectures/database/${slug}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/content/lectures/database/${slug}`);
       
       if (!response.ok) {
         throw new Error(`Failed to load lecture: ${response.status}`);
