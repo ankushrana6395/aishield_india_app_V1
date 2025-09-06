@@ -223,24 +223,35 @@ router.get('/lectures', auth, adminAuth, (req, res) => {
 });
 
 // Delete a lecture file
-router.delete('/lectures/:filename', auth, adminAuth, (req, res) => {
+router.delete('/lectures/:filename', auth, adminAuth, async (req, res) => {
   try {
     const { filename } = req.params;
-    
+
     // Security check to prevent directory traversal
     if (filename.includes('..') || filename.includes('/')) {
       return res.status(400).json({ message: 'Invalid filename' });
     }
-    
+
     const filePath = path.join(__dirname, '..', 'client', 'public', 'lectures', filename);
-    
+
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ message: 'File not found' });
     }
-    
+
+    // Delete the physical file
     fs.unlinkSync(filePath);
-    
-    res.json({ message: 'Lecture deleted successfully' });
+
+    // Also remove from FileCategory collection
+    const filenameWithoutExtension = filename.replace('.html', '');
+    const deleteResult = await FileCategory.deleteMany({
+      filename: { $in: [filename, filenameWithoutExtension] }
+    });
+
+    console.log(`Deleted ${deleteResult.deletedCount} FileCategory entries for ${filename}`);
+
+    res.json({
+      message: 'Lecture deleted successfully from file system and database'
+    });
   } catch (err) {
     console.error('Error deleting lecture:', err);
     res.status(500).json({ message: 'Error deleting lecture' });
