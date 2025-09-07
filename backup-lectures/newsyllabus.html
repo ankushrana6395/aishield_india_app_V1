@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Cyber Security Internship With Realtime Practical Labs | Navpragy Technologies</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --glow-green: rgba(0, 255, 136, 0.4);
+      --glow-blue: rgba(0, 170, 255, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(0, 170, 255, 0.05) 0%, transparent 20%);
+    }
+
+    .container {
+      max-width: 210mm; /* A4 width */
+      margin: 10px auto;
+      background: var(--dark-navy);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), #0d1f3a);
+      text-align: center;
+      padding: 50px 20px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--neon-green);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 40%),
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 255, 136, 0.05) 10px, rgba(0, 255, 136, 0.05) 20px);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 0 10px var(--neon-green);
+      margin-bottom: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    .tagline {
+      font-style: italic;
+      color: var(--mid-gray);
+      margin-bottom: 20px;
+    }
+
+    .course-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      color: var(--neon-green);
+      margin: 15px 0;
+      text-shadow: 0 0 15px var(--glow-green);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--electric-blue);
+      margin: 10px 0;
+    }
+
+    blockquote {
+      max-width: 700px;
+      margin: 30px auto;
+      font-style: italic;
+      font-size: 1.1rem;
+      border-left: 4px solid var(--neon-green);
+      padding-left: 20px;
+      color: white;
+    }
+
+    blockquote cite {
+      display: block;
+      text-align: right;
+      font-weight: 500;
+      color: var(--neon-green);
+      margin-top: 10px;
+    }
+
+    /* Content Section */
+    .content-section {
+      padding: 30px;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      color: var(--neon-green);
+      margin: 30px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--electric-blue);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 70px;
+      height: 2px;
+      background: var(--neon-green);
+    }
+
+    /* Instructor Card */
+    .instructor {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 25px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .instructor-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .instructor-info h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-green);
+      margin-bottom: 8px;
+    }
+
+    .instructor-title {
+      color: var(--electric-blue);
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      background: var(--electric-blue);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Module Card */
+    .module {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 25px 0;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .module:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px var(--glow-blue);
+    }
+
+    .module-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .module-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 15px;
+    }
+
+    .module-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      color: var(--neon-green);
+    }
+
+    .module-subtitle {
+      font-style: italic;
+      color: var(--electric-blue);
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 10px;
+    }
+
+    li {
+      margin: 8px 0;
+      padding-left: 25px;
+      position: relative;
+      font-size: 15px;
+    }
+
+    li::before {
+      content: "»";
+      color: var(--neon-green);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* Tools Grid */
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .tool-item {
+      background: rgba(0, 170, 255, 0.2);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      border: 1px solid var(--electric-blue);
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: linear-gradient(135deg, #0d2035, #0a1a2f);
+      border: 1px solid var(--neon-green);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+    }
+
+    .highlight-box h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-green);
+      margin-bottom: 15px;
+    }
+
+    .two-column {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .col {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 40px 30px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer h2 {
+      color: var(--neon-green);
+      margin-bottom: 20px;
+    }
+
+    .contact-info p {
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    .contact-info i {
+      color: var(--neon-green);
+      width: 25px;
+      text-align: left;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      padding: 14px 30px;
+      margin: 20px 0;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 0 20px var(--glow-green);
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px var(--glow-green);
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+      }
+      .container {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+        border: none;
+      }
+      .btn {
+        display: none;
+      }
+      .module:hover {
+        transform: none;
+        box-shadow: none;
+      }
+      .header, .module, .footer {
+        break-inside: avoid;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .course-title {
+        font-size: 2.2rem;
+      }
+      .instructor {
+        flex-direction: column;
+        text-align: center;
+      }
+      .two-column {
+        flex-direction: column;
+      }
+      .module-header {
+        text-align: center;
+      }
+      .module-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">NAVPRAGY TECHNOLOGIES</div>
+      <div class="tagline">Empowering Cyber Defenders</div>
+      <h1 class="course-title">Advancing Cyber Skills and Professional Mastery </h1>
+      <div class="subtitle">From Fundamentals to Full-Scope Exploitation</div>
+      <div class="subtitle">Hands-On | Real-World Ready | Industry Expert Led</div>
+      <blockquote>
+        "Attack is the best form of defense. Master every layer — web, network, API, AD, and AI."
+        <cite>— Ankush Rana, OSCP, CEH, CRTP, OSEE</cite>
+      </blockquote>
+    </header>
+
+    <div class="content-section">
+
+      <!-- Program Overview -->
+      <h2 class="section-title">Program Overview</h2>
+      <p>A comprehensive, hands-on penetration testing curriculum covering all modern attack surfaces — from traditional web and network systems to enterprise Active Directory, cloud environments, and emerging AI-powered applications.</p>
+
+      <div class="two-column">
+        <div class="col">
+          <h3 style="color:var(--electric-blue)">Program Details</h3>
+          <ul>
+            <li><strong>Duration:</strong> 3–12 Months (Flexible Batches)</li>
+            <li><strong>Mode:</strong> Ofline / On-Premise / Hybrid</li>
+            <li><strong>Lab Access:</strong> 24x7 Cloud-Based Labs</li>
+            <li><strong>Format:</strong> 70% Practical | 30% Theory</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3 style="color:var(--electric-blue)">Who Should Enroll?</h3>
+          <ul>
+            <li>Cybersecurity Analyst</li>
+            <li>Penetration Testers</li>
+            <li>Software Developers</li>
+            <li>Aspiring Ethical Hackers</li>
+            <li>Red Team & SOC Analysts</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Instructor -->
+      <div class="instructor">
+        <div class="instructor-img">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <div class="instructor-info">
+          <h3>Ankush Rana</h3>
+          <div class="instructor-title">Senior Penetration Tester | Red Team Lead | Offensive Security Expert</div>
+          <ul>
+            <li>4+ Years in Ethical Hacking & Security Research</li>
+            <li>Conducted 100+ Penetration Tests for BFSI, Healthcare & Government</li>
+            <li>Trained 100+ Students in Offensive Security</li>
+            <li>Active Bug Bounty Hunter (HackerOne, Bugcrowd)</li>
+          </ul>
+          <div class="badges">
+            <span class="badge">OSCP</span>
+            <span class="badge">CEH</span>
+            <span class="badge">CRTP</span>
+            <span class="badge">OSEE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Syllabus -->
+      <h2 class="section-title">Complete Course Syllabus</h2>
+
+      <!-- Module 1: Network -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-network-wired"></i></div>
+          <h3 class="module-title">Network Penetration Testing</h3>
+        </div>
+        <div class="module-subtitle">Recon, Exploitation & Post-Exploitation</div>
+        <ul>
+          <li>Passive & Active Recon: Shodan, Censys, Nmap</li>
+          <li>Vulnerability Scanning: OpenVAS, Nikto</li>
+          <li>Exploitation: Buffer Overflows, Metasploit, Manual Exploits</li>
+          <li>Privilege Escalation: Kernel, SUID, Misconfigurations</li>
+          <li>Post-Exploitation: Pivoting, Persistence, Lateral Movement</li>
+          <li>Wireless Attacks: WEP/WPA/WPA2/WPA3 Cracking, Evil Twin, KRACK</li>
+          <li>Network Segmentation Testing: VLAN Hopping, Zone Bypass</li>
+          <li>Firewall Testing: Rule Evasion, Egress Filtering</li>
+          <li>IDS/IPS Evasion: Fragmentation, Timing, Encryption</li>
+          <li>OT/ICS Network Security: SCADA, PLC, DCS Testing</li>
+          <li>Network Protocol Analysis: Wireshark, TCPDump, Protocol Fuzzing</li>
+          <li>DNS Security: Zone Transfers, DNS Rebinding, Cache Poisoning</li>
+          <li>SNMP Enumeration & Exploitation</li>
+          <li>VPN Security Testing: IPsec, SSL VPN, Client Configuration</li>
+          <li>Network Device Security: Router, Switch, Firewall Exploitation</li>
+          <li>DDoS Testing & Mitigation Analysis</li>
+          <li>5G Network Security: Core Network, RAN, SBAFli>
+          <li>IoT Network Security: Device Discovery, Protocol Analysis</li>
+        </ul>
+      </div>
+
+      <!-- Module 2: Web App -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-globe"></i></div>
+          <h3 class="module-title">Web Application Penetration Testing</h3>
+        </div>
+        <div class="module-subtitle">Complete Coverage of All Web Vulnerabilities</div>
+        <ul>
+          <li>OWASP Top 10 (2021 & 2023 Draft)</li>
+          <li>SQLi, Command, LDAP, XPath Injection</li>
+          <li>XSS (Reflected, Stored, DOM, Blind)</li>
+          <li>CSRF, SSRF, XXE (File Read, OOB)</li>
+          <li>Insecure Deserialization (Java, PHP, .NET)</li>
+          <li>Broken Access Control: IDOR, Mass Assignment</li>
+          <li>Security Misconfiguration: Debug Endpoints, S3 Leaks</li>
+          <li>Sensitive Data Exposure: Weak Crypto, Hardcoded Keys</li>
+          <li>Template Injection (SSTI), HTTP Smuggling</li>
+          <li>Host Header Injection, Clickjacking</li>
+          <li>File Uploads, Web Shells, Business Logic Flaws</li>
+          <li>JWT & OAuth Misuse</li>
+          <li>Mobile Web Testing: PWA, WebView, Deep Linking</li>
+          <li>Web Caching Attacks: Poisoning, Deception</li>
+          <li>WebSocket Security: Message Injection</li>
+        </ul>
+        <div class="tools-grid">
+          <span class="tool-item">Burp Suite Pro</span>
+          <span class="tool-item">OWASP ZAP</span>
+          <span class="tool-item">SQLMap</span>
+          <span class="tool-item">ffuf</span>
+          <span class="tool-item">Gobuster</span>
+          <span class="tool-item">Nessus</span>
+          <span class="tool-item">Custom Python Scripts</span>
+        </div>
+      </div>
+
+      <!-- Module 3: API -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-code"></i></div>
+          <h3 class="module-title">API Security Testing</h3>
+        </div>
+        <div class="module-subtitle">REST, GraphQL, gRPC & Microservices</div>
+        <ul>
+          <li>API Discovery: Swagger, Postman, GraphQL Introspection, OpenAPI Spec Analysis</li>
+          <li>Authentication: API Keys, JWT, OAuth 2.0, OpenID Connect, Mutual TLS</li>
+          <li>BOLA, BFLA, Excessive Data Exposure, Parameter Pollution</li>
+          <li>Rate Limiting & Mass Assignment, Business Logic Flaws</li>
+          <li>GraphQL: Batch Queries, Schema Abuse, Introspection Abuse, Query Depth</li>
+          <li>Insecure Webhooks & Serverless APIs, Lambda Functions</li>
+          <li>gRPC Security: Message Validation, Auth Bypass, Reflection Attacks</li>
+          <li>API Gateway Security: Kong, Apigee, AWS API Gateway, Azure API Management</li>
+          <li>Containerized & Kubernetes API Testing, Service Mesh Security</li>
+          <li>REST API Security: HATEOAS, Content-Type Spoofing, Method Tampering</li>
+          <li>SOAP API Security: WSDL Analysis, XML External Entities (XXE), WS-Security</li>
+          <li>GraphQL: Field Tracing, Error Message Analysis, Query Complexity</li>
+          <li>API Rate Limiting Bypass & DoS Testing</li>
+          <li>API Versioning & Deprecation Testing</li>
+          <li>GraphQL Federation & Subgraph Security</li>
+          <li>API Security Testing Automation: Custom Scripts, Fuzzing</li>
+          <li>GraphQL: Query Complexity Analysis, Resource Exhaustion</li>
+          <li>API Contract Testing & Schema Validation</li>
+          <li>GraphQL: Apollo Federation, Federation Gateway Security</li>
+        </ul>
+      </div>
+
+      <!-- Module 4: AD -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-sitemap"></i></div>
+          <h3 class="module-title">Active Directory Penetration Testing</h3>
+        </div>
+        <div class="module-subtitle">Enterprise Red Teaming & Domain Takeover</div>
+        <ul>
+          <li>AD Architecture: Domains, Trusts, GPOs, Kerberos, Forests</li>
+          <li>Enumeration: BloodHound, PowerView, Impacket, ADExplorer</li>
+          <li>Kerberoasting, AS-REP Roasting, TGT Delegation</li>
+          <li>Pass-the-Hash, Pass-the-Ticket, Overpass-the-Hash</li>
+          <li>Golden/Silver Tickets, DCSync, ACL Abuse, Resource-Based Constrained Delegation</li>
+          <li>Lateral Movement: WMI, SMB, PSExec, RDP, WinRM</li>
+          <li>Azure AD / Entra ID: Conditional Access Bypass, JIT Priv Escalation</li>
+          <li>Cross-Forest Attacks: SID Filtering Bypass, Trust Abuse</li>
+          <li>AD CS Exploitation: ESC1-ESC8, PKI Abuse, Certificate Templates</li>
+          <li>Privileged Access Workstations (PAW) Bypass, Credential Guard</li>
+          <li>ZeroLogon, PrintNightmare, PetitPotam, Shadow Credentials, HiveNightmare</li>
+          <li>AD Replication Attacks: DCSync, RID Cycling, FSMO Abuse</li>
+          <li>Group Policy Preferences (GPP) Exploitation</li>
+          <li>LSASS Memory Dumping & Credential Extraction</li>
+          <li>Pass-the-Cookie, Kerberos Golden Ticket Attacks</li>
+          <li>AD Certificate Services: ESC1-ESC8, ESC13, ESC14</li>
+          <li>Privileged Identity Management (PIM) Bypass</li>
+          <li>AD FS & ADFS Exploitation: Token Forgery, Claims Abuse</li>
+          <li>Microsoft Entra ID: Identity Governance, Privileged Access Management</li>
+        </ul>
+      </div>
+
+      <!-- Module 5: AI/ML -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-brain"></i></div>
+          <h3 class="module-title">AI & Machine Learning Security</h3>
+        </div>
+        <div class="module-subtitle">Next-Gen Attack Surface</div>
+        <ul>
+          <li>Threat Modeling AI Systems</li>
+          <li>Adversarial Examples & Evasion Attacks</li>
+          <li>Model Stealing, Inversion, Membership Inference</li>
+          <li>Data Poisoning & Backdoor Training</li>
+          <li>Prompt Injection in LLMs (ChatGPT, Llama)</li>
+          <li>Jailbreaking & Overreliance Exploits</li>
+          <li>Federated Learning Security: Gradient Leakage</li>
+          <li>Edge AI Security: IoT, Mobile Models</li>
+          <li>Model Supply Chain: Hugging Face Auditing</li>
+          <li>AI-Powered Phishing & Deepfakes</li>
+          <li>Tools: ART, Garak, PromptInject, Counterfit</li>
+        </ul>
+      </div>
+
+      <!-- Module 6: Tools -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-tools"></i></div>
+          <h3 class="module-title">Tools & Methodologies</h3>
+        </div>
+        <div class="module-subtitle">Professional Offensive Toolkit</div>
+        <ul>
+          <li>MITRE ATT&CK Mapping</li>
+          <li>PTES, OWASP WSTG, NIST SP 800-115</li>
+          <li>Automation: Python, Bash, PowerShell</li>
+          <li>Reporting: Executive & Technical</li>
+          <li>Custom Fuzzers, Scanners, Exploit Scripts</li>
+          <li>Cloud Security: AWS CLI, Azure CLI, Prowler, ScoutSuite</li>
+          <li>Container Security: Docker, Kubernetes, kube-bench, Trivy</li>
+          <li>CI/CD Security: GitLeaks, Dependency Scanning</li>
+        </ul>
+      </div>
+
+      <!-- Module 7: Labs -->
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon"><i class="fas fa-flask"></i></div>
+          <h3 class="module-title">Real-World Labs & Capstone Project</h3>
+        </div>
+        <div class="module-subtitle">Hands-on Experience</div>
+        <ul>
+          <li>Hands-on Labs: Hack The Box, TryHackMe, Custom VMs</li>
+          <li>Simulated Corporate Network (Hybrid Web + AD + API)</li>
+          <li>Cloud Environment Labs: AWS, Azure Misconfigurations</li>
+          <li>Containerized Application Testing: Docker, Kubernetes Clusters</li>
+          <li>Capstone Project: Full-Scope Penetration Test
+            <ul style="margin-top: 8px; font-size: 14px;">
+              <li>External & Internal Network</li>
+              <li>Web App & API Testing</li>
+              <li>Active Directory & Azure AD</li>
+              <li>AI-Powered Application Assessment</li>
+              <li>Cloud & Container Assessment</li>
+            </ul>
+          </li>
+          <li>Deliver a Professional Penetration Test Report</li>
+        </ul>
+      </div>
+
+      <!-- Why Choose Us -->
+      <div class="highlight-box">
+        <h3>Why This Program Stands Out?</h3>
+        <div class="two-column">
+          <div class="col">
+            <ul>
+              <li>✅ 100% Hands-On, No Fluff</li>
+              <li>✅ Real Enterprise Attack Scenarios</li>
+              <li>✅ Mentorship by OSCP & OSEE Certified Expert</li>
+              <li>✅ Cloud-Based Lab Access (24x7)</li>
+              <li>✅ Latest Content: AI, Cloud, Containers</li>
+            </ul>
+          </div>
+          <div class="col">
+            <ul>
+              <li>✅ Job-Ready Offensive Security Skills</li>
+              <li>✅ Covers Azure AD, AD CS, gRPC, Edge AI</li>
+              <li>✅ Capstone with Cloud & AI Components</li>
+              <li>✅ Industry-Aligned with MITRE & OWASP</li>
+              <li>✅ Limited Batch Size (Max 50)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <h2>Contact Us</h2>
+      <div class="contact-info">
+        <p><i class="fas fa-building"></i> Navpragy Technologie Pvt. Ltd.</p>
+        <p><i class="fas fa-quote-left"></i> Building the Next Generation of Cyber Warriors</p>
+        <p><i class="fas fa-envelope"></i> Email: info@navpragytechnology.com</p>
+        <p><i class="fas fa-phone"></i> Phone: +91 9588853973</p>
+        <p><i class="fas fa-globe"></i> Website: <strong>https://www.navpragytechnology.com</strong></p>
+        <p><i class="fas fa-map-marker-alt"></i> Location: Noida, Uttar Pradesh, India</p>
+      </div>
+
+      <h3>Next Batch Starts: Sep 15, 2025</h3>
+      <p></p>Limited Seats (50 Max)</p>
+      
+      <a href="#" class="btn">Enroll Now</a>
+      
+  
+    </footer>
+
+  </div>
+</body>
+</html>

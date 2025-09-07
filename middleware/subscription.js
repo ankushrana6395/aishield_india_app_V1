@@ -16,12 +16,12 @@ const subscription = async (req, res, next) => {
     if (!req.user.isSubscribed || !req.user.subscription) {
       return res.status(403).json({ message: 'Subscription required to access this content' });
     }
-    
+
     // Check subscription status
     if (req.user.subscription.status !== 'completed') {
       return res.status(403).json({ message: 'Active subscription required to access this content' });
     }
-    
+
     // Check if subscription has expired
     if (req.user.subscription.expiresAt && new Date() > req.user.subscription.expiresAt) {
       return res.status(403).json({ message: 'Subscription has expired' });

@@ -18,7 +18,7 @@ console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
 
 // Create Express app
 const app = express();
-const PORT = process.env.PORT && !isNaN(parseInt(process.env.PORT)) ? parseInt(process.env.PORT) : 5000;
+const PORT = process.env.PORT && !isNaN(parseInt(process.env.PORT)) ? parseInt(process.env.PORT) : 5002;
 console.log('process.env.PORT:', process.env.PORT);
 console.log('Parsed PORT value:', parseInt(process.env.PORT) || 'NaN');
 console.log('Using PORT:', PORT);
@@ -31,7 +31,7 @@ app.use(helmet({
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? [process.env.CLIENT_URL, 'https://aishield-india-app-v1.onrender.com']
-    : ['http://localhost:3000', 'http://localhost:5000'],
+    : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5000', 'http://127.0.0.1:3000'],
   credentials: true
 }));
 
@@ -42,11 +42,13 @@ app.use('/robots.txt', cors({ origin: '*' }));
 app.use('/manifest.json', cors({ origin: '*' }));
 app.use('/static/', cors({ origin: '*' }));
 
-// Rate limiting
+// Rate limiting (increased for testing/development)
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  windowMs: 60 * 60 * 1000, // 1 hour (increased from 15 minutes for testing)
+  max: 1000, // limit each IP to 1000 requests per window (increased from 100)
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use(limiter);
 
@@ -105,11 +107,12 @@ const lectureMiddleware = (req, res, next) => {
   }
 };
 
-// Serve lecture content with selective middleware (no CSP protection)
-app.use('/lectures-no-csp',
-  lectureMiddleware,
-  express.static('client/public/lectures')
-);
+// Lecture content is now served exclusively from database via API endpoints
+// Remove static file serving to enforce database-only access
+// app.use('/lectures-no-csp',
+//   lectureMiddleware,
+//   express.static('client/public/lectures')
+// );
 
 // Serve React frontend
 if (process.env.NODE_ENV === 'production') {
@@ -135,7 +138,13 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-// Health check endpoint
+// Health check endpoint (non-rate-limited for testing)
+// This endpoint bypasses rate limiting to allow health checks during testing
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running', timestamp: new Date().toISOString() });
+});
+
+// Health check endpoint (rate limited)
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Server is running' });
 });

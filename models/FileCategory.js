@@ -4,12 +4,8 @@ const fileCategorySchema = new mongoose.Schema({
   filename: {
     type: String,
     required: true,
+    unique: true,
     trim: true
-  },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-    required: true
   },
   title: {
     type: String,
@@ -20,23 +16,23 @@ const fileCategorySchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  content: {
+    type: mongoose.Schema.Types.Buffer, // Store as Buffer to avoid string conversion issues
+    required: true
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true
   }
+}, {
+  timestamps: true,
+  // Disable unnecessary features
+  versionKey: false,
+  minimize: false
 });
 
-// Update the updatedAt field before saving
-fileCategorySchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
-});
-
-// Create a unique index on filename
+// Add index for performance
 fileCategorySchema.index({ filename: 1 });
 
 module.exports = mongoose.model('FileCategory', fileCategorySchema);

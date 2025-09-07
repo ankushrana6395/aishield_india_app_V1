@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Race Condition Vulnerability Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>Race Conditions | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the Race Conditions Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content"><!-- English Version -->
+        <div class="en">
+          <h1>Race <span>Conditions</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Master the art of exploiting timing vulnerabilities in concurrent systems and multi-threaded applications — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>Race <span>Conditions</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Concurrent systems aur multi-threaded applications mein timing vulnerabilities ka faida uthana sikhen — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Right Corner</strong>
+        <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="hero-translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What are Race Conditions? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What are Race Conditions?</h2>
+      <h2 class="section-title hi" style="display:none;">Race Conditions Kya Hain?</h2>
+
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Core Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Yatnaye</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Attack Vectors</div>
+          <div class="step-title hi" style="display:none;">Hamlawar Ke Gaiyan</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Techniques</div>
+          <div class="step-title hi" style="display:none;">Uchatam Gaiyan</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding Race Conditions</h3>
+        <h3 class="hi" style="display:none;">Race Conditions Ki Samajh</h3>
+        <p class="en">Race conditions occur when multiple processes or threads access shared resources simultaneously, leading to unexpected behavior. When the timing of these accesses coincides in a specific way, it can cause security vulnerabilities or system crashes.</p>
+        <p class="hi" style="display:none;">Race conditions tab hote hain jab kai processes ya threads ek hi shared resources tak ek saath access karte hain, jisse unexpected behavior hota hai. Jab in accesses ka timing ek specific tarike se coincide hota hai, toh yeh security vulnerabilities ya system crashes cause kar sakta hai.</p>
+        <p class="en"><strong>Real Analogy:</strong> Like two people trying to withdraw money from the same bank account at the exact same time. If the system doesn't handle the concurrency properly, it might allow overdrafts or incorrect balances.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Jaise do log ek hi bank account se ek hi time pe money withdraw karne ki koshish kar rahe hain. Agar system concurrency ko properly handle nahi karta, toh yeh overdrafts allow kar sakta hai ya galat balances dikha sakta hai.</p>
+        <p class="en">Race conditions are particularly dangerous in web applications because they're often timing-dependent and hard to reproduce, making them perfect for one-click exploits.</p>
+        <p class="hi" style="display:none;">Race conditions web applications mein specially khatarnaak hote hain kyunki woh aksar timing-dependent hote hain aur reproduce karna mushkil hota hai, jo unhe one-click exploits ke liye perfect bana deta hai.</p>
+        <p class="en"><span class="keyword" data-title="Race Condition" data-content="A security vulnerability that occurs when multiple processes access shared resources simultaneously, leading to unexpected behavior based on execution timing.">Race Conditions</span> are the ultimate timing attacks that can bypass security controls if developers don't implement proper synchronization.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="Race Condition" data-content="Ek security vulnerability jo tab hoti hai jab multiple processes shared resources tak simultaneously access karte hain, jisse execution timing ke aadhar par unexpected behavior hota hai.">Race Conditions</span> ultimate timing attacks hain jo security controls ko bypass kar sakte hain agar developers proper synchronization implement nahi karte hain.</p>
+      </div>
+
+      <!-- Race Condition Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How Race Conditions Work - Visualization</h3>
+        <h3 class="hi" style="display:none;">Race Conditions Kaise Kaam Karte Hain - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">Thread A</div>
+            <div class="hi" style="display:none;">Thread A</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Check Balance: $100</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">Shared Resource</div>
+            <div class="hi" style="display:none;">Shared Resource</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Withdraw $50</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">Thread B</div>
+            <div class="hi" style="display:none;">Thread B</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Withdraw $50</div>
+          </div>
+        </div>
+        <p class="en">Both threads check the balance simultaneously and both see $100, so both proceed with withdrawal. Without proper locking, the final balance could be $0 instead of $50.</p>
+        <p class="hi" style="display:none;">Dono threads balance ko simultaneously check karte hain aur dono ko $100 nazar aata hai, soh dono withdrawal se aage badhte hain. Proper locking ke bina, final balance $0 ban sakta hai instead of $50.</p>
+      </div>
+
+      <!-- Types of Race Conditions -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Common Race Condition Patterns</h3>
+        <h3 class="hi" style="display:none;">Common Race Condition Patterns</h3>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="Check-Then-Act" data-content="A race condition pattern where a thread checks a condition and then acts on it, but another thread can change the condition in between.">Check-Then-Act</span>: Check balance, then withdraw (time window for race)</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Check-Then-Act" data-content="Ek race condition pattern jahan ek thread condition ko check karta hai aur phir uspe act karta hai, lekin doosra thread in bich condition ko change kar sakta hai.">Check-Then-Act</span>: Balance check karo, phir withdraw karo (race ke liye time window)</li>
+          <li class="en"><span class="keyword" data-title="Read-Modify-Write" data-content="A pattern where a value is read, modified, and written back, but another thread can interfere in between operations.">Read-Modify-Write</span>: Read file, modify content, write back</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Read-Modify-Write" data-content="Ek pattern jahan ek value ko read kiya jata hai, modify kiya jata hai, aur phir write back kiya jata hai, lekin doosra thread operations ke bich interfere kar sakta hai.">Read-Modify-Write</span>: File ko read karo, content modify karo, write back karo</li>
+          <li class="en"><span class="keyword" data-title="Time-of-Check to Time-of-Use" data-content="A race condition where the state checked is different from the state used by the time of use.">Time-of-Check to Time-of-Use (TOCTOU)</span>: Check file permissions, then access file</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Time-of-Check to Time-of-Use" data-content="Ek race condition jahan checked state different hai use ke time tak ki state se.">Time-of-Check to Time-of-Use (TOCTOU)</span>: File permissions check karo, phir file ko access karo</li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">High</div>
+          <div class="stat-number hi" style="display:none;">High</div>
+          <div class="stat-label en">Impact Level</div>
+          <div class="stat-label hi" style="display:none;">Asar Ka Level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">35%</div>
+          <div class="stat-label en">Apps vulnerable to races</div>
+          <div class="stat-label hi" style="display:none;">Apps race condition se vulnerable</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">1-in-1000</div>
+          <div class="stat-label en">Hit rate for race exploits</div>
+          <div class="stat-label hi" style="display:none;">Race exploit ke liye hit rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Race Condition Exploitation -->
+  <section id="try-race">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Race Condition Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Race Condition Exploitation</h2>
+
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced Racing</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Basic Se Advanced Racing</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Basic Racing</div>
+            <div class="step-title hi" style="display:none;">Mool Racing</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Multi-threaded Attacks</div>
+            <div class="step-title hi" style="display:none;">Multi-threaded Attacks</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Advanced Racing</div>
+            <div class="step-title hi" style="display:none;">Advanced Racing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Race Condition Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: Basic Race Condition</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: Mool Race Condition</h3>
+        <p class="en">Simulate a classic race condition where multiple requests compete for a shared resource.</p>
+        <p class="hi" style="display:none;">Ek classic race condition simulate karein jahan multiple requests ek shared resource ke liye compete karte hain.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="race-requests" class="en">Number of Requests:</label>
+            <label for="race-requests" class="hi" style="display:none;">Requests Ki Sankhya:</label>
+            <input type="number" id="race-requests" value="10">
+          </div>
+          <div class="input-group">
+            <label for="race-concurrency" class="en">Concurrency Level:</label>
+            <label for="race-concurrency" class="hi" style="display:none;">Concurrency Level:</label>
+            <input type="number" id="race-concurrency" value="5">
+          </div>
+          <button class="button" onclick="simulateRaceCondition()">Launch Race Attack</button>
+          <div class="result-box" id="race-result">
+// Race simulation results will appear here
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-threaded Race Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: Multi-threaded Race Exploitation</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: Multi-threaded Race Exploitation</h3>
+        <p class="en">Use multiple threads to increase the chance of winning the race condition.</p>
+        <p class="hi" style="display:none;">Race condition mein jeetne ke chance increase karne ke liye multiple threads ka use karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="multi-race-payload" class="en">Race Payload:</label>
+            <label for="multi-race-payload" class="hi" style="display:none;">Race Payload:</label>
+            <input type="text" id="multi-race-payload" value="POST /transfer?amount=1000&to=attacker" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Example: Multi-threaded transfer exploitation
+// Thread 1: Check balance = $1000
+// Thread 2: Check balance = $1000
+// Both threads proceed with transfer
+// Result: Attacker gets $2000 worth of goods
+          </div>
+          <div class="result-box" id="multi-race-result">
+// Multi-threaded results will appear here
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Race Techniques -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Advanced Race Techniques</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Advanced Race Techniques</h3>
+        <p class="en">Explore advanced techniques like limit-overrun races and file-based races.</p>
+        <p class="hi" style="display:none;">Limit-overrun races aur file-based races jaise advanced techniques explore karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="advanced-race-tech" class="en">Advanced Technique:</label>
+            <label for="advanced-race-tech" class="hi" style="display:none;">Advanced Technique:</label>
+            <select id="advanced-race-tech">
+              <option value="limit-overrun">Limit Overrun Race</option>
+              <option value="file-race">File-based Race</option>
+              <option value="state-race">Application State Race</option>
+            </select>
+          </div>
+          <div class="code-block">
+// Limit Overrun: Bypass rate limits by concurrent requests
+// File Race: Create symlink to sensitive file during upload
+// State Race: Manipulate application state during transitions
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Race Exploitation Techniques -->
+  <section id="exploitation">
+    <div class="container">
+      <h2 class="section-title en">Race Condition Exploitation Techniques</h2>
+      <h2 class="section-title hi" style="display:none;">Race Condition Exploitation Techniques</h2>
+
+      <!-- Attack Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Race Condition Exploitation - Visualization</h3>
+        <h3 class="hi" style="display:none;">Race Condition Exploitation - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Attack Request</div>
+            <div class="hi" style="display:none;">Hamlawar Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Concurrent Requests</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Vulnerable Code</div>
+            <div class="hi" style="display:none;">Kamjor Code</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">No Synchronization</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Data Corruption</div>
+            <div class="hi" style="display:none;">Data Corruption</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Unexpected State</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Race Exploitation Techniques with Examples -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Advanced Race Exploitation Techniques</h3>
+        <h3 class="hi" style="display:none;">Uchatam Race Exploitation Techniques</h3>
+
+        <!-- Limit Overrun Technique -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Limit Overrun Races</h4>
+          <p class="en">Bypass rate limits by sending multiple concurrent requests that arrive simultaneously.</p>
+          <p class="hi" style="display:none;">Rate limits ko bypass karne ke liye multiple concurrent requests ek saath bhejein.</p>
+          <div class="code-block">
+// Example: Coupon system limit bypass
+// Attacker sends 10 requests simultaneously
+// Each thread checks: coupons > 0 (true for all)
+// All threads consume coupons
+// Result: Attacker gets more than limit
+          </div>
+        </div>
+
+        <!-- File-based Race -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. File-based Race Conditions</h4>
+          <p class="en">Create symbolic links or manipulate file system operations during concurrent access.</p>
+          <p class="hi" style="display:none;">Concurrent access ke dauran symbolic links banana ya file system operations manipulate karain.</p>
+          <div class="code-block">
+// Example: File upload race
+// Thread 1: Remove sensitive file
+// Thread 2: Create symlink to password file
+// Thread 1: Upload replaces sensitive file
+// Result: Password file exposed
+          </div>
+        </div>
+
+        <!-- Multi-step Race -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Multi-step Race Exploitation</h4>
+          <p class="en">Exploit races that span multiple operations or database transactions.</p>
+          <p class="hi" style="display:none;">Multiple operations ya database transactions mein span karne wale races exploit karein.</p>
+          <div class="code-block">
+// Example: Balance transfer race
+// Check sender balance -> deduct amount
+// Check receiver balance -> add amount
+// Race window: Sender can overdraft
+// Race window: Receiver can get duplicate credits
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Case Studies -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Real-World Race Condition Cases</h3>
+        <h3 class="hi" style="display:none;">Vastavik Duniya Ke Race Condition Cases</h3>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--neon-green);">Case Study 1: E-commerce Coupon System</h4>
+          <p class="en"><strong>Scenario:</strong> An online store allowed only one coupon per user but had a race condition in the redemption system.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek online store ne ek user ke liye sirf ek coupon allow kiya lekin redemption system mein race condition thi.</p>
+          <p class="en"><strong>Exploitation:</strong> Used 50 concurrent requests to redeem the same coupon multiple times.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Same coupon ko kayi baar redeem karne ke liye 50 concurrent requests ka upyog kiya gaya.</p>
+          <p class="en"><strong>Impact:</strong> Attacker redeemed coupons worth $500 instead of $10 limit.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Attacker ne $500 ke coupons redeem kiye instead of $10 limit.</p>
+        </div>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--electric-blue);">Case Study 2: Banking Transfer System</h4>
+          <p class="en"><strong>Scenario:</strong> Bank transfer system didn't properly handle concurrent transfers.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Bank transfer system concurrent transfers ko properly handle nahi karta tha.</p>
+          <p class="en"><strong>Exploitation:</strong> Multiple transfers initiated simultaneously bypassing balance checks.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Balance checks ko bypass karke multiple transfers simultaneously initiate kiye gaye.</p>
+          <p class="en"><strong>Impact:</strong> Account sent $10,000 instead of $1,000 limit.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Account se $10,000 bheje gaye instead of $1,000 ki limit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Privilege Escalation through Races -->
+  <section id="try-privilege">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Race to Escalate</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Race Se Escalate Karein</h2>
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Race Condition Privilege Escalation</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Race Condition Privilege Escalation</h3>
+        <p class="en">Attempt to escalate privileges using race conditions in concurrent operations.</p>
+        <p class="hi" style="display:none;">Concurrent operations mein race conditions ka upyog karke privileges escalate karne ki koshish karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="privilege-race-url" class="en">Target URL:</label>
+            <label for="privilege-race-url" class="hi" style="display:none;">Target URL:</label>
+            <input type="text" id="privilege-race-url" value="https://app.example.com/admin/promote">
+          </div>
+          <button class="button" onclick="runPrivilegeRace()">Launch Privilege Race</button>
+          <div class="result-box" id="privilege-race-result">
+// Privilege escalation race simulation will appear here
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent Race Conditions</h2>
+      <h2 class="section-title hi" style="display:none;">Race Conditions Ko Kaise Rokein</h2>
+
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Race Condition Prevention - Visualization</h3>
+        <h3 class="hi" style="display:none;">Race Condition Bachav - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Concurrent Access</div>
+            <div class="hi" style="display:none;">Concurrent Access</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Multiple Threads</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Synchronization</div>
+            <div class="hi" style="display:none;">Synchronization</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Locks & Atomic Ops</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Thread Safety</div>
+            <div class="hi" style="display:none;">Thread Safety</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Predictable Behavior</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Coding Practices -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Secure Coding Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Coding Abhyas</h3>
+
+        <!-- Atomic Operations -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Use Atomic Operations</h4>
+          <p class="en">Ensure critical operations are atomic and cannot be interrupted by other threads.</p>
+          <p class="hi" style="display:none;">Critical operations ko atomic banao taaki woh doosre threads se interrupt na ho sakein.</p>
+          <div class="code-block">
+// Example: Atomic balance update
+function withdrawAtomic(amount, userId) {
+  return db.transaction(async () => {
+    const user = await User.findById(userId);
+    if (user.balance >= amount) {
+      user.balance -= amount;
+      await user.save();
+      return true;
+    }
+    return false;
+  });
+}
+          </div>
+        </div>
+
+        <!-- Database Locking -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Database Locking Mechanisms</h4>
+          <p class="en">Use proper database locks to prevent race conditions at the data layer.</p>
+          <p class="hi" style="display:none;">Data layer par race conditions ko rokne ke liye proper database locks ka upyog karein.</p>
+          <div class="code-block">
+// Example: Pessimistic locking
+const user = await User.findById(userId).withLock('forUpdate');
+// Now other transactions cannot modify this user
+user.balance -= amount;
+await user.save();
+          </div>
+        </div>
+
+        <!-- Synchronization Primitives -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Proper Synchronization</h4>
+          <p class="en">Use locks, semaphores, and other synchronization primitives appropriately.</p>
+          <p class="hi" style="display:none;">Locks, semaphores, aur other synchronization primitives ko appropriately use karein.</p>
+          <div class="code-block">
+// Example: Node.js async locks
+const AsyncLock = require('async-lock');
+const lock = new AsyncLock();
+
+await lock.acquire('user-' + userId, async () => {
+  // This code block is thread-safe
+  const balance = await getBalance(userId);
+  if (balance >= amount) {
+    await updateBalance(userId, balance - amount);
+  }
+});
+          </div>
+        </div>
+
+        <!-- Input Validation -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Rate Limiting & Queuing</h4>
+          <p class="en">Implement proper rate limiting and request queuing to prevent racing scenarios.</p>
+          <p class="hi" style="display:none;">Racing scenarios ko rokne ke liye proper rate limiting aur request queuing implement karein.</p>
+          <div class="code-block">
+// Example: Request deduplication
+const requestCache = new Map();
+
+async function processRequest(requestId, data) {
+  if (requestCache.has(requestId)) {
+    return requestCache.get(requestId);
+  }
+
+  const promise = processData(data);
+  requestCache.set(requestId, promise);
+
+  try {
+    return await promise;
+  } finally {
+    requestCache.delete(requestId);
+  }
+}
+          </div>
+        </div>
+      </div>
+
+      <!-- Prevention Testing -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Race Condition Prevention Testing</h3>
+        <h3 class="hi" style="display:none;">Race Condition Bachav Testing</h3>
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--neon-green);">Test Your Race Prevention</h4>
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="test-race-url" class="en">Test Endpoint:</label>
+              <label for="test-race-url" class="hi" style="display:none;">Test Endpoint:</label>
+              <input type="text" id="test-race-url" value="https://api.example.com/transfer" placeholder="Enter endpoint to test">
+            </div>
+            <button class="button" onclick="testRacePrevention()" style="position: relative; z-index: 10;">Test Prevention</button>
+            <div class="result-box" id="prevention-result">
+// Race prevention test results will appear here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Race Knowledge</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Race Jaankari Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Mastering the Art of Race Conditions</p>
+      <p class="hi" style="display:none;">Race Conditions Ko Master Karne Ka Art</p>
+
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    let isHinglish = false;
+
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+    });
+
+    function initializeApp() {
+      // Initialize Three.js
+      const canvas = document.getElementById('three-canvas');
+      if (canvas) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+        gridHelper.position.z = -20;
+        scene.add(gridHelper);
+
+        // Floating Points
+        const geometry = new THREE.BufferGeometry();
+        const count = 500;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+          positions[i] = (Math.random() - 0.5) * 100;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // Add floating cubes
+        const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const cubeMaterial = new THREE.MeshBasicMaterial({
+          color: 0x00aaff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5
+        });
+        const cubes = [];
+        for (let i = 0; i < 10; i++) {
+          const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+          cube.position.x = (Math.random() - 0.5) * 50;
+          cube.position.y = (Math.random() - 0.5) * 50;
+          cube.position.z = (Math.random() - 0.5) * 50;
+          cube.rotation.x = Math.random() * Math.PI;
+          cube.rotation.y = Math.random() * Math.PI;
+          cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+          scene.add(cube);
+        }
+
+        camera.position.z = 30;
+
+        // Animation
+        function animate() {
+          requestAnimationFrame(animate);
+          gridHelper.rotation.y += 0.005;
+          points.rotation.y += 0.003;
+          cubes.forEach(cube => {
+            cube.mesh.rotation.x += cube.speed;
+            cube.mesh.rotation.y += cube.speed;
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      // Initialize keyword modal
+      const keywordModal = document.getElementById('keyword-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const modalClose = document.getElementById('modal-close');
+
+      if (keywordModal && modalTitle && modalBody && modalClose) {
+        document.querySelectorAll('.keyword').forEach(keyword => {
+          keyword.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalTitle.textContent = this.getAttribute('data-title');
+            modalBody.textContent = this.getAttribute('data-content');
+            keywordModal.classList.add('active');
+          });
+        });
+
+        modalClose.addEventListener('click', () => {
+          keywordModal.classList.remove('active');
+        });
+
+        keywordModal.addEventListener('click', (e) => {
+          if (e.target === keywordModal) {
+            keywordModal.classList.remove('active');
+          }
+        });
+      }
+
+      // Initialize quiz
+      renderQuiz();
+
+      // Initialize scroll animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // Card Interaction Functions
+    function highlightCard(card) {
+      if (card) {
+        card.classList.add('pop-out');
+        showNotification('Hovering: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    function unhighlightCard(card) {
+      if (card && !card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    }
+
+    function focusCard(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+
+      if (card) {
+        card.classList.add('focused');
+        card.classList.add('pop-out');
+        showNotification('Focused on: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    // Language Toggle
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+
+      enElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'none' : 'block';
+      });
+
+      hiElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'block' : 'none';
+      });
+
+      // Update both translator buttons
+      const translatorBtns = document.querySelectorAll('.translator-btn');
+      translatorBtns.forEach(btn => {
+        if (btn) btn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      });
+
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+
+      // Re-render quiz with new language
+      renderQuiz();
+    }
+
+    // Quiz Questions (10 Questions)
+    const quizQuestions = [
+      {
+        question: {
+          en: "What is a race condition?",
+          hi: "Race condition kya hota hai?"
+        },
+        options: {
+          en: [
+            "Two threads competing for the same resource",
+            "A car race in competition",
+            "Database connection timeout",
+            "Network latency issue"
+          ],
+          hi: [
+            "Do threads ek hi resource ke liye compete kar rahe hain",
+            "Competition mein ek car race",
+            "Database connection timeout",
+            "Network latency issue"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "Race conditions occur when multiple threads access shared resources simultaneously.",
+          hi: "Race conditions tab hote hain jab multiple threads shared resources ko simultaneously access karte hain।"
+        }
+      },
+      {
+        question: {
+          en: "Which pattern is most vulnerable to race conditions?",
+          hi: "Kaunsa pattern race conditions se sabse zyada vulnerable hai?"
+        },
+        options: {
+          en: [
+            "Check-then-act",
+            "Object creation",
+            "Error handling",
+            "Logging"
+          ],
+          hi: [
+            "Check-then-act",
+            "Object creation",
+            "Error handling",
+            "Logging"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "Check-then-act is highly vulnerable because thread state can change between check and act.",
+          hi: "Check-then-act highly vulnerable hai kyunki check aur act ke bich thread state change ho sakta hai।"
+        }
+      },
+      {
+        question: {
+          en: "What prevents race conditions?",
+          hi: "Race conditions ko kya prevent karta hai?"
+        },
+        options: {
+          en: [
+            "More threads",
+            "Synchronization mechanisms",
+            "Faster processors",
+            "Better networks"
+          ],
+          hi: [
+            "Zyada threads",
+            "Synchronization mechanisms",
+            "Fast processors",
+            "Better networks"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Proper synchronization with locks, atomic operations prevents race conditions.",
+          hi: "Locks, atomic operations ke saath proper synchronization race conditions ko prevent karta hai।"
+        }
+      },
+      {
+        question: {
+          en: "What is TOCTOU in race conditions?",
+          hi: "Race conditions mein TOCTOU kya hota hai?"
+        },
+        options: {
+          en: [
+            "Time of Check to Time of Use",
+            "Thread Object Creation Time Out",
+            "Temporary Object Control To Use",
+            "Thread Object Cache Timeout"
+          ],
+          hi: [
+            "Time of Check to Time of Use",
+            "Thread Object Creation Time Out",
+            "Temporary Object Control To Use",
+            "Thread Object Cache Timeout"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "TOCTOU occurs when the state checked differs from the state used.",
+          hi: "TOCTOU tab hota hai jab checked state used state se differ karta hai।"
+        }
+      },
+      {
+        question: {
+          en: "Which is most effective against race conditions?",
+          hi: "Race conditions ke khilaf kaunsa sabse effective hai?"
+        },
+        options: {
+          en: [
+            "Atomic operations",
+            "Comments in code",
+            "Unit tests",
+            "Documentation"
+          ],
+          hi: [
+            "Atomic operations",
+            "Code mein comments",
+            "Unit tests",
+            "Documentation"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "Atomic operations ensure operations complete without interruption.",
+          hi: "Atomic operations ensure karta hai ki operations interruption ke bina complete ho jaayein।"
+        }
+      },
+      {
+        question: {
+          en: "What is limit overrun race?",
+          hi: "Limit overrun race kya hota hai?"
+        },
+        options: {
+          en: [
+            "Using too many threads",
+            "Bypassing limits with concurrent requests",
+            "Processor limit exceeded",
+            "Memory overrun"
+          ],
+          hi: [
+            "Bahut zyada threads use karna",
+            "Concurrent requests se limits bypass karna",
+            "Processor limit exceeded",
+            "Memory overrun"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Limit overrun races bypass rate limits using timing attacks.",
+          hi: "Limit overrun races timing attacks ka upyog karke rate limits bypass karte hain।"
+        }
+      },
+      {
+        question: {
+          en: "Database transactions help with race conditions how?",
+          hi: "Database transactions race conditions ke saath kaise help karte hain?"
+        },
+        options: {
+          en: [
+            "Make queries faster",
+            "Provide atomicity and isolation",
+            "Store more data",
+            "Improve indexing"
+          ],
+          hi: [
+            "Queries ko fast banao",
+            "Atomicity aur isolation provide karo",
+            "Zyada data store karo",
+            "Indexing sudharo"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Transactions provide ACID properties that prevent inconsistent states.",
+          hi: "Transactions ACID properties provide karte hain jo inconsistent states ko prevent karte hain।"
+        }
+      },
+      {
+        question: {
+          en: "What makes race conditions hard to reproduce?",
+          hi: "Race conditions ko reproduce karna kyun mushkil hai?"
+        },
+        options: {
+          en: [
+            "Poor code quality",
+            "Timing dependent nature",
+            "Bad testing",
+            "Complexity"
+          ],
+          hi: [
+            "Poor code quality",
+            "Timing dependent nature",
+            "Bad testing",
+            "Complexity"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Race conditions depend on specific timing that's hard to reproduce.",
+          hi: "Race conditions specific timing pe depend karte hain jo reproduce karna hard hai।"
+        }
+      },
+      {
+        question: {
+          en: "Which attack uses race conditions commonly?",
+          hi: "Kaunsa attack commonly race conditions ka upyog karta hai?"
+        },
+        options: {
+          en: [
+            "SQL Injection",
+            "XSS",
+            "Limit Overrun for coupons/credits",
+            "CSRF"
+          ],
+          hi: [
+            "SQL Injection",
+            "XSS",
+            "Coupons/credits ke liye Limit Overrun",
+            "CSRF"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "Limit overrun races often target coupon systems and credit limits.",
+          hi: "Limit overrun races aksar coupon systems aur credit limits ko target karte hain।"
+        }
+      },
+      {
+        question: {
+          en: "What is pessimistic locking?",
+          hi: "Pessimistic locking kya hota hai?"
+        },
+        options: {
+          en: [
+            "Expecting no conflicts",
+            "Locking resources before access",
+            "Optimistic concurrency",
+            "No locking at all"
+          ],
+          hi: [
+            "No conflicts expect karna",
+            "Access se pahle resources lock karna",
+            "Optimistic concurrency",
+            "Koi locking hi nahi"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Pessimistic locking locks resources to prevent conflicts.",
+          hi: "Pessimistic locking conflicts prevent karne ke liye resources ko lock karta hai।"
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      if (!quizContainer) return;
+
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedAnswers = new Array(quizQuestions.length).fill(-1);
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      const optionsContainer = document.getElementById(`options-${questionIndex}`);
+      if (!optionsContainer) return;
+
+      optionsContainer.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      optionsContainer.querySelectorAll('.option')[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      let score = 0;
+      const scoreDisplay = document.getElementById('score-display');
+      if (!scoreDisplay) return;
+
+      // Clear any previous summary
+      const existingSummary = document.querySelector('.quiz-summary');
+      if (existingSummary) {
+        existingSummary.remove();
+      }
+
+      quizQuestions.forEach((q, index) => {
+        const optionsContainer = document.getElementById(`options-${index}`);
+        if (!optionsContainer) return;
+
+        const options = optionsContainer.querySelectorAll('.option');
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        if (selectedAnswers[index] === q.correct) {
+          score++;
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1) options[selectedAnswers[index]].classList.add('correct');
+        } else {
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1 && selectedAnswers[index] !== q.correct) {
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        }
+      });
+
+      scoreDisplay.textContent = `Score: ${score} / ${quizQuestions.length}`;
+
+      // Create detailed summary
+      displayQuizSummary(score);
+      showNotification(isHinglish ? `Quiz pura! Score: ${score}/${quizQuestions.length}` : `Quiz complete! You scored ${score}/${quizQuestions.length}`);
+    };
+
+    // Display Quiz Summary
+    function displayQuizSummary(score) {
+      const quizContainer = document.getElementById('quiz-questions');
+      if (!quizContainer) return;
+
+      const summaryDiv = document.createElement('div');
+      summaryDiv.className = 'quiz-summary';
+      summaryDiv.style.cssText = `
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid var(--neon-green);
+        border-radius: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+      `;
+
+      let summaryContent = `
+        <h4 style="color: var(--neon-green); margin-bottom: 15px;">
+          ${isHinglish ? '👍 Quiz Results Summary' : '👍 Quiz Results Summary'}
+        </h4>
+      `;
+
+      quizQuestions.forEach((q, index) => {
+        const question = isHinglish ? q.question.hi : q.question.en;
+        const options = isHinglish ? q.options.hi : q.options.en;
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        const selectedOption = selectedAnswers[index];
+        const correctOption = q.correct;
+
+        const selectedText = selectedOption >= 0 ? options[selectedOption] : (isHinglish ? 'Not answered' : 'Not answered');
+        const correctText = options[correctOption];
+
+        const isCorrect = selectedOption === correctOption;
+
+        summaryContent += `
+          <div style="margin-bottom: 15px; padding: 10px; border: 1px solid ${isCorrect ? 'var(--neon-green)' : 'var(--neon-orange)'}; border-radius: 5px; background: rgba(0, 20, 40, 0.3);">
+            <div style="font-weight: bold; color: var(--light-gray); margin-bottom: 8px;">
+              Q${index + 1}: ${question}
+            </div>
+            <div style="color: ${isCorrect ? 'var(--neon-green)' : 'var(--neon-orange)'}; font-weight: bold; margin-bottom: 5px;">
+              ${isHinglish ? 'Your Answer' : 'Your Answer'}: ${selectedText}
+            </div>
+            <div style="color: var(--neon-green); font-weight: bold; margin-bottom: 5px;">
+              ${isHinglish ? 'Correct Answer' : 'Correct Answer'}: ${correctText}
+            </div>
+            <div style="color: var(--mid-gray); font-size: 0.9em; font-style: italic;">
+              ${explanation}
+            </div>
+          </div>
+        `;
+      });
+
+      summaryDiv.innerHTML = summaryContent;
+      quizContainer.appendChild(summaryDiv);
+    }
+
+    // Notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const progressBar = document.getElementById('progress-bar');
+      if (!progressBar) return;
+
+      const winHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset;
+      const trackLength = docHeight - winHeight;
+      const progress = scrollTop / trackLength * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    // Interactive Demo Functions
+    function simulateRaceCondition() {
+      const requestsInput = document.getElementById('race-requests');
+      const concurrencyInput = document.getElementById('race-concurrency');
+      const result = document.getElementById('race-result');
+
+      if (!requestsInput || !concurrencyInput || !result) return;
+
+      const requests = parseInt(requestsInput.value) || 10;
+      const concurrency = parseInt(concurrencyInput.value) || 5;
+
+      result.innerHTML = isHinglish
+        ? `<span style="color: #00ff88">🏃 RACE SIMULATION:</span><br>Requests: ${requests}<br>Concurrency: ${concurrency}<br>❌ Potential Race: Multiple threads accessing shared balance simultaneously<br>Expected final balance should be $1000, but could be unpredictable due to race condition!`
+        : `<span style="color: #00ff88">🏃 RACE SIMULATION:</span><br>Requests: ${requests}<br>Concurrency: ${concurrency}<br>❌ Potential Race: Multiple threads accessing shared balance simultaneously<br>Expected final balance should be $1000, but could be unpredictable due to race condition!`;
+
+      showNotification(isHinglish ? 'Race condition simulated!' : 'Race condition simulated!');
+    }
+
+    function runPrivilegeRace() {
+      const input = document.getElementById('privilege-race-url');
+      const result = document.getElementById('privilege-race-result');
+
+      if (!input || !result) return;
+
+      const url = input.value;
+
+      result.innerHTML = isHinglish
+        ? `<span style="color: #00ff88">🛡️ PRIVILEGE ESCALATION RACE:</span><br>📍 Target: ${url}<br>❌ ATTEMPTING: Concurrent admin role change without proper synchronization<br><br>Common attack vectors:<br>• Race to change user role<br>• Bypass permission checks<br>• Manipulate session state`
+        : `<span style="color: #00ff88">🛡️ PRIVILEGE ESCALATION RACE:</span><br>📍 Target: ${url}<br>❌ ATTEMPTING: Concurrent admin role change without proper synchronization<br><br>Common attack vectors:<br>• Race to change user role<br>• Bypass permission checks<br>• Manipulate session state`;
+
+      showNotification(isHinglish ? 'Privilege escalation race simulated!' : 'Privilege escalation race simulated!');
+    }
+
+    function testRacePrevention() {
+      const urlInput = document.getElementById('test-race-url');
+      const result = document.getElementById('prevention-result');
+
+      if (!urlInput || !result) return;
+
+      const url = urlInput.value;
+
+      result.innerHTML = isHinglish
+        ? `<span style="color: #00ff88">🛡️ RACE PREVENTION TEST:</span> ${url}<br><br>🔍 Checking for:<br>✅ Atomic operations implemented<br>✅ Database transactions used<br>✅ Proper locking mechanisms<br>✅ Request deduplication<br><br><span style="color: #ff8800">💡 Real prevention testing would require actual endpoint analysis.</span>`
+        : `<span style="color: #00ff88">🛡️ RACE PREVENTION TEST:</span> ${url}<br><br>🔍 Checking for:<br>✅ Atomic operations implemented<br>✅ Database transactions used<br>✅ Proper locking mechanisms<br>✅ Request deduplication<br><br><span style="color: #ff8800">💡 Real prevention testing would require actual endpoint analysis.</span>`;
+
+      showNotification(isHinglish ? 'Race prevention tested!' : 'Race prevention tested!');
+    }
+
+    function runIdorExploit() {
+      const input = document.getElementById('idor-input');
+      const result = document.getElementById('idor-result');
+
+      if (!input || !result) return;
+
+      const url = input.value;
+      const urlParts = url.split('?');
+      if (urlParts.length > 1) {
+        const params = new URLSearchParams(urlParts[1]);
+        const id = params.get('id');
+        let newId = parseInt(id) + 1; // Try accessing next ID
+        params.set('id', newId.toString());
+        const newUrl = urlParts[0] + '?' + params.toString();
+
+        result.innerHTML = isHinglish
+          ? `<span style="color: #00ff88">🔍 IDOR ATTEMPT:</span> Trying URL:<br><code>${newUrl}</code><br>❌ This would attempt unauthorized access in a real scenario.`
+          : `<span style="color: #00ff88">🔍 IDOR ATTEMPT:</span> Trying URL:<br><code>${newUrl}</code><br>❌ This would attempt unauthorized access in a real scenario.`;
+      } else {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #ff8800">❌ Invalid URL format.</span>`
+          : `<span style="color: #ff8800">❌ Invalid URL format.</span>`;
+      }
+      showNotification(isHinglish ? 'IDOR demo simulated!' : 'IDOR demo simulated!');
+    }
+
+    // Additional functions for race condition demos
+    function clearLabResults() {
+      const labResult = document.getElementById('lab-result');
+      const protectionResult = document.getElementById('prevention-result');
+      const idorResult = document.getElementById('idor-result');
+      const privilegeResult = document.getElementById('privilege-race-result');
+
+      if (labResult) labResult.innerHTML = isHinglish ? '// Lab results cleared' : '// Lab results cleared';
+      if (protectionResult) protectionResult.innerHTML = isHinglish ? '// Results will appear here' : '// Results will appear here';
+      if (idorResult) idorResult.innerHTML = isHinglish ? '// Try changing the ID parameter' : '// Try changing the ID parameter';
+      if (privilegeResult) privilegeResult.innerHTML = isHinglish ? '// Try accessing admin functionality' : '// Try accessing admin functionality';
+
+      showNotification(isHinglish ? 'Results cleared!' : 'Results cleared!');
+    }
+
+    function setTestURL(url) {
+      const labUrlInput = document.getElementById('lab-url');
+      if (labUrlInput) {
+        labUrlInput.value = url;
+        showNotification(isHinglish ? 'URL set!' : 'URL set!');
+      }
+    }
+  </script>
+</body>
+</html>

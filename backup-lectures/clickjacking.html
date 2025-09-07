@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Interactive Clickjacking Vulnerability Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>Clickjacking Vulnerabilities | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input, .input-group select {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+
+    /* Clickjacking Specific Styles */
+    .clickjacking-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .iframe-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 170, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--electric-blue);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .demo-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      opacity: 0.7;
+    }
+
+    .opacity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .opacity-control input {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the Clickjacking Vulnerability Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content">
+        <!-- English Version -->
+        <div class="en">
+          <h1>Clickjacking <span>Vulnerabilities</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>A deep dive into clickjacking vulnerabilities, exploitation techniques, and real-world attacks — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>Clickjacking <span>Vulnerabilities</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Clickjacking vulnerabilities, exploitation techniques, aur real-world attacks mein gahrai se jaane — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Left Corner</strong>
+          <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is Clickjacking? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What is Clickjacking?</h2>
+      <h2 class="section-title hi" style="display:none;">Clickjacking Kya Hai?</h2>
+      
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Attack Vectors</div>
+          <div class="step-title hi" style="display:none;">Hamlawar Ke Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Techniques</div>
+          <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding Clickjacking</h3>
+        <h3 class="hi" style="display:none;">Clickjacking Ki Samajh</h3>
+        <p class="en">Clickjacking (UI Redress Attack) is a malicious technique where an attacker tricks a user into clicking on something different from what the user perceives, potentially revealing confidential information or taking control of their computer.</p>
+        <p class="hi" style="display:none;">Clickjacking (UI Redress Attack) ek dushit technique hai jahan ek hamlawar upyogkartri ko uske samajh se alag kisi cheez par click karne ke liye bewakuf banata hai, jisse sanvedansheel jankari prakat ho sakti hai ya unke computer ka niyantran liya ja sakta hai.</p>
+        <p class="en"><strong>Real Analogy:</strong> Like a fake button placed over a real button on a website - when you think you're clicking "Play Video", you're actually clicking "Transfer Money" hidden underneath.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Jaise ek website par asli button ke upar rakha gaya nakli button - jab aap sochte hain ki "Play Video" click kar rahe hain, aap actually mein niche chhipe "Transfer Money" par click kar rahe hain.</p>
+        <p class="en">Clickjacking is dangerous because it can trick users into performing actions without their knowledge or consent, leading to account compromise, data theft, or financial loss.</p>
+        <p class="hi" style="display:none;">Clickjacking khatarnaak hai kyunki yeh upyogkartriyon ko unki jaankari ya anumati ke bina kriyaen karne ke liye bewakuf bana sakta hai, jisse account compromise, data theft, ya financial loss ho sakta hai.</p>
+        <p class="en"><span class="keyword" data-title="Clickjacking" data-content="A malicious technique that tricks users into clicking on hidden elements by overlaying transparent layers.">Clickjacking</span> is also known as UI redress attack because it overlays hidden interfaces over legitimate ones.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="Clickjacking" data-content="Ek dushit technique jo upyogkartriyon ko transparent layers overlay karke chhipe elements par click karne ke liye bewakuf banati hai.">Clickjacking</span> ko UI redress attack bhi kaha jata hai kyunki yeh vaid interfaces ke upar chhipe interfaces overlay karta hai.</p>
+      </div>
+
+      <!-- Clickjacking Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How Clickjacking Works - Visualization</h3>
+        <h3 class="hi" style="display:none;">Clickjacking Kaise Kaam Karta Hai - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">Malicious Page</div>
+            <div class="hi" style="display:none;">Dushit Page</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Attacker's Website</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">Hidden Iframe</div>
+            <div class="hi" style="display:none;">Chhipe Iframe</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Legitimate Site Loaded</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">User Action</div>
+            <div class="hi" style="display:none;">Upyogkartri Kriya</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Clicks Hidden Button</div>
+          </div>
+        </div>
+        <p class="en">The attacker creates a malicious page that loads a legitimate site in a transparent iframe, then overlays deceptive elements that trick the user into clicking hidden buttons.</p>
+        <p class="hi" style="display:none;">Hamlawar ek dushit page banata hai jo ek vaid site ko transparent iframe mein load karta hai, phir dhokhebaj elements overlay karta hai jo upyogkartri ko chhipe buttons par click karne ke liye bewakuf banate hain.</p>
+      </div>
+
+      <!-- Types of Clickjacking Attacks -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Types of Clickjacking Attacks</h3>
+        <h3 class="hi" style="display:none;">Clickjacking Attacks Ke Prakar</h3>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="Classic Clickjacking" data-content="Tricking users into clicking hidden buttons or links on a legitimate website.">Classic Clickjacking</span>: Tricking users into clicking hidden buttons or links</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Classic Clickjacking" data-content="Upyogkartriyon ko vaid website par chhipe buttons ya links par click karne ke liye bewakuf banana.">Classic Clickjacking</span>: Upyogkartriyon ko chhipe buttons ya links par click karne ke liye bewakuf banana</li>
+          <li class="en"><span class="keyword" data-title="Likejacking" data-content="Tricking users into liking pages or content on social media without their knowledge.">Likejacking</span>: Tricking users into liking pages on social media</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Likejacking" data-content="Upyogkartriyon ko unki jaankari ke bina social media par pages ya content like karne ke liye bewakuf banana.">Likejacking</span>: Upyogkartriyon ko social media par pages like karne ke liye bewakuf banana</li>
+          <li class="en"><span class="keyword" data-title="Cursorjacking" data-content="Manipulating the cursor position to make users click different elements than intended.">Cursorjacking</span>: Manipulating cursor position to mislead clicks</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Cursorjacking" data-content="Upyogkartriyon ko intended se alag elements par click karane ke liye cursor position manipulate karna.">Cursorjacking</span>: Clicks ko gumrah karne ke liye cursor position manipulate karna</li>
+          <li class="en"><span class="keyword" data-title="Cookiejacking" data-content="Stealing session cookies by tricking users into performing specific actions.">Cookiejacking</span>: Stealing session cookies through deceptive actions</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Cookiejacking" data-content="Upyogkartriyon ko specific kriyaen karne ke liye bewakuf bana kar session cookies churana.">Cookiejacking</span>: Dhokhebaj kriyaon ke through session cookies churana</li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">Medium</div>
+          <div class="stat-number hi" style="display:none;">Madhyam</div>
+          <div class="stat-label en">severity rating</div>
+          <div class="stat-label hi" style="display:none;">khatre ka level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">35%</div>
+          <div class="stat-label en">of websites vulnerable</div>
+          <div class="stat-label hi" style="display:none;">websites kamjor hain</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$8K+</div>
+          <div class="stat-label en">in bug bounty rewards</div>
+          <div class="stat-label hi" style="display:none;">bug bounty mein kamai</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Clickjacking -->
+  <section id="try-clickjacking">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Clickjacking Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Clickjacking Doharpan</h2>
+      
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Mool Se Uchatam</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Basic Clickjacking</div>
+            <div class="step-title hi" style="display:none;">Mool Clickjacking</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Advanced Techniques</div>
+            <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Real-World Scenarios</div>
+            <div class="step-title hi" style="display:none;">Vastavik Duniya Ke Udaharan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Clickjacking Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: Basic Clickjacking</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: Mool Clickjacking</h3>
+        <p class="en">Create a simple clickjacking attack by overlaying a transparent iframe with deceptive buttons.</p>
+        <p class="hi" style="display:none;">Dhokhebaj buttons ke saath transparent iframe overlay karke ek simple clickjacking attack banayein.</p>
+        
+        <div class="clickjacking-demo">
+          <div class="input-group">
+            <label for="target-url" class="en">Target URL:</label>
+            <label for="target-url" class="hi" style="display:none;">Lakshya URL:</label>
+            <input type="text" id="target-url" value="https://example.com/settings/delete-account">
+          </div>
+          
+          <div class="input-group">
+            <label for="button-text" class="en">Deceptive Button Text:</label>
+            <label for="button-text" class="hi" style="display:none;">Dhokhebaj Button Text:</label>
+            <input type="text" id="button-text" value="Win Free Prize! Click Here!">
+          </div>
+          
+          <div class="opacity-control">
+            <label for="opacity" class="en">Iframe Opacity:</label>
+            <label for="opacity" class="hi" style="display:none;">Iframe Opacity:</label>
+            <input type="range" id="opacity" min="0" max="100" value="30">
+            <span id="opacity-value">30%</span>
+          </div>
+          
+          <button class="button" onclick="demoClickjacking()">Demo Clickjacking</button>
+          
+          <div class="iframe-container">
+            <div class="iframe-overlay" id="overlay-button">Win Free Prize! Click Here!</div>
+            <iframe class="demo-iframe" id="demo-iframe" src="about:blank"></iframe>
+          </div>
+          
+          <div class="result-box" id="clickjacking-result">
+// Clickjacking simulation results will appear here
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Techniques Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: Advanced Clickjacking Techniques</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: Uchatam Clickjacking Tarika</h3>
+        <p class="en">Use advanced techniques like cursor manipulation, multi-step attacks, and bypassing frame busting.</p>
+        <p class="hi" style="display:none;">Cursor manipulation, multi-step attacks, aur frame busting bypass jaise uchatam tarikon ka upyog karein.</p>
+        
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="advanced-technique" class="en">Advanced Technique:</label>
+            <label for="advanced-technique" class="hi" style="display:none;">Uchatam Technique:</label>
+            <select id="advanced-technique">
+              <option value="cursor">Cursorjacking (Cursor Manipulation)</option>
+              <option value="multistep">Multi-Step Attack</option>
+              <option value="busting">Frame Busting Bypass</option>
+              <option value="touch">Touchjacking (Mobile Devices)</option>
+            </select>
+          </div>
+          
+          <div class="code-block">
+// Advanced clickjacking techniques:
+// 1. Cursorjacking: Manipulate cursor position visually
+// 2. Multi-Step: Trick users into multiple actions
+// 3. Frame Busting Bypass: Break JavaScript that prevents framing
+// 4. Touchjacking: Target mobile device touch interfaces
+          </div>
+          
+          <button class="button" onclick="testAdvancedTechnique()">Test Technique</button>
+          
+          <div class="result-box" id="advanced-result">
+// Advanced technique results will appear here
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Scenarios Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Real-World Clickjacking Scenarios</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Vastavik Duniya Ke Clickjacking Udaharan</h3>
+        <p class="en">Simulate real-world clickjacking attacks against social media, banking, and admin interfaces.</p>
+        <p class="hi" style="display:none;">Social media, banking, aur admin interfaces ke khilaf vastavik duniya ke clickjacking attacks ka anukaran karein.</p>
+        
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="scenario-type" class="en">Attack Scenario:</label>
+            <label for="scenario-type" class="hi" style="display:none;">Hamla Scenario:</label>
+            <select id="scenario-type">
+              <option value="social">Social Media Likejacking</option>
+              <option value="banking">Banking Transfer</option>
+              <option value="admin">Admin Privilege Escalation</option>
+              <option value="webcam">Webcam/Microphone Access</option>
+            </select>
+          </div>
+          
+          <div class="code-block">
+// Real-world scenarios:
+// 1. Likejacking: Trick users into liking pages
+// 2. Banking: Initiate unauthorized transfers
+// 3. Admin: Grant admin privileges to attackers
+// 4. Webcam: Trick users into granting media access
+          </div>
+          
+          <button class="button" onclick="testScenario()">Test Scenario</button>
+          
+          <div class="result-box" id="scenario-result">
+// Scenario results will appear here
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Bypass Techniques -->
+  <section id="bypass">
+    <div class="container">
+      <h2 class="section-title en">Bypassing Clickjacking Protection</h2>
+      <h2 class="section-title hi" style="display:none;">Clickjacking Protection Ko Kaise Bypass Karein</h2>
+      
+      <!-- Attack Vector Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Clickjacking Bypass - Visualization</h3>
+        <h3 class="hi" style="display:none;">Clickjacking Bypass - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Frame Busting Code</div>
+            <div class="hi" style="display:none;">Frame Busting Code</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">if (top != self) top.location = self.location;</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Bypass Techniques</div>
+            <div class="hi" style="display:none;">Bypass Tarika</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">X-Frame-Options, Sandbox</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Frame Loaded</div>
+            <div class="hi" style="display:none;">Frame Loaded</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Bypass Successful</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bypass Techniques with Examples -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Advanced Bypass Techniques</h3>
+        <h3 class="hi" style="display:none;">Uchatam Bypass Tarika</h3>
+        
+        <!-- Frame Busting Bypass -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Frame Busting Bypass</h4>
+          <p class="en">Bypass JavaScript frame busting code that prevents sites from being loaded in iframes.</p>
+          <p class="hi" style="display:none;">JavaScript frame busting code ko bypass karein jo sites ko iframes mein load hone se rokta hai.</p>
+          <div class="code-block">
+// Example frame busting code
+if (top != self) top.location = self.location;
+
+// Bypass techniques:
+// 1. Use the sandbox attribute to restrict JavaScript
+// 2. Use the X-Frame-Options bypass techniques
+// 3. Double framing to break out of the frame buster
+          </div>
+        </div>
+        
+        <!-- X-Frame-Options Bypass -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. X-Frame-Options Bypass</h4>
+          <p class="en">Bypass X-Frame-Options header protection using various techniques.</p>
+          <p class="hi" style="display:none;">Vibhinn tarikon ka upyog karke X-Frame-Options header protection ko bypass karein.</p>
+          <div class="code-block">
+// X-Frame-Options values:
+// - DENY: No framing allowed
+// - SAMEORIGIN: Only same origin framing
+// - ALLOW-FROM: Allow from specific origin
+
+// Bypass techniques:
+// 1. Use iframe sandbox with allow-forms or allow-scripts
+// 2. Use Flash or Java applets to create overlays
+// 3. Use CSS attacks to inject content
+          </div>
+        </div>
+        
+        <!-- Clickjacking on HTTPS -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Clickjacking on HTTPS Pages</h4>
+          <p class="en">Execute clickjacking attacks even on HTTPS secured pages.</p>
+          <p class="hi" style="display:none;">HTTPS secured pages par bhi clickjacking attacks execute karein.</p>
+          <div class="code-block">
+// HTTPS doesn't prevent clickjacking
+// Mixed content warnings can be avoided by:
+// 1. Using HTTPS for both attacker and target pages
+// 2. Using relative URLs or protocol-relative URLs
+// 3. Using iframe sandboxing techniques
+
+// Example: Both attacker page and target page use HTTPS
+          </div>
+        </div>
+        
+        <!-- Mobile Clickjacking -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Mobile Clickjacking (Touchjacking)</h4>
+          <p class="en">Execute clickjacking attacks on mobile devices by exploiting touch interfaces.</p>
+          <p class="hi" style="display:none;">Touch interfaces ka faida uthakar mobile devices par clickjacking attacks execute karein.</p>
+          <div class="code-block">
+// Mobile-specific techniques:
+// 1. Create fake touch interfaces
+// 2. Exploit browser zoom behaviors
+// 3. Use responsive design tricks
+// 4. Overlay hidden elements on touch targets
+
+// Example: Fake "swipe to unlock" overlaying real buttons
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Case Studies -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Real-World Case Studies</h3>
+        <h3 class="hi" style="display:none;">Vastavik Duniya Ke Udaharan</h3>
+        
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--neon-green);">Case Study 1: Social Media Platform</h4>
+          <p class="en"><strong>Scenario:</strong> A major social media platform was vulnerable to likejacking attacks.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek pramukh social media platform likejacking attacks ke liye kamjor tha.</p>
+          <p class="en"><strong>Exploitation:</strong> Attackers created fake "video player" buttons that overlay the actual "Like" button, tricking users into liking pages unintentionally.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Hamlawaron ne nakli "video player" buttons banaye jo asli "Like" button overlay karte the, jisse upyogkartriyon ko anjaane mein pages like karne ke liye bewakuf banaya gaya.</p>
+          <p class="en"><strong>Impact:</strong> Millions of users tricked into liking malicious pages, leading to widespread spam and phishing campaigns.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Lakshon upyogkartriyon ko dushit pages like karne ke liye bewakuf banaya gaya, jisse vyapak spam aur phishing campaigns hui.</p>
+        </div>
+        
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--electric-blue);">Case Study 2: Banking Application</h4>
+          <p class="en"><strong>Scenario:</strong> A banking application had inadequate X-Frame-Options protection.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek banking application mein aparyapt X-Frame-Options suraksha thi.</p>
+          <p class="en"><strong>Exploitation:</strong> Attackers created fake banking pages that overlay the actual transfer confirmation buttons, tricking users into authorizing transactions.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Hamlawaron ne nakli banking pages banaye jo asli transfer confirmation buttons overlay karte the, jisse upyogkartriyon ko transactions authorize karne ke liye bewakuf banaya gaya.</p>
+          <p class="en"><strong>Impact:</strong> Financial losses for customers and reputational damage to the bank.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Grahakon ke liye financial losses aur bank ko pratishtha nuksan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Protection Bypass -->
+  <section id="try-bypass">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Protection Bypass</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Protection Bypass</h2>
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Bypass Frame Busting Protection</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Frame Busting Protection Ko Bypass Karein</h3>
+        <p class="en">Test techniques to bypass common frame busting protections used by websites.</p>
+        <p class="hi" style="display:none;">Websites dwara upayog kiye jaane wale common frame busting protections ko bypass karne ke tarikon ka parikshan karein.</p>
+        
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="busting-type" class="en">Frame Busting Type:</label>
+            <label for="busting-type" class="hi" style="display:none;">Frame Busting Type:</label>
+            <select id="busting-type">
+              <option value="js">JavaScript Frame Busting</option>
+              <option value="xfo">X-Frame-Options Header</option>
+              <option value="csp">Content Security Policy</option>
+            </select>
+          </div>
+          
+          <div class="code-block">
+// Common protection methods:
+// 1. JavaScript: if (top != self) top.location = self.location;
+// 2. X-Frame-Options: DENY, SAMEORIGIN
+// 3. CSP: frame-ancestors 'none' or 'self'
+          </div>
+          
+          <button class="button" onclick="testBypass()">Test Bypass</button>
+          
+          <div class="result-box" id="bypass-result">
+// Bypass results will appear here
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent Clickjacking</h2>
+      <h2 class="section-title hi" style="display:none;">Clickjacking Ko Kaise Rokein</h2>
+      
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Clickjacking Prevention - Visualization</h3>
+        <h3 class="hi" style="display:none;">Clickjacking Bachav - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Malicious Page</div>
+            <div class="hi" style="display:none;">Dushit Page</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Attempts to Frame Legitimate Site</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Defense Mechanisms</div>
+            <div class="hi" style="display:none;">Bachav Yantra</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">X-Frame-Options, CSP</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Frame Blocked</div>
+            <div class="hi" style="display:none;">Frame Blocked</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Protection Successful</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Coding Practices -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Secure Coding Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Coding Abhyas</h3>
+        
+        <!-- X-Frame-Options -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. X-Frame-Options Header</h4>
+          <p class="en">Use the X-Frame-Options HTTP header to control which sites can frame your content.</p>
+          <p class="hi" style="display:none;">Yeh control karne ke liye ki kaunsi sites aapka content frame kar sakti hain, X-Frame-Options HTTP header ka upyog karein.</p>
+          <div class="code-block">
+// Prevent all framing
+X-Frame-Options: DENY
+
+// Allow same-origin framing only
+X-Frame-Options: SAMEORIGIN
+
+// Allow from specific origin (deprecated but still used)
+X-Frame-Options: ALLOW-FROM https://example.com
+
+// Example in Apache config:
+Header always set X-Frame-Options "SAMEORIGIN"
+
+// Example in Nginx config:
+add_header X-Frame-Options SAMEORIGIN;
+          </div>
+        </div>
+        
+        <!-- Content Security Policy -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Content Security Policy (CSP)</h4>
+          <p class="en">Use CSP frame-ancestors directive for more granular control over framing.</p>
+          <p class="hi" style="display:none;">Framing par adhik granular control ke liye CSP frame-ancestors directive ka upyog karein.</p>
+          <div class="code-block">
+// Prevent all framing
+Content-Security-Policy: frame-ancestors 'none';
+
+// Allow same-origin framing only
+Content-Security-Policy: frame-ancestors 'self';
+
+// Allow from specific origins
+Content-Security-Policy: frame-ancestors example.com trusted-site.com;
+
+// Allow from specific origin with scheme
+Content-Security-Policy: frame-ancestors https://example.com;
+
+// Example in HTML meta tag (not recommended for CSP):
+<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self'">
+          </div>
+        </div>
+        
+        <!-- JavaScript Protection -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. JavaScript Frame Busting</h4>
+          <p class="en">Implement JavaScript frame busting as a secondary defense mechanism.</p>
+          <p class="hi" style="display:none;">Ek secondary bachav yantra ke roop mein JavaScript frame busting lagu karein.</p>
+          <div class="code-block">
+// Basic frame busting
+if (top != self) top.location = self.location;
+
+// More robust frame busting
+<style>html { display: none; }</style>
+<script>
+  if (self == top) {
+    document.documentElement.style.display = 'block';
+  } else {
+    top.location = self.location;
+  }
+</script>
+
+// Check for framability
+if (window.self !== window.top) {
+  // We're in a frame, take action
+  window.top.location = window.self.location;
+}
+          </div>
+        </div>
+        
+        <!-- Additional Measures -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Additional Protective Measures</h4>
+          <p class="en">Implement additional measures to protect sensitive actions from being framed.</p>
+          <p class="hi" style="display:none;">Sanvedansheel kriyaon ko frame hone se bachane ke liye adhik suraksha upay lagu karein.</p>
+          <div class="code-block">
+// 1. Use CAPTCHAs for sensitive actions
+// 2. Implement confirmation dialogs for important actions
+// 3. Use session-based tokens for state-changing operations
+// 4. Educate users about clickjacking risks
+
+// Example: Confirm sensitive actions
+function confirmAction(action) {
+  return confirm(`Are you sure you want to ${action}?`);
+}
+
+// Use in forms:
+<form onsubmit="return confirmAction('delete your account')">
+  <!-- form content -->
+</form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lab Environment Simulation -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Lab Environment Simulation</h3>
+        <h3 class="hi" style="display:none;">Prayogshala Vatavaran Anukaran</h3>
+        <p class="en">Test clickjacking prevention techniques in a safe environment.</p>
+        <p class="hi" style="display:none;">Surakshit vatavaran mein clickjacking bachav tarikon ka parikshan karein.</p>
+        
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--neon-green);">Clickjacking Prevention Testing</h4>
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="protection-type" class="en">Protection Type:</label>
+              <label for="protection-type" class="hi" style="display:none;">Suraksha Type:</label>
+              <select id="protection-type">
+                <option value="xfo">X-Frame-Options</option>
+                <option value="csp">Content Security Policy</option>
+                <option value="js">JavaScript Frame Busting</option>
+                <option value="none">No Protection</option>
+              </select>
+            </div>
+            <button class="button" onclick="testProtection()" style="position: relative; z-index: 10;">Test Protection</button>
+            <div class="result-box" id="protection-result">
+// Results will appear here
+            </div>
+          </div>
+        </div>
+        
+        <!-- Interactive Lab Exercise -->
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--electric-blue);">Interactive Lab Exercise</h4>
+          <p class="en">Test different protection mechanisms against clickjacking attacks:</p>
+          <p class="hi" style="display:none;">Clickjacking attacks ke khilaf alag-alag suraksha yantron ka parikshan karein:</p>
+          
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="test-protection" class="en">Test Protection:</label>
+              <label for="test-protection" class="hi" style="display:none;">Parikshan Suraksha:</label>
+              <select id="test-protection">
+                <option value="xfo-deny">X-Frame-Options: DENY</option>
+                <option value="xfo-same">X-Frame-Options: SAMEORIGIN</option>
+                <option value="csp-none">CSP: frame-ancestors 'none'</option>
+                <option value="csp-self">CSP: frame-ancestors 'self'</option>
+                <option value="js">JavaScript Frame Busting</option>
+                <option value="none">No Protection</option>
+              </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="button" onclick="testLabProtection()" style="position: relative; z-index: 10;">Test Protection</button>
+              <button class="button" style="background: var(--neon-orange); position: relative; z-index: 10;" onclick="clearLabResults()">Clear</button>
+            </div>
+            <div class="result-box" id="lab-result">
+// Lab results will appear here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+      
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+      
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let isHinglish = false;
+      
+      // Helper function to safely get element by ID
+      function getElement(id) {
+        const el = document.getElementById(id);
+        if (!el) {
+          console.error(`Element with ID ${id} not found`);
+          return null;
+        }
+        return el;
+      }
+      
+      // Card Interaction Functions (defined first to ensure they're available)
+    function highlightCard(card) {
+      if (!card) return;
+      card.classList.add('pop-out');
+      const title = card.querySelector('h3');
+      if (title) {
+        showNotification('Hovering: ' + title.textContent);
+      }
+    }
+    function unhighlightCard(card) {
+      if (!card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    }
+    function focusCard(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+      card.classList.add('focused');
+      card.classList.add('pop-out');
+      showNotification('Focused on: ' + card.querySelector('h3').textContent);
+    }
+
+    // Initialize Three.js
+    const canvas = document.getElementById('three-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Grid
+    const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+    gridHelper.position.z = -20;
+    scene.add(gridHelper);
+
+    // Floating Points
+    const geometry = new THREE.BufferGeometry();
+    const count = 500;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 100;
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // Add floating cubes
+    const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const cubeMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0x00aaff, 
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    });
+    const cubes = [];
+    for (let i = 0; i < 10; i++) {
+      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      cube.position.x = (Math.random() - 0.5) * 50;
+      cube.position.y = (Math.random() - 0.5) * 50;
+      cube.position.z = (Math.random() - 0.5) * 50;
+      cube.rotation.x = Math.random() * Math.PI;
+      cube.rotation.y = Math.random() * Math.PI;
+      cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+      scene.add(cube);
+    }
+
+    camera.position.z = 30;
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+      gridHelper.rotation.y += 0.005;
+      points.rotation.y += 0.003;
+      cubes.forEach(cube => {
+        cube.mesh.rotation.x += cube.speed;
+        cube.mesh.rotation.y += cube.speed;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Keyword Modal
+    const keywordModal = document.getElementById('keyword-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.getElementById('modal-close');
+    document.querySelectorAll('.keyword').forEach(keyword => {
+      keyword.addEventListener('click', function(e) {
+        e.stopPropagation();
+        modalTitle.textContent = this.getAttribute('data-title');
+        modalBody.textContent = this.getAttribute('data-content');
+        keywordModal.classList.add('active');
+      });
+    });
+    modalClose.addEventListener('click', () => {
+      keywordModal.classList.remove('active');
+    });
+    keywordModal.addEventListener('click', (e) => {
+      if (e.target === keywordModal) {
+        keywordModal.classList.remove('active');
+      }
+    });
+
+    // Language Toggle
+    const translatorBtn = document.getElementById('translator-btn');
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+      enElements.forEach(el => el.style.display = isHinglish ? 'none' : 'block');
+      hiElements.forEach(el => el.style.display = isHinglish ? 'block' : 'none');
+      translatorBtn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+      renderQuiz();
+    }
+
+    // Clickjacking Demo Functions
+    function demoClickjacking() {
+      const targetUrl = document.getElementById('target-url').value;
+      const buttonText = document.getElementById('button-text').value;
+      const opacity = document.getElementById('opacity').value;
+      const iframe = document.getElementById('demo-iframe');
+      const overlay = document.getElementById('overlay-button');
+      const result = document.getElementById('clickjacking-result');
+      
+      // Set iframe opacity
+      iframe.style.opacity = opacity / 100;
+      
+      // Set overlay button text
+      overlay.textContent = buttonText;
+      
+      // Load the target URL in the iframe
+      iframe.src = targetUrl;
+      
+      // Show result
+      result.innerHTML = isHinglish 
+        ? `✅ Clickjacking simulation shuru ho gayi!\n\nUpyogkartri "${buttonText}" button par click karenge, lekin asal mein "${targetUrl}" par action hoga.` 
+        : `✅ Clickjacking simulation started!\n\nUser will click "${buttonText}" button but actually perform action on "${targetUrl}".`;
+      
+      showNotification(isHinglish ? 'Clickjacking simulation shuru!' : 'Clickjacking simulation started!');
+    }
+
+    // Update opacity value display
+    document.getElementById('opacity').addEventListener('input', function() {
+      document.getElementById('opacity-value').textContent = this.value + '%';
+      const iframe = document.getElementById('demo-iframe');
+      iframe.style.opacity = this.value / 100;
+    });
+
+    // Setup overlay button click
+    document.getElementById('overlay-button').addEventListener('click', function() {
+      const result = document.getElementById('clickjacking-result');
+      const targetUrl = document.getElementById('target-url').value;
+      
+      result.innerHTML = isHinglish 
+        ? `🎯 Clickjacking safal!\n\nUpyogkartri ne dhokha kha kar "${targetUrl}" par action perform kiya.` 
+        : `🎯 Clickjacking successful!\n\nUser was tricked into performing action on "${targetUrl}".`;
+    });
+
+    function testAdvancedTechnique() {
+      const technique = document.getElementById('advanced-technique').value;
+      const result = document.getElementById('advanced-result');
+      
+      let message = '';
+      
+      switch(technique) {
+        case 'cursor':
+          message = isHinglish 
+            ? '✅ Cursorjacking technique safal!\n\nCursor position manipulate kiya gaya, upyogkartri ne socha se alag element par click kiya.' 
+            : '✅ Cursorjacking technique successful!\n\nCursor position manipulated, user clicked different element than intended.';
+          break;
+        case 'multistep':
+          message = isHinglish 
+            ? '✅ Multi-step attack safal!\n\nUpyogkartri ko multiple actions karne ke liye bewakuf banaya gaya.' 
+            : '✅ Multi-step attack successful!\n\nUser was tricked into performing multiple actions.';
+          break;
+        case 'busting':
+          message = isHinglish 
+            ? '✅ Frame busting bypass safal!\n\nFrame busting protection ko bypass karke site iframe mein load ki gayi.' 
+            : '✅ Frame busting bypass successful!\n\nBypassed frame busting protection and loaded site in iframe.';
+          break;
+        case 'touch':
+          message = isHinglish 
+            ? '✅ Touchjacking technique safal!\n\nMobile device par touch interface exploit kiya gaya.' 
+            : '✅ Touchjacking technique successful!\n\nExploited touch interface on mobile device.';
+          break;
+      }
+      
+      result.innerHTML = message;
+      showNotification(isHinglish ? 'Advanced technique safal!' : 'Advanced technique successful!');
+    }
+
+    function testScenario() {
+      const scenario = document.getElementById('scenario-type').value;
+      const result = document.getElementById('scenario-result');
+      
+      let message = '';
+      
+      switch(scenario) {
+        case 'social':
+          message = isHinglish 
+            ? '✅ Social media likejacking safal!\n\nUpyogkartri ko nakli "Play" button par click karake page like karne ke liye bewakuf banaya gaya.' 
+            : '✅ Social media likejacking successful!\n\nUser was tricked into liking page by clicking fake "Play" button.';
+          break;
+        case 'banking':
+          message = isHinglish 
+            ? '✅ Banking transfer attack safal!\n\nUpyogkartri ko nakli "Confirm" button par click karake anadhikrit transfer authorize karne ke liye bewakuf banaya gaya.' 
+            : '✅ Banking transfer attack successful!\n\nUser was tricked into authorizing unauthorized transfer by clicking fake "Confirm" button.';
+          break;
+        case 'admin':
+          message = isHinglish 
+            ? '✅ Admin privilege escalation safal!\n\nUpyogkartri ko nakli "Save" button par click karake hamlawar ko admin privileges dene ke liye bewakuf banaya gaya.' 
+            : '✅ Admin privilege escalation successful!\n\nUser was tricked into granting admin privileges to attacker by clicking fake "Save" button.';
+          break;
+        case 'webcam':
+          message = isHinglish 
+            ? '✅ Webcam access attack safal!\n\nUpyogkartri ko nakli "Allow" button par click karake webcam/microphone access dene ke liye bewakuf banaya gaya.' 
+            : '✅ Webcam access attack successful!\n\nUser was tricked into granting webcam/microphone access by clicking fake "Allow" button.';
+          break;
+      }
+      
+      result.innerHTML = message;
+      showNotification(isHinglish ? 'Scenario test safal!' : 'Scenario test successful!');
+    }
+
+    function testBypass() {
+      const bustingType = document.getElementById('busting-type').value;
+      const result = document.getElementById('bypass-result');
+      
+      let message = '';
+      
+      switch(bustingType) {
+        case 'js':
+          message = isHinglish 
+            ? '✅ JavaScript frame busting bypass safal!\n\nSandbox attribute aur double framing ka upyog karke frame busting code ko bypass kiya gaya.' 
+            : '✅ JavaScript frame busting bypass successful!\n\nUsed sandbox attribute and double framing to bypass frame busting code.';
+          break;
+        case 'xfo':
+          message = isHinglish 
+            ? '✅ X-Frame-Options bypass safal!\n\nBrowser-specific vulnerabilities aur iframe sandboxing ka upyog karke X-Frame-Options ko bypass kiya gaya.' 
+            : '✅ X-Frame-Options bypass successful!\n\nUsed browser-specific vulnerabilities and iframe sandboxing to bypass X-Frame-Options.';
+          break;
+        case 'csp':
+          message = isHinglish 
+            ? '✅ Content Security Policy bypass safal!\n\nCSP implementation flaws ka faida uthakar frame-ancestors directive ko bypass kiya gaya.' 
+            : '✅ Content Security Policy bypass successful!\n\nExploited CSP implementation flaws to bypass frame-ancestors directive.';
+          break;
+      }
+      
+      result.innerHTML = message;
+      showNotification(isHinglish ? 'Bypass test safal!' : 'Bypass test successful!');
+    }
+
+    // Quiz Questions (10 Questions)
+    const quizQuestions = [
+      {
+        question: {
+          en: "What is the primary goal of clickjacking?",
+          hi: "Clickjacking ka mukhya uddeshya kya hai?"
+        },
+        options: {
+          en: [
+            "To steal passwords directly",
+            "To trick users into performing unintended actions",
+            "To crash the user's browser",
+            "To install malware on the user's computer"
+          ],
+          hi: [
+            "Seedhe passwords churana",
+            "Upyogkartriyon ko anjaani kriyaen karne ke liye bewakuf banana",
+            "Upyogkartri ke browser ko crash karna",
+            "Upyogkartri ke computer par malware install karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "The primary goal of clickjacking is to trick users into performing actions they didn't intend to perform.",
+          hi: "Clickjacking ka mukhya uddeshya upyogkartriyon ko unki ichchha ke bina kriyaen karne ke liye bewakuf banana hai."
+        }
+      },
+      {
+        question: {
+          en: "Which HTML element is commonly used in clickjacking attacks?",
+          hi: "Clickjacking attacks mein aam taur par kaunsa HTML element upyog hota hai?"
+        },
+        options: {
+          en: [
+            "<div>",
+            "<iframe>",
+            "<script>",
+            "<style>"
+          ],
+          hi: [
+            "<div>",
+            "<iframe>",
+            "<script>",
+            "<style>"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "The <iframe> element is commonly used to load the target page in a transparent layer.",
+          hi: "<iframe> element aam taur par lakshya page ko transparent layer mein load karne ke liye upyog hota hai."
+        }
+      },
+      {
+        question: {
+          en: "Which HTTP header is most effective against clickjacking?",
+          hi: "Clickjacking ke khilaf sabse prabhavi HTTP header kaunsa hai?"
+        },
+        options: {
+          en: [
+            "X-Content-Type-Options",
+            "X-Frame-Options",
+            "Strict-Transport-Security",
+            "Content-Security-Policy"
+          ],
+          hi: [
+            "X-Content-Type-Options",
+            "X-Frame-Options",
+            "Strict-Transport-Security",
+            "Content-Security-Policy"
+          ]
+        },
+        correct: 3,
+        explanation: {
+          en: "Content-Security-Policy with frame-ancestors directive is the most modern and effective defense.",
+          hi: "Frame-ancestors directive ke saath Content-Security-Policy sabse adhunik aur prabhavi bachav hai."
+        }
+      },
+      {
+        question: {
+          en: "What does X-Frame-Options: DENY do?",
+          hi: "X-Frame-Options: DENY kya karta hai?"
+        },
+        options: {
+          en: [
+            "Allows framing from any site",
+            "Prevents all framing of the page",
+            "Allows framing from the same origin only",
+            "Prevents JavaScript execution in frames"
+          ],
+          hi: [
+            "Kisi bhi site se framing ki anumati deta hai",
+            "Page ki sabhi framing ko rokta hai",
+            "Keval same origin se framing ki anumati deta hai",
+            "Frames mein JavaScript execution ko rokta hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "X-Frame-Options: DENY prevents the page from being displayed in a frame, regardless of the site attempting to do so.",
+          hi: "X-Frame-Options: DENY page ko frame mein display hone se rokta hai, chahe kaunsi site aisa karne ka prayas kar rahi ho."
+        }
+      },
+      {
+        question: {
+          en: "What is likejacking?",
+          hi: "Likejacking kya hai?"
+        },
+        options: {
+          en: [
+            "Stealing Facebook likes",
+            "Tricking users into liking content",
+            "Automatically liking content",
+            "Blocking likes on social media"
+          ],
+          hi: [
+            "Facebook likes churana",
+            "Upyogkartriyon ko content like karne ke liye bewakuf banana",
+            "Automatically content like karna",
+            "Social media par likes ko block karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Likejacking is a form of clickjacking that tricks users into liking content on social media without their knowledge.",
+          hi: "Likejacking clickjacking ka ek roop hai jo upyogkartriyon ko unki jaankari ke bina social media par content like karne ke liye bewakuf banata hai."
+        }
+      },
+      {
+        question: {
+          en: "Which technique can bypass JavaScript frame busting?",
+          hi: "Kaunsa technique JavaScript frame busting ko bypass kar sakta hai?"
+        },
+        options: {
+          en: [
+            "Using iframe sandbox attribute",
+            "Using X-Frame-Options",
+            "Using HTTPS instead of HTTP",
+            "Using CSS animations"
+          ],
+          hi: [
+            "Iframe sandbox attribute ka upyog karna",
+            "X-Frame-Options ka upyog karna",
+            "HTTP ke bajaye HTTPS ka upyog karna",
+            "CSS animations ka upyog karna"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "The iframe sandbox attribute can restrict JavaScript execution, bypassing frame busting code.",
+          hi: "Iframe sandbox attribute JavaScript execution ko pratibandhit kar sakta hai, jisse frame busting code bypass ho jata hai."
+        }
+      },
+      {
+        question: {
+          en: "What is the main limitation of X-Frame-Options?",
+          hi: "X-Frame-Options ki mukhya seema kya hai?"
+        },
+        options: {
+          en: [
+            "It only works in modern browsers",
+            "It doesn't support multiple values",
+            "It can be bypassed easily",
+            "It only works with HTTPS"
+          ],
+          hi: [
+            "Yeh keval modern browsers mein kaam karta hai",
+            "Yeh multiple values ko support nahi karta",
+            "Ise aasani se bypass kiya ja sakta hai",
+            "Yeh keval HTTPS ke saath kaam karta hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "X-Frame-Options doesn't support multiple values, limiting its flexibility compared to CSP.",
+          Hi: "X-Frame-Options multiple values ko support nahi karta, jo CSP ke tulna mein iski flexibility ko seemit karta hai."
+        }
+      },
+      {
+        question: {
+          en: "Which CSP directive prevents clickjacking?",
+          hi: "Kaunsa CSP directive clickjacking ko rokta hai?"
+        },
+        options: {
+          en: [
+            "frame-ancestors",
+            "script-src",
+            "style-src",
+            "connect-src"
+          ],
+          hi: [
+            "frame-ancestors",
+            "script-src",
+            "style-src",
+            "connect-src"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "The frame-ancestors CSP directive controls which sites can embed the page in frames, preventing clickjacking.",
+          hi: "Frame-ancestors CSP directive niyantrit karta hai ki kaunsi sites page ko frames mein embed kar sakti hain, jisse clickjacking roka jata hai."
+        }
+      },
+      {
+        question: {
+          en: "What is cursorjacking?",
+          hi: "Cursorjacking kya hai?"
+        },
+        options: {
+          en: [
+            "Stealing mouse cursor data",
+            "Manipulating the visual position of the cursor",
+            "Disabling the cursor",
+            "Changing cursor style"
+          ],
+          hi: [
+            "Mouse cursor data churana",
+            "Cursor ki visual position manipulate karna",
+            "Cursor ko disable karna",
+            "Cursor style badalna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Cursorjacking is a technique that manipulates the visual position of the cursor to mislead users about where they're clicking.",
+          hi: "Cursorjacking ek aisi technique hai jo cursor ki visual position manipulate karti hai taaki upyogkartriyon ko yeh gumrah kiya ja sake ki ve kahan click kar rahe hain."
+        }
+      },
+      {
+        question: {
+          en: "Why is clickjacking still effective despite protections?",
+          hi: "Bachav upayon ke bavjood clickjacking abhi bhi prabhavi kyun hai?"
+        },
+        options: {
+          en: [
+            "Many sites don't implement protections correctly",
+            "Protections are easy to bypass",
+            "Users are easily tricked",
+            "All of the above"
+          ],
+          hi: [
+            "Kai sites bachav upayon ko sahi se lagoo nahi karti",
+            "Bachav upayon ko aasani se bypass kiya ja sakta hai",
+            "Upyogkartri aasani se bewakuf ban jate hain",
+            "Upar ke sabhi"
+          ]
+        },
+        correct: 3,
+        explanation: {
+          en: "Clickjacking remains effective because of incomplete protection implementation, bypass techniques, and the human factor of users being tricked.",
+          hi: "Clickjacking prabhavi bana hua hai kyunki adhoori suraksha implementation, bypass techniques, aur upyogkartriyon ke bewakuf banne ke human factor."
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedAnswers = new Array(quizQuestions.length).fill(-1);
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      document.querySelectorAll(`#options-${questionIndex} .option`).forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.querySelectorAll(`#options-${questionIndex} .option`)[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      let score = 0;
+      const feedback = document.getElementById('feedback');
+      feedback.innerHTML = '';
+      feedback.style.display = 'block';
+
+      quizQuestions.forEach((q, index) => {
+        const options = document.querySelectorAll(`#options-${index} .option`);
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        if (selectedAnswers[index] === q.correct) {
+          score++;
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1) options[selectedAnswers[index]].classList.add('correct');
+        } else {
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1 && selectedAnswers[index] !== q.correct) {
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        }
+
+        feedback.innerHTML += `<strong>Q${index + 1}:</strong> ${explanation}<br><br>`;
+      });
+
+      document.getElementById('score-display').textContent = `Score: ${score} / ${quizQuestions.length}`;
+      showNotification(isHinglish ? `Quiz pura! Score: ${score}/${quizQuestions.length}` : `Quiz complete! You scored ${score}/${quizQuestions.length}`);
+    };
+
+    // Notification
+    function showNotification(message) {
+      const notification = getElement('notification');
+      const notificationText = getElement('notification-text');
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const progressBar = getElement('progress-bar');
+      if (progressBar) {
+        const winHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        const scrollTop = window.pageYOffset;
+        const trackLength = docHeight - winHeight;
+        const progress = scrollTop / trackLength * 100;
+        progressBar.style.width = progress + '%';
+      }
+    });
+
+    // Animation on Scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+      renderQuiz();
+    });
+
+    // Lab functions
+    function testProtection() {
+      const protectionType = document.getElementById('protection-type').value;
+      const result = document.getElementById('protection-result');
+      
+      let message = '';
+      
+      if (protectionType === 'none') {
+        message = isHinglish 
+          ? `❌ Koi suraksha nahi!\n\nClickjacking attack safal hoga kyunki koi bachav upay nahi hai.` 
+          : `❌ No protection!\n\nClickjacking attack will succeed because no protection is in place.`;
+      } else {
+        message = isHinglish 
+          ? `✅ ${protectionType.toUpperCase()} suraksha lagoo hai!\n\nClickjacking attack rok diya gaya.` 
+          : `✅ ${protectionType.toUpperCase()} protection applied!\n\nClickjacking attack prevented.`;
+      }
+      
+      result.innerHTML = message;
+    }
+
+    function testLabProtection() {
+      const protectionType = document.getElementById('test-protection').value;
+      const result = document.getElementById('lab-result');
+      
+      let message = '';
+      
+      if (protectionType === 'none') {
+        message = isHinglish 
+          ? `❌ Koi suraksha nahi!\n\nClickjacking attack safal hoga.` 
+          : `❌ No protection!\n\nClickjacking attack will succeed.`;
+      } else {
+        message = isHinglish 
+          ? `✅ ${protectionType.toUpperCase()} suraksha prabhavi hai!\n\nClickjacking attack rok diya gaya.` 
+          : `✅ ${protectionType.toUpperCase()} protection effective!\n\nClickjacking attack prevented.`;
+      }
+      
+      result.innerHTML = message;
+    }
+
+    function clearLabResults() {
+      document.getElementById('lab-result').textContent = '// Lab results will appear here';
+    }
+    }); // End of DOMContentLoaded
+  </script>
+</body>
+</html>

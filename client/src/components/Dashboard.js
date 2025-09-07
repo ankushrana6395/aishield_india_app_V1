@@ -26,7 +26,7 @@ const Dashboard = () => {
       // Load categories
       const categoryRes = await axios.get('/api/content/categories');
       setCategories(categoryRes.data);
-      
+
       // Load all lectures by default
       await loadAllLectures();
     } catch (err) {
@@ -363,7 +363,7 @@ const Dashboard = () => {
           <div className="alert-box">
             <h2 className="alert-title">Subscription Required</h2>
             <p>You need an active subscription to access course content.</p>
-            <button 
+            <button
               className="subscribe-button"
               onClick={() => navigate('/payment')}
             >
@@ -377,15 +377,15 @@ const Dashboard = () => {
           </div>
         )}
         
-        {isSubscribed && (fileLectures.length > 0) && (
+        {(fileLectures.length > 0) && (
           <div className="progress-container">
             <div className="progress-header">
               <span>Your Progress</span>
               <span>{calculateProgress()}% Complete</span>
             </div>
             <div className="progress-bar-container">
-              <div 
-                className="progress-bar" 
+              <div
+                className="progress-bar"
                 style={{ width: `${calculateProgress()}%` }}
               ></div>
             </div>
@@ -393,9 +393,9 @@ const Dashboard = () => {
         )}
         
         {isSubscribed && categories.length > 0 && (
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
             marginBottom: '30px',
             flexWrap: 'wrap',
             gap: '10px'
@@ -406,11 +406,11 @@ const Dashboard = () => {
                 await loadAllLectures();
               }}
               style={{
-                background: selectedCategory === null 
-                  ? '#00ff88' 
+                background: selectedCategory === null
+                  ? '#00ff88'
                   : '#111c30',
-                color: selectedCategory === null 
-                  ? '#0a1121' 
+                color: selectedCategory === null
+                  ? '#0a1121'
                   : '#e0e0e0',
                 border: '1px solid #2a4060',
                 borderRadius: '20px',
@@ -443,11 +443,11 @@ const Dashboard = () => {
                   await loadLecturesByCategory(category._id);
                 }}
                 style={{
-                  background: selectedCategory && selectedCategory._id === category._id 
-                    ? '#00ff88' 
+                  background: selectedCategory && selectedCategory._id === category._id
+                    ? '#00ff88'
                     : '#111c30',
-                  color: selectedCategory && selectedCategory._id === category._id 
-                    ? '#0a1121' 
+                  color: selectedCategory && selectedCategory._id === category._id
+                    ? '#0a1121'
                     : '#e0e0e0',
                   border: '1px solid #2a4060',
                   borderRadius: '20px',
@@ -509,16 +509,16 @@ const Dashboard = () => {
               {selectedCategory ? selectedCategory.name : 'All Lectures'}
             </h3>
             <div className="lectures-grid">
-              {fileLectures.map((lecture) => (
-                <div 
+              {fileLectures.map((lecture, index) => (
+                <div
                   className="lecture-card"
-                  key={lecture.fileName}
+                  key={lecture._id || `${lecture.fileName}-${index}`}
                   onClick={() => handleViewFileLecture(lecture.fileName)}
                 >
                   <h3 className="lecture-title">{lecture.displayName}</h3>
                   {lecture.description && (
-                    <p style={{ 
-                      color: '#aaaaaa', 
+                    <p style={{
+                      color: '#aaaaaa',
                       fontFamily: 'Roboto, sans-serif',
                       fontSize: '0.9rem',
                       marginBottom: '15px'

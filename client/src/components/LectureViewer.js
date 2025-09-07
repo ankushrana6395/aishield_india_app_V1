@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const LectureViewer = () => {
   const { filename } = useParams();
   const navigate = useNavigate();
-  const { user, updateProgress } = useAuth();
+  const { user, updateProgress, getAuthHeaders } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [lectureContent, setLectureContent] = useState('');
@@ -136,26 +136,66 @@ const LectureViewer = () => {
     try {
       setLoading(true);
       setError('');
-      
-      // Fetch the lecture content using lecture route without CSP
-      // Note: Authorization is handled by middleware bypass for static HTML files
+
+      // Get fresh authentication headers
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/lectures-no-csp/${filename}`, {
-        headers: token ? {
+      if (!token) {
+        throw new Error('No authentication token found. Please login again.');
+      }
+
+      // Debug: Log file request
+      console.log(`🔍 Loading lecture: ${filename}`);
+
+      // Fetch the lecture content from database with auth headers
+      const response = await fetch(`/api/content/lecture-content/${filename}`, {
+        method: 'GET',
+        headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        } : undefined
+        }
       });
 
+      console.log(`📡 Request status: ${response.status}`);
+      console.log(`📡 Response URL: ${response.url}`);
+
       if (!response.ok) {
-        throw new Error(`Failed to load lecture: ${response.status}`);
+        let errorMessage = `Failed to load lecture: ${response.status}`;
+
+        if (response.status === 403) {
+          errorMessage = 'Subscription required to access this lecture. Please subscribe to continue.';
+        } else if (response.status === 404) {
+          errorMessage = `Lecture "${filename}" not found in database.`;
+        } else if (response.status === 401) {
+          errorMessage = 'Authentication failed. Please login again.';
+        } else {
+          // Log detailed error
+          const errorText = await response.text().catch(() => 'Unknown error');
+          console.error('API Error Response:', errorText);
+        }
+
+        throw new Error(errorMessage);
       }
-      
+
       const content = await response.text();
+      console.log(`✅ Lecture content loaded: ${content.length} characters`);
+
+      if (content.length === 0) {
+        throw new Error('Lecture content is empty.');
+      }
+
       setLectureContent(content);
     } catch (err) {
-      console.error('Error loading lecture:', err);
-      setError('Failed to load lecture content. Please try again.');
+      console.error('❌ Error loading lecture:', err);
+
+      // Provide more detailed error messages
+      let userFriendlyMessage = err.message;
+      if (err.message.includes('Failed to fetch')) {
+        userFriendlyMessage = 'Unable to connect to server. Please check your internet connection.';
+      } else if (err.message.includes('NetworkError')) {
+        userFriendlyMessage = 'Network error. Please try again.';
+      }
+
+      setError(userFriendlyMessage);
     } finally {
       setLoading(false);
     }

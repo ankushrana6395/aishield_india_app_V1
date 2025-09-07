@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Interactive HTTP Smuggling Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>HTTP Smuggling | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the HTTP Smuggling Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content"><!-- English Version -->
+        <div class="en">
+          <h1>HTTP <span>Smuggling</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>A deep dive into request smuggling techniques, front-end proxy bypasses, and real-world exploitation — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>HTTP <span>Smuggling</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Request smuggling techniques, front-end proxy bypasses, aur real-world exploitation mein gahrai se jaane — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Right Corner</strong>
+        <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is HTTP Smuggling? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What is HTTP Smuggling?</h2>
+      <h2 class="section-title hi" style="display:none;">HTTP Smuggling Kya Hai?</h2>
+      
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Attack Vectors</div>
+          <div class="step-title hi" style="display:none;">Hamlawar Ke Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Techniques</div>
+          <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">The Proxy Mismatch Analogy</h3>
+        <h3 class="hi" style="display:none;">Proxy Mismatch Wala Scene</h3>
+        <p class="en">HTTP Smuggling occurs when two HTTP servers (typically a front-end proxy and a back-end server) interpret the same ambiguous HTTP request differently, allowing an attacker to "smuggle" requests through the front-end proxy to the back-end server.</p>
+        <p class="hi" style="display:none;">HTTP Smuggling tab hota hai jab do HTTP servers (aam taur par ek front-end proxy aur ek back-end server) ek hi ambigous HTTP request ko alag tarike se interpret karte hain, jisse hamlawar front-end proxy se back-end server tak request "smuggle" kar sakta hai.</p>
+        <p class="en"><strong>Real Analogy:</strong> Two security guards checking the same bag but interpreting what's inside differently - one sees a harmless item while the other sees a weapon.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Do security guards ek hi bag ko check kar rahe hain lekin usme jo hai uska alag alag interpretation kar rahe hain - ek ko lagta hai woh ek harmless cheez hai jabki dusre ko lagta hai woh ek weapon hai.</p>
+        <p class="en">If exploited, HTTP Smuggling can lead to cache poisoning, session hijacking, bypassing security controls, and even complete system compromise.</p>
+        <p class="hi" style="display:none;">Agar exploit kiya jaye, toh HTTP Smuggling cache poisoning, session hijacking, security controls ko bypass karna, aur poori system compromise tak le ja sakta hai.</p>
+        <p class="en"><span class="keyword" data-title="HTTP Smuggling" data-content="A technique where an attacker sends a malicious HTTP request that is interpreted differently by front-end and back-end servers, allowing bypass of security controls.">HTTP Smuggling</span> is critical because it exploits discrepancies in HTTP parsing between servers.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="HTTP Smuggling" data-content="Ek aisi technique jahan hamlawar ek malicious HTTP request bhejta hai jo front-end aur back-end servers ke beech alag alag interpret hota hai, jisse security controls ko bypass kiya ja sakta hai.">HTTP Smuggling</span> bahut khatarnaak hai kyunki yeh servers ke beech HTTP parsing mein discrepancies ka faida uthata hai.</p>
+      </div>
+
+      <!-- HTTP Smuggling Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How HTTP Smuggling Works - Visualization</h3>
+        <h3 class="hi" style="display:none;">HTTP Smuggling Kaise Kaam Karta Hai - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">Malicious Request</div>
+            <div class="hi" style="display:none;">Dushit Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Ambiguous HTTP</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">Front-end Proxy</div>
+            <div class="hi" style="display:none;">Front-end Proxy</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Interpretation 1</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">Back-end Server</div>
+            <div class="hi" style="display:none;">Back-end Server</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Interpretation 2</div>
+          </div>
+        </div>
+        <p class="en">The front-end proxy and back-end server parse the same request differently, allowing the attacker to smuggle additional requests to the back-end server.</p>
+        <p class="hi" style="display:none;">Front-end proxy aur back-end server ek hi request ko alag alag tarike se parse karte hain, jisse hamlawar back-end server tak additional requests smuggle kar sakta hai.</p>
+      </div>
+
+      <!-- HTTP Parsing Explanation -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">HTTP Parsing Breakdown</h3>
+        <h3 class="hi" style="display:none;">HTTP Parsing Ki Vistrit Jankari</h3>
+        <div class="code-block">
+POST / HTTP/1.1\r\n
+Host: example.com\r\n
+Content-Length: 13\r\n
+Transfer-Encoding: chunked\r\n
+\r\n
+0\r\n
+\r\n
+GET /admin HTTP/1.1\r\n
+Host: example.com\r\n
+\r\n
+        </div>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="Content-Length" data-content="Specifies the length of the message body in bytes.">Content-Length</span>: Number of bytes in the message body</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Content-Length" data-content="Message body mein bytes ki sankhya nirdharit karta hai.">Content-Length</span>: Message body mein bytes ki sankhya</li>
+          <li class="en"><span class="keyword" data-title="Transfer-Encoding" data-content="Specifies the form of encoding used to safely transfer the payload body.">Transfer-Encoding</span>: Encoding method for the payload</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Transfer-Encoding" data-content="Payload body ko surakshit tarike se transfer karne ke liye prayukt encoding ka nirdharan karta hai.">Transfer-Encoding</span>: Payload ke liye encoding method</li>
+          <li class="en"><span class="keyword" data-title="Chunked Encoding" data-content="A streaming data transfer mechanism where data is sent in chunks.">Chunked Encoding</span>: Data sent in chunks with size indicators</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Chunked Encoding" data-content="Ek streaming data transfer mechanism jahan data chunks mein bheja jata hai.">Chunked Encoding</span>: Data chunks mein size indicators ke saath bheja jata hai</li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">Critical</div>
+          <div class="stat-number hi" style="display:none;">Khatarnaak</div>
+          <div class="stat-label en">severity rating</div>
+          <div class="stat-label hi" style="display:none;">khatre ka level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">35+</div>
+          <div class="stat-label en">User Flags on HackTheBox</div>
+          <div class="stat-label hi" style="display:none;">HackTheBox par User Flags</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$15K+</div>
+          <div class="stat-label en">in bug bounty rewards</div>
+          <div class="stat-label hi" style="display:none;">bug bounty mein kamai</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Basic Smuggling -->
+  <section id="try-basic">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Basic Smuggling</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Mool Smuggling</h2>
+      
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Mool Se Uchatam</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">CL.TE Smuggling</div>
+            <div class="step-title hi" style="display:none;">CL.TE Smuggling</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">TE.CL Smuggling</div>
+            <div class="step-title hi" style="display:none;">TE.CL Smuggling</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Advanced Exploitation</div>
+            <div class="step-title hi" style="display:none;">Uchatam Doharpan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CL.TE Smuggling Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: CL.TE Smuggling</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: CL.TE Smuggling</h3>
+        <p class="en">Front-end uses Content-Length, back-end uses Transfer-Encoding</p>
+        <p class="hi" style="display:none;">Front-end Content-Length ka upyog karta hai, back-end Transfer-Encoding ka</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="cl-te-input" class="en">CL.TE Payload:</label>
+            <label for="cl-te-input" class="hi" style="display:none;">CL.TE Payload:</label>
+            <input type="text" id="cl-te-input" value="POST / HTTP/1.1\r\nHost: example.com\r\nContent-Length: 49\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nGET /admin HTTP/1.1\r\nHost: example.com\r\n\r\n">
+          </div>
+          <button class="button" onclick="runCLTE()">Smuggle Request</button>
+          <div class="result-box" id="cl-te-result">
+// Try CL.TE smuggling technique
+          </div>
+        </div>
+      </div>
+
+      <!-- TE.CL Smuggling Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: TE.CL Smuggling</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: TE.CL Smuggling</h3>
+        <p class="en">Front-end uses Transfer-Encoding, back-end uses Content-Length</p>
+        <p class="hi" style="display:none;">Front-end Transfer-Encoding ka upyog karta hai, back-end Content-Length ka</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="te-cl-input" class="en">TE.CL Payload:</label>
+            <label for="te-cl-input" class="hi" style="display:none;">TE.CL Payload:</label>
+            <input type="text" id="te-cl-input" value="POST / HTTP/1.1\r\nHost: example.com\r\nContent-Length: 3\r\nTransfer-Encoding: chunked\r\n\r\n8\r\nGET /admin\r\n0\r\n\r\n" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Explanation:
+// 1. Front-end processes Transfer-Encoding (chunked)
+// 2. Back-end processes Content-Length (3 bytes)
+// 3. Remaining data becomes next request
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Exploitation Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Advanced Exploitation</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Uchatam Doharpan</h3>
+        <p class="en">Use smuggling to capture other users' requests or poison caches</p>
+        <p class="hi" style="display:none;">Doosre upyogkartaon ke anurodh capture karne ya cache ko poison karne ke liye smuggling ka upyog karein</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="advanced-input" class="en">Advanced Payload:</label>
+            <label for="advanced-input" class="hi" style="display:none;">Uchatam Payload:</label>
+            <input type="text" id="advanced-input" value="POST / HTTP/1.1\r\nHost: example.com\r\nContent-Length: 120\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nPOST /login HTTP/1.1\r\nHost: example.com\r\nCookie: session=attacker_session\r\nContent-Length: 50\r\n\r\nusername=victim&password=anything" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Advanced Techniques:
+// 1. Session Hijacking: Capture session tokens
+// 2. Cache Poisoning: Inject malicious responses
+// 3. Request Capturing: Steal other users' requests
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Bypass Techniques -->
+  <section id="bypass">
+    <div class="container">
+      <h2 class="section-title en">Bypassing HTTP Smuggling Defenses</h2>
+      <h2 class="section-title hi" style="display:none;">HTTP Smuggling Defenses Ko Kaise Bypass Karein</h2>
+      
+      <!-- Attack Vector Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">HTTP Smuggling Attack Vectors - Visualization</h3>
+        <h3 class="hi" style="display:none;">HTTP Smuggling Hamlawar Ke Tarika - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Blocked Techniques</div>
+            <div class="hi" style="display:none;">Rukawat Techniques</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Standard CL.TE/TE.CL</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Defense Mechanism</div>
+            <div class="hi" style="display:none;">Bachav Yantra</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Validation/Normalization</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Bypass Techniques</div>
+            <div class="hi" style="display:none;">Bypass Tarika</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Obfuscation, Encoding</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bypass Techniques with Examples -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Advanced Bypass Techniques</h3>
+        <h3 class="hi" style="display:none;">Uchatam Bypass Tarika</h3>
+        
+        <!-- Obfuscation Technique -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Header Obfuscation</h4>
+          <p class="en">When standard headers are blocked, obfuscate them with case variations or spaces.</p>
+          <p class="hi" style="display:none;">Jab standard headers rukawat ho jate hain, toh unhe case variations ya spaces ke saath obfuscate karein.</p>
+          <div class="code-block">
+Obfuscation Techniques:
+- Transfer-Encoding: chunked
+- transfer-encoding: chunked
+- Transfer-Encoding : chunked
+- Transfer-Encoding: xchunked
+- X-Transfer-Encoding: chunked
+          </div>
+        </div>
+        
+        <!-- Encoding Technique -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Encoding Bypass</h4>
+          <p class="en">Use different encodings to bypass normalization filters.</p>
+          <p class="hi" style="display:none;">Normalization filters ko bypass karne ke liye alag encodings ka upyog karein.</p>
+          <div class="code-block">
+Encoding Techniques:
+- Tab characters: Transfer-Encoding:\tchunked
+- Newline characters: Transfer-Encoding\n: chunked
+- Unicode characters: Transfer-Encoding: chūnked
+- Hex encoding: Transfer-Encoding: %63%68%75%6e%6b%65%64
+          </div>
+        </div>
+        
+        <!-- Chunk Size Manipulation -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Chunk Size Manipulation</h4>
+          <p class="en">Manipulate chunk sizes to confuse parsers.</p>
+          <p class="hi" style="display:none;">Parsers ko confuse karne ke liye chunk sizes ko manipulate karein.</p>
+          <div class="code-block">
+Chunk Manipulation:
+- Zero padding: 0000\r\n
+- Hex variations: 0x0\r\n
+- Extra whitespace: 0 \r\n
+- Multiple zeros: 00\r\n
+          </div>
+        </div>
+        
+        <!-- Multi-part Requests -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Multi-part Request Smuggling</h4>
+          <p class="en">Combine smuggling with multi-part requests to bypass more sophisticated filters.</p>
+          <p class="hi" style="display:none;">Adhikatam filters ko bypass karne ke liye smuggling ko multi-part requests ke saath combine karein.</p>
+          <div class="code-block">
+Multi-part Smuggling:
+POST /upload HTTP/1.1\r\n
+Host: example.com\r\n
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary\r\n
+Content-Length: X\r\n
+Transfer-Encoding: chunked\r\n
+\r\n
+0\r\n
+\r\n
+------WebKitFormBoundary\r\n
+Content-Disposition: form-data; name="file"; filename="test.txt"\r\n
+Content-Type: text/plain\r\n
+\r\n
+Smuggled content here
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Case Studies -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Real-World Case Studies</h3>
+        <h3 class="hi" style="display:none;">Vastavik Duniya Ke Udaharan</h3>
+        
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--neon-green);">Case Study 1: CDN Bypass</h4>
+          <p class="en"><strong>Scenario:</strong> A major CDN was vulnerable to TE.CL smuggling.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek pramukh CDN TE.CL smuggling ke liye kamzor tha.</p>
+          <p class="en"><strong>Exploitation:</strong> Used header obfuscation to bypass CDN normalization.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> CDN normalization ko bypass karne ke liye header obfuscation ka upyog kiya gaya.</p>
+          <p class="en"><strong>Impact:</strong> Allowed cache poisoning of protected resources.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Surakshit srotakon ke cache poisoning ki anumati di.</p>
+        </div>
+        
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--electric-blue);">Case Study 2: Enterprise Application</h4>
+          <p class="en"><strong>Scenario:</strong> An enterprise application used multiple proxies.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek enterprise application ekadha proxy ka upyog karta tha.</p>
+          <p class="en"><strong>Exploitation:</strong> Chained CL.TE and TE.CL techniques to bypass all proxies.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Sabhi proxy ko bypass karne ke liye CL.TE aur TE.CL techniques ko chain kiya gaya.</p>
+          <p class="en"><strong>Impact:</strong> Full session hijacking of administrative users.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Prashashanik upyogkartaon ke poori session hijacking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Advanced Smuggling -->
+  <section id="try-advanced">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Advanced Smuggling</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Uchatam Smuggling</h2>
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Exploit Advanced Smuggling Techniques</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Uchatam Smuggling Techniques Ka Faida Uthao</h3>
+        <p class="en">Test advanced smuggling payloads to understand real-world exploitation.</p>
+        <p class="hi" style="display:none;">Vastavik duniya ke doharpan ko samajhne ke liye uchatam smuggling payloads ko test karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="advanced-smuggling-input" class="en">Payload:</label>
+            <label for="advanced-smuggling-input" class="hi" style="display:none;">Payload:</label>
+            <input type="text" id="advanced-smuggling-input" value="POST / HTTP/1.1\r\nHost: example.com\r\nContent-Length: 4\r\nTransfer-Encoding : chunked\r\n\r\n74\r\nGET /admin HTTP/1.1\r\nHost: example.com\r\n\r\n0\r\n\r\n">
+          </div>
+          <button class="button" onclick="runAdvancedSmuggling()">Test Smuggling</button>
+          <div class="result-box" id="advanced-smuggling-result">
+// Try advanced smuggling techniques
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent HTTP Smuggling</h2>
+      <h2 class="section-title hi" style="display:none;">HTTP Smuggling Ko Kaise Rokein</h2>
+      
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">HTTP Smuggling Prevention - Visualization</h3>
+        <h3 class="hi" style="display:none;">HTTP Smuggling Bachav - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Malicious Request</div>
+            <div class="hi" style="display:none;">Dushit Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Ambiguous HTTP</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Defense Layers</div>
+            <div class="hi" style="display:none;">Bachav Perton</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Validation, Normalization</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Blocked Request</div>
+            <div class="hi" style="display:none;">Rukawat Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Access Denied</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Coding Practices -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Secure Coding Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Coding Abhyas</h3>
+        
+        <!-- Input Validation -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Strict Header Parsing</h4>
+          <p class="en">Implement strict parsing of HTTP headers and reject ambiguous requests.</p>
+          <p class="hi" style="display:none;">HTTP headers ka kathor parsing lagayen aur ambigous requests ko reject karein.</p>
+          <div class="code-block">
+// Example: Reject requests with both Content-Length and Transfer-Encoding
+if (request.hasHeader("Content-Length") && request.hasHeader("Transfer-Encoding")) {
+  response.setStatus(400);
+  return;
+}
+          </div>
+        </div>
+        
+        <!-- Consistent Parsing -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Consistent HTTP Parsing</h4>
+          <p class="en">Ensure front-end and back-end servers use the same HTTP parsing library.</p>
+          <p class="hi" style="display:none;">Front-end aur back-end servers ek hi HTTP parsing library ka upyog karein.</p>
+          <div class="code-block">
+// Example: Use the same HTTP library across all components
+// Front-end proxy and back-end server both use Apache HttpComponents
+// This ensures consistent interpretation of requests
+          </div>
+        </div>
+        
+        <!-- Normalization -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Request Normalization</h4>
+          <p class="en">Normalize HTTP requests before processing to eliminate ambiguities.</p>
+          <p class="hi" style="display:none;">Ambiguities ko khatam karne ke liye HTTP requests ko sansadhit karne se pahle normalize karein.</p>
+          <div class="code-block">
+// Example: Normalize headers before processing
+String normalizedHeader = header.trim().toLowerCase();
+if (normalizedHeader.equals("transfer-encoding")) {
+  // Process according to standard
+}
+          </div>
+        </div>
+        
+        <!-- Disable Unnecessary Features -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Disable Chunked Encoding if Not Needed</h4>
+          <p class="en">If your application doesn't require chunked encoding, disable it completely.</p>
+          <p class="hi" style="display:none;">Agar aapki application ko chunked encoding ki aavashyakta nahi hai, toh ise poori tarah nishkriya karein.</p>
+          <div class="code-block">
+// Example: Disable chunked encoding in server configuration
+// Apache: HttpProtocol disableChunking="true"
+// Nginx: chunked_transfer_encoding off;
+          </div>
+        </div>
+      </div>
+
+      <!-- Lab Environment Simulation -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Lab Environment Simulation</h3>
+        <h3 class="hi" style="display:none;">Prayogshala Vatavaran Anukaran</h3>
+        <p class="en">Set up a safe environment to test HTTP Smuggling prevention techniques without risking production systems.</p>
+        <p class="hi" style="display:none;">Utpadan pranaliyon ko jokhim mein daale bina HTTP Smuggling bachav tarikon ka parikshan karne ke liye surakshit vatanavaran sthapit karein.</p>
+        
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--neon-green);">HTTP Smuggling Prevention Testing</h4>
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="test-smuggling-url" class="en">Test Request:</label>
+              <label for="test-smuggling-url" class="hi" style="display:none;">Parikshan Anurodh:</label>
+              <input type="text" id="test-smuggling-url" value="POST / HTTP/1.1\r\nHost: example.com\r\nContent-Length: 49\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nGET /admin HTTP/1.1\r\nHost: example.com\r\n\r\n" placeholder="Enter smuggling payload to test">
+            </div>
+            <button class="button" onclick="testSmugglingProtection()" style="position: relative; z-index: 10;">Test Protection</button>
+            <div class="result-box" id="smuggling-protection-result">
+// Results will appear here
+            </div>
+          </div>
+        </div>
+        
+        <!-- Interactive Lab Exercise -->
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--electric-blue);">Interactive Lab Exercise</h4>
+          <p class="en">Try different payloads to see how HTTP Smuggling protection works:</p>
+          <p class="hi" style="display:none;">Alag-alag payloads ka prayog karein taaki HTTP Smuggling suraksha kaise kaam karta hai yeh dekh sakein:</p>
+          
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="lab-smuggling-url" class="en">Lab Payload:</label>
+              <label for="lab-smuggling-url" class="hi" style="display:none;">Prayogshala Payload:</label>
+              <input type="text" id="lab-smuggling-url" placeholder="Enter any smuggling payload to test">
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="button" onclick="testLabSmuggling()" style="position: relative; z-index: 10;">Test Payload</button>
+              <button class="button" style="background: var(--neon-orange); position: relative; z-index: 10;" onclick="clearLabSmugglingResults()">Clear</button>
+            </div>
+            <div class="result-box" id="lab-smuggling-result">
+// Lab results will appear here
+            </div>
+            
+            <!-- Predefined Test Cases -->
+            <div style="margin-top: 20px;">
+              <h5 class="en" style="color: var(--neon-green);">Quick Test Cases:</h5>
+              <h5 class="hi" style="color: var(--neon-green); display:none;">Tvarit Parikshan Ke Antar:</h5>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                <button class="button" style="background: var(--electric-blue); padding: 8px 12px; font-size: 0.9rem; position: relative; z-index: 10;" onclick="setTestSmuggling('POST / HTTP/1.1\\r\\nHost: example.com\\r\\nContent-Length: 49\\r\\nTransfer-Encoding: chunked\\r\\n\\r\\n0\\r\\n\\r\\nGET /admin HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n')">CL.TE</button>
+                <button class="button" style="background: var(--electric-blue); padding: 8px 12px; font-size: 0.9rem; position: relative; z-index: 10;" onclick="setTestSmuggling('POST / HTTP/1.1\\r\\nHost: example.com\\r\\nContent-Length: 3\\r\\nTransfer-Encoding: chunked\\r\\n\\r\\n8\\r\\nGET /admin\\r\\n0\\r\\n\\r\\n')">TE.CL</button>
+                <button class="button" style="background: var(--electric-blue); padding: 8px 12px; font-size: 0.9rem; position: relative; z-index: 10;" onclick="setTestSmuggling('POST / HTTP/1.1\\r\\nHost: example.com\\r\\nContent-Length: 4\\r\\nTransfer-Encoding : chunked\\r\\n\\r\\n74\\r\\nGET /admin HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n0\\r\\n\\r\\n')">Obfuscated</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+        <div id="feedback" style="margin-top: 20px; padding: 15px; background: rgba(0, 255, 136, 0.1); border-radius: 8px; display: none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+      
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+      
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>    let isHinglish = false;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    // Card Interaction Functions (defined first to ensure they're available)
+    function highlightCard(card) {
+      card.classList.add('pop-out');
+      showNotification('Hovering: ' + card.querySelector('h3').textContent);
+    }
+    function unhighlightCard(card) {
+      if (!card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    }
+    function focusCard(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+      card.classList.add('focused');
+      card.classList.add('pop-out');
+      showNotification('Focused on: ' + card.querySelector('h3').textContent);
+    }
+
+    // Initialize Three.js
+    const canvas = document.getElementById('three-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Grid
+    const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+    gridHelper.position.z = -20;
+    scene.add(gridHelper);
+
+    // Floating Points
+    const geometry = new THREE.BufferGeometry();
+    const count = 500;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 100;
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // Add floating cubes
+    const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const cubeMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0x00aaff, 
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    });
+    const cubes = [];
+    for (let i = 0; i < 10; i++) {
+      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      cube.position.x = (Math.random() - 0.5) * 50;
+      cube.position.y = (Math.random() - 0.5) * 50;
+      cube.position.z = (Math.random() - 0.5) * 50;
+      cube.rotation.x = Math.random() * Math.PI;
+      cube.rotation.y = Math.random() * Math.PI;
+      cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+      scene.add(cube);
+    }
+
+    camera.position.z = 30;
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+      gridHelper.rotation.y += 0.005;
+      points.rotation.y += 0.003;
+      cubes.forEach(cube => {
+        cube.mesh.rotation.x += cube.speed;
+        cube.mesh.rotation.y += cube.speed;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+
+    // Keyword Modal
+    const keywordModal = document.getElementById('keyword-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.getElementById('modal-close');
+    document.querySelectorAll('.keyword').forEach(keyword => {
+      keyword.addEventListener('click', function(e) {
+        e.stopPropagation();
+        modalTitle.textContent = this.getAttribute('data-title');
+        modalBody.textContent = this.getAttribute('data-content');
+        keywordModal.classList.add('active');
+      });
+    });
+    modalClose.addEventListener('click', () => {
+      keywordModal.classList.remove('active');
+    });
+    keywordModal.addEventListener('click', (e) => {
+      if (e.target === keywordModal) {
+        keywordModal.classList.remove('active');
+      }
+    });
+
+    // Language Toggle
+    
+    const translatorBtn = document.getElementById('translator-btn');
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+      enElements.forEach(el => el.style.display = isHinglish ? 'none' : 'block');
+      hiElements.forEach(el => el.style.display = isHinglish ? 'block' : 'none');
+      translatorBtn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+    }
+
+    // Mass Assignment Demo
+    function runMassAssignment() {
+      const payload = document.getElementById('api-input').value;
+      const result = document.getElementById('mass-result');
+      try {
+        const json = JSON.parse(payload);
+        if (json.isAdmin === true || json.role === "admin") {
+          result.innerHTML = isHinglish 
+            ? `<span style="color: #00ff88">✅ Admin Privileges Gained!</span>
+Welcome Admin!
+Access: [User Management] [Logs] [Settings]
+🔐 Full Control Activated` 
+            : `<span style="color: #00ff88">✅ Admin Privileges Gained!</span>
+Welcome Admin!
+Access: [User Management] [Logs] [Settings]
+🔐 Full Control Activated`;
+          showNotification(isHinglish ? 'API: Mass assignment successful!' : 'API: Mass assignment successful!');
+        } else {
+          result.innerHTML = isHinglish 
+            ? `<span style="color: #ff8800">❌ Request processed normally.</span>` 
+            : `<span style="color: #ff8800">❌ Request processed normally.</span>`;
+        }
+      } catch (e) {
+        result.innerHTML = isHinglish 
+          ? `<span style="color: #ff8800">❌ Invalid JSON.</span>` 
+          : `<span style="color: #ff8800">❌ Invalid JSON.</span>`;
+      }
+    }
+
+    // Quiz Questions (10 Questions)
+    const quizQuestions = [
+      {
+        question: {
+          en: "What is the main goal of API testing?",
+          hi: "API testing ka mukhya uddeshya kya hota hai?"
+        },
+        options: {
+          en: [
+            "To design better UI",
+            "To find hidden endpoints and vulnerabilities",
+            "To improve server speed",
+            "To create documentation"
+          ],
+          hi: [
+            "Behtar UI design karna",
+            "Chhupay hue endpoints aur vulnerabilities dhoondhna",
+            "Server ki speed sudharana",
+            "Documentation banana"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "API testing aims to discover hidden attack surfaces and security flaws.",
+          hi: "API testing ka uddeshya chhupay hue attack surfaces aur security flaws dhoondhna hai।"
+        }
+      },
+      {
+        question: {
+          en: "Where can you find hidden API endpoints?",
+          hi: "Chhupay hue API endpoints kahan se mil sakte hain?"
+        },
+        options: {
+          en: [
+            "In CSS files",
+            "In JavaScript files and /swagger",
+            "In images",
+            "In comments"
+          ],
+          hi: [
+            "CSS files mein",
+            "JavaScript files aur /swagger mein",
+            "Images mein",
+            "Comments mein"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "JS files and Swagger docs often contain hidden API endpoints.",
+          hi: "JS files aur Swagger docs mein aksar chhupay hue API endpoints hote hain।"
+        }
+      },
+      {
+        question: {
+          en: "What is mass assignment?",
+          hi: "Mass assignment kya hota hai?"
+        },
+        options: {
+          en: [
+            "Assigning many users at once",
+            "Auto-binding request parameters to object fields",
+            "Mass email sending",
+            "Bulk data deletion"
+          ],
+          hi: [
+            "Ek saath kayi users ko assign karna",
+            "Request parameters ko object fields se auto-bind karna",
+            "Ek saath kayi emails bhejna",
+            "Bulk data delete karna"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Mass assignment occurs when framework binds all params to object fields.",
+          hi: "Mass assignment tab hota hai jab framework sabhi params ko object fields se bind kar deta hai।"
+        }
+      },
+      {
+        question: {
+          en: "How to prevent mass assignment?",
+          hi: "Mass assignment ko kaise rok sakte hain?"
+        },
+        options: {
+          en: [
+            "Use HTTPS",
+            "Allowlist safe fields, block sensitive ones",
+            "Compress JSON",
+            "Change API name"
+          ],
+          hi: [
+            "HTTPS ka istemal karein",
+            "Safe fields allowlist karein, sensitive ones block karein",
+            "JSON compress karein",
+            "API ka naam badal dein"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Only allow specific fields to be updated by users.",
+          hi: "Sirf specific fields ko update karne ki anumati dein."
+        }
+      },
+      {
+        question: {
+          en: "Which header controls data format in API requests?",
+          hi: "Kaunsa header API requests mein data format control karta hai?"
+        },
+        options: {
+          en: [
+            "Authorization",
+            "Content-Type",
+            "User-Agent",
+            "Accept"
+          ],
+          hi: [
+            "Authorization",
+            "Content-Type",
+            "User-Agent",
+            "Accept"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Content-Type header tells the server whether data is JSON, XML, etc.",
+          hi: "Content-Type header server ko batata hai ki data JSON, XML, etc. hai."
+        }
+      },
+      {
+        question: {
+          en: "What does the OPTIONS method do?",
+          hi: "OPTIONS method ka kaam kya hota hai?"
+        },
+        options: {
+          en: [
+            "Deletes a resource",
+            "Retrieves allowed HTTP methods",
+            "Updates a resource",
+            "Creates a new user"
+          ],
+          hi: [
+            "Resource delete karta hai",
+            "Allowed HTTP methods retrieve karta hai",
+            "Resource update karta hai",
+            "Naya user create karta hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "OPTIONS returns which HTTP methods (GET, POST, etc.) are allowed.",
+          hi: "OPTIONS batata hai ki kaunse HTTP methods (GET, POST, etc.) allow hain।"
+        }
+      },
+      {
+        question: {
+          en: "Why is API documentation dangerous if public?",
+          hi: "Agar public hai toh API documentation kyun khatarnaak hoti hai?"
+        },
+        options: {
+          en: [
+            "It slows the server",
+            "It reveals endpoints and parameters",
+            "It changes the UI",
+            "It deletes data"
+          ],
+          hi: [
+            "Server slow ho jata hai",
+            "Endpoints aur parameters reveal kar deti hai",
+            "UI badal deti hai",
+            "Data delete kar deti hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Public API docs expose attack surface to attackers.",
+          hi: "Public API docs attack surface ko attackers ke liye expose kar deti hain।"
+        }
+      },
+      {
+        question: {
+          en: "Which tool can auto-discover API parameters?",
+          hi: "Kaunsa tool API parameters ko auto-discover kar sakta hai?"
+        },
+        options: {
+          en: [
+            "Burp Repeater",
+            "Param Miner BApp",
+            "Google",
+            "Notepad"
+          ],
+          hi: [
+            "Burp Repeater",
+            "Param Miner BApp",
+            "Google",
+            "Notepad"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Param Miner BApp guesses thousands of parameter names automatically.",
+          hi: "Param Miner BApp hazaron parameter names ko automatic guess kar sakta hai।"
+        }
+      },
+      {
+        question: {
+          en: "What is server-side parameter pollution?",
+          hi: "Server-side parameter pollution kya hota hai?"
+        },
+        options: {
+          en: [
+            "Too many users",
+            "Conflicting parameters cause unexpected behavior",
+            "Server overload",
+            "Network congestion"
+          ],
+          hi: [
+            "Bahut zyada users",
+            "Conflicting parameters se unexpected behavior hota hai",
+            "Server overload",
+            "Network congestion"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "When multiple params with same name cause logic confusion on server.",
+          hi: "Jab ek naam ke multiple params server par logic confusion paida karte hain।"
+        }
+      },
+      {
+        question: {
+          en: "Which HTTP method updates a resource partially?",
+          hi: "Kaunsa HTTP method resource ko aadha update karta hai?"
+        },
+        options: {
+          en: [
+            "GET",
+            "POST",
+            "PATCH",
+            "DELETE"
+          ],
+          hi: [
+            "GET",
+            "POST",
+            "PATCH",
+            "DELETE"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "PATCH applies partial updates to a resource.",
+          hi: "PATCH resource par aadhe updates apply karta hai।"
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedAnswers = new Array(quizQuestions.length).fill(-1);
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      document.querySelectorAll(`#options-${questionIndex} .option`).forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.querySelectorAll(`#options-${questionIndex} .option`)[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      let score = 0;
+      const feedback = document.getElementById('feedback');
+      feedback.innerHTML = '';
+      feedback.style.display = 'block';
+
+      quizQuestions.forEach((q, index) => {
+        const options = document.querySelectorAll(`#options-${index} .option`);
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        if (selectedAnswers[index] === q.correct) {
+          score++;
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1) options[selectedAnswers[index]].classList.add('correct');
+        } else {
+          options[q.correct].classList.add('correct');
+          if (selectedAnswers[index] !== -1 && selectedAnswers[index] !== q.correct) {
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        }
+
+        feedback.innerHTML += `<strong>Q${index + 1}:</strong> ${explanation}<br><br>`;
+      });
+
+      document.getElementById('score-display').textContent = `Score: ${score} / ${quizQuestions.length}`;
+      showNotification(isHinglish ? `Quiz pura! Score: ${score}/${quizQuestions.length}` : `Quiz complete! You scored ${score}/${quizQuestions.length}`);
+    };
+
+    // Notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+      notificationText.textContent = message;
+      notification.classList.add('show');
+      setTimeout(() => notification.classList.remove('show'), 3000);
+    }
+
+    // Scroll Progress Bar (with null checks)
+    window.addEventListener('scroll', () => {
+      try {
+        const progressBar = document.getElementById('progress-bar');
+        if (!progressBar) return;
+
+        const winHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        const scrollTop = window.pageYOffset;
+        const trackLength = docHeight - winHeight;
+        const progress = scrollTop / trackLength * 100;
+        progressBar.style.width = Math.min(progress, 100) + '%';
+      } catch (e) {
+        // Silently handle scroll progress errors
+      }
+    });
+
+    // Animation on Scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+      renderQuiz();
+    });
+
+    // HTTP Smuggling Demo Functions (with null checks)
+    function runCLTE() {
+      const result = document.getElementById('cl-te-result');
+      const payloadInput = document.getElementById('cl-te-input');
+
+      if (!result || !payloadInput) return;
+
+      const payload = payloadInput.value;
+      result.innerHTML = `
+🚀 <strong>Simulation: CL.TE Smuggling Demo</strong><br><br>
+✅ <strong>Request Analysis:</strong><br>
+• Front-end processes Content-Length: 49<br>
+• Back-end processes Transfer-Encoding: chunked<br>
+• Smuggled request separated successfully<br><br>
+📋 <strong>Payload Structure:</strong><br>
+<code>${payload.replace(/\r\n/g, '<br>')}</code><br><br>
+🎯 <strong>Result:</strong> GET /admin HTTP/1.1 successfully smuggled through proxy!
+      `;
+      showNotification('CL.TE smuggling simulation completed!');
+    }
+
+    function runAdvancedSmuggling() {
+      const result = document.getElementById('advanced-smuggling-result');
+      const payloadInput = document.getElementById('advanced-smuggling-input');
+
+      if (!result || !payloadInput) return;
+
+      const payload = payloadInput.value;
+      result.innerHTML = `
+🔧 <strong>Advanced Smuggling Test</strong><br><br>
+✅ <strong>Header Analysis:</strong><br>
+• Transfer-Encoding with space: Transfer-Encoding : chunked<br>
+• Back-end processes chunked encoding<br>
+• Malformed chunk size bypassed front-end<br><br>
+📋 <strong>Tested Payload:</strong><br>
+<code>${payload.replace(/\r\n/g, '<br>')}</code><br><br>
+🎯 <strong>Outcome:</strong> Advanced technique successfully bypassed protection!
+      `;
+      showNotification('Advanced smuggling technique tested!');
+    }
+
+    function testSmugglingProtection() {
+      const result = document.getElementById('smuggling-protection-result');
+      const payloadInput = document.getElementById('test-smuggling-url');
+
+      if (!result || !payloadInput) return;
+
+      const payload = payloadInput.value;
+      result.innerHTML = `
+🛡️ <strong>Protection Test Results</strong><br><br>
+🔍 <strong>Analysis:</strong><br>
+• Detected both Content-Length and Transfer-Encoding headers<br>
+• Request rejected due to ambiguous parsing<br>
+• Protected against CL.TE smuggling attempt<br><br>
+📋 <strong>Tested Payload:</strong><br>
+<code>${payload.replace(/\r\n/g, '<br>')}</code><br><br>
+✅ <strong>Result:</strong> Smuggling attack successfully blocked!
+      `;
+      showNotification('HTTP Smuggling protection test completed!');
+    }
+
+    function testLabSmuggling() {
+      const result = document.getElementById('lab-smuggling-result');
+      const payloadInput = document.getElementById('lab-smuggling-url');
+
+      if (!result) return;
+
+      if (!payloadInput) {
+        result.innerHTML = `❌ <strong>Lab Test Failed</strong><br><br>Input element not found.`;
+        return;
+      }
+
+      const payload = payloadInput.value;
+      if (payload.trim() === '') {
+        result.innerHTML = `
+❌ <strong>Lab Test Failed</strong><br><br>
+Please enter a valid HTTP smuggling payload to test.
+        `;
+        return;
+      }
+
+      result.innerHTML = `
+🧪 <strong>Lab Test Executed</strong><br><br>
+✅ <strong>Analysis:</strong><br>
+• Parsing both headers: Content-Length + Transfer-Encoding<br>
+• Simulating proxy behavior<br>
+• Testing back-end processing<br><br>
+📋 <strong>Executed Payload:</strong><br>
+<code>${payload.replace(/\r\n/g, '<br>')}</code><br><br>
+🎯 <strong>Lab Result:</strong> Test completed successfully!
+      `;
+      showNotification('Lab smuggling test completed!');
+    }
+
+    function clearLabSmugglingResults() {
+      const result = document.getElementById('lab-smuggling-result');
+      const payloadInput = document.getElementById('lab-smuggling-url');
+
+      if (result) result.innerHTML = '// Lab results will appear here';
+      if (payloadInput) payloadInput.value = '';
+      showNotification('Lab results cleared!');
+    }
+
+    function setTestSmuggling(payload) {
+      const payloadInput = document.getElementById('lab-smuggling-url');
+      if (!payloadInput) return;
+
+      payloadInput.value = payload.replace(/\\r\\n/g, '\r\n');
+      showNotification('Test payload loaded!');
+    }
+
+    // Safe notification function with null checks
+    function showNotificationSafe(message) {
+      try {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+
+        if (!notification || !notificationText) return;
+
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => {
+          if (notification) notification.classList.remove('show');
+        }, 3000);
+      } catch (e) {
+        // Silently handle notification errors
+      }
+    }
+
+    // Override the original showNotification to use safe version
+    window.showNotification = showNotificationSafe;
+
+    // Global error handler to prevent runtime errors from breaking the page
+    window.addEventListener('error', function(e) {
+      // Prevent style property access errors from browser extensions
+      if (e.error && e.error.message && (
+        e.error.message.includes('Cannot read property') ||
+        e.error.message.includes('cannot access property "style"')
+      )) {
+        e.preventDefault();
+        console.warn('Ignored harmless style property access error');
+      }
+    });
+
+    // Safe DOM query function that returns null instead of throwing errors
+    function safeGetElementById(id) {
+      try {
+        return document.getElementById(id);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Safe style accessor that won't throw errors
+    function safeSetStyle(element, property, value) {
+      if (!element) return;
+      try {
+        element.style[property] = value;
+      } catch (e) {
+        // Silently ignore style errors
+      }
+    }
+  </script>
+</body>
+</html>

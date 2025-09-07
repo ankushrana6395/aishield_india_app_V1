@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Interactive Web Cache Deception Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>Web Cache Deception | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the Web Cache Deception Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content"><!-- English Version -->
+        <div class="en">
+          <h1>Web <span>Cache Deception</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>A deep dive into web cache deception attacks, cache poisoning, and sophisticated cache manipulation techniques — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>Web <span>Cache Deception</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Web cache deception attacks, cache poisoning, aur sophisticated cache manipulation tarikon mein gahrai se jaane — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Right Corner</strong>
+        <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="hero-translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is Web Cache Deception? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What is Web Cache Deception?</h2>
+      <h2 class="section-title hi" style="display:none;">Web Cache Deception Kya Hai?</h2>
+
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Attack Vectors</div>
+          <div class="step-title hi" style="display:none;">Hamlawar Ke Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Techniques</div>
+          <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding Web Cache Deception</h3>
+        <h3 class="hi" style="display:none;">Web Cache Deception Ki Samajh</h3>
+        <p class="en">Web cache deception is a sophisticated attack technique that tricks web caches into storing sensitive user data, which can then be retrieved by attackers. It exploits the mismatch between how web caching mechanisms and application servers interpret file extensions.</p>
+        <p class="hi" style="display:none;">Web cache deception ek advanced attack technique hai jo web caches ko sensitive user data store karne ki dhokha deti hai, jo phir attackers dwara retrieve ki ja sakti hai. Yeh file extensions ko web caching mechanisms aur application servers ke beech mismatch ka faida uthati hai.</p>
+        <p class="en"><strong>Real Analogy:</strong> Like fooling a library's catalog system into thinking your private diary is a public borrowing record. When someone asks for the "record", they get your diary entries.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Ek library ke catalog system ko dhokha de kar sochna ki aapka private diary ek public borrowing record hai. Jab koi "record" puchta hai, toh woh aapke diary entries mil jate hain.</p>
+        <p class="en">This attack appeared in 2017 and has been actively exploited in real-world scenarios, particularly affecting web applications with aggressive caching strategies.</p>
+        <p class="hi" style="display:none;">Yeh attack 2017 mein aaya aur real-world scenarios mein actively exploit hua hai, specially web applications mein jo aggressive caching strategies use karte hain.</p>
+        <p class="en"><span class="keyword" data-title="Web Cache Deception" data-content="An attack that exploits misconfigurations in web caching to steal sensitive user data by tricking caches into storing private content.">Web Cache Deception</span> exploits the fundamental difference in how browsers and web caches interpret URLs.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="Web Cache Deception" data-content="Ek attack jo web caching mein misconfigurations ka faida utha kar sensitive user data chori karta hai by caches ko private content store karne ki dhoka dekar.">Web Cache Deception</span> browsers aur web caches ke beech URLs interpret karne ke fundamental difference ka faida uthati hai.</p>
+      </div>
+
+      <!-- How Cache Deception Works -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How Web Cache Deception Works</h3>
+        <h3 class="hi" style="display:none;">Web Cache Deception Kaise Kaam Karta Hai</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">User Request</div>
+            <div class="hi" style="display:none;">Upyogkartri Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">GET /admin/dashboard.css</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">Server Response</div>
+            <div class="hi" style="display:none;">Server Reply</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Private Dashboard HTML</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">Cached as CSS</div>
+            <div class="hi" style="display:none;">CSS Ke Roop Mein Cache</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Exposed to Others</div>
+          </div>
+        </div>
+        <p class="en">The attack works by requesting sensitive pages with cacheable file extensions. The server processes the request but the cache stores it as a static file with the extension, making it accessible to other users.</p>
+        <p class="hi" style="display:none;">Attack cacheable file extensions ke saath sensitive pages request karke kaam karta hai. Server request process karta hai par cache usse ek static file ke roop mein extension ke saath store kar leta hai, aur woh doosre users ke liye accessible ho jata hai.</p>
+      </div>
+
+      <!-- Cacheable vs Non-Cacheable Extensions -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Cacheable Extensions</h3>
+        <h3 class="hi" style="display:none;">Cacheable Extensions</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0;">
+          <div style="background: rgba(0, 255, 136, 0.1); padding: 20px; border-radius: 8px; border-left: 4px solid var(--neon-green);">
+            <h4 style="color: var(--neon-green); margin-bottom: 10px;">Common Cacheable Extensions</h4>
+            <ul style="line-height: 1.8;">
+              <li>.css</li>
+              <li>.js</li>
+              <li>.png</li>
+              <li>.jpg</li>
+              <li>.gif</li>
+              <li>.ico</li>
+            </ul>
+          </div>
+          <div style="background: rgba(255, 136, 0, 0.1); padding: 20px; border-radius: 8px; border-left: 4px solid var(--neon-orange);">
+            <h4 style="color: var(--neon-orange); margin-bottom: 10px;">High-Impact Targets</h4>
+            <ul style="line-height: 1.8;">
+              <li>/admin/dashboard.css</li>
+              <li>/user/profile.js</li>
+              <li>/account/settings.css</li>
+              <li>/api/user/data.json</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">Critical</div>
+          <div class="stat-number hi" style="display:none;">Khatarnaak</div>
+          <div class="stat-label en">risk level</div>
+          <div class="stat-label hi" style="display:none;">khatre ka level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">2017</div>
+          <div class="stat-label en">discovery year</div>
+          <div class="stat-label hi" style="display:none;">discovery saal</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$50K+</div>
+          <div class="stat-label en">max bounty value</div>
+          <div class="stat-label hi" style="display:none;">max bounty value</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Cache Deception -->
+  <section id="try-cache-deception">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Cache Deception Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Cache Deception Doharpan</h2>
+
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Mool Se Uchatam</h3>
+        <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Basic Cache Deception</div>
+            <div class="step-title hi" style="display:none;">Mool Cache Deception</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Cache Poisoning</div>
+            <div class="step-title hi" style="display:none;">Cache Poisoning</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Blind Exploitation</div>
+            <div class="step-title hi" style="display:none;">Andha Doharpan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Cache Deception Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: Basic Cache Deception</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: Mool Cache Deception</h3>
+        <p class="en">Transform sensitive pages into cacheable static files by appending file extensions.</p>
+        <p class="hi" style="display:none;">Sensitive pages ko cacheable static files mein convert karein by file extensions append karke.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="cache-deception-input" class="en">Sensitive URL:</label>
+            <label for="cache-deception-input" class="hi" style="display:none;">Sensitive URL:</label>
+            <input type="text" id="cache-deception-input" value="https://app.example.com/dashboard" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="input-group">
+            <label for="cache-extension" class="en">Cache Extension:</label>
+            <label for="cache-extension" class="hi" style="display:none;">Cache Extension:</label>
+            <input type="text" id="cache-extension" value=".css" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <button class="button" onclick="runCacheDeceptionExploit()">Exploit Cache Deception</button>
+          <div class="result-box" id="cache-deception-result">
+// Try changing the URL to a sensitive page
+          </div>
+        </div>
+      </div>
+
+      <!-- Cache Poisoning Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: Cache Poisoning Techniques</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: Cache Poisoning Tarika</h3>
+        <p class="en">Poison the cache with malicious content by manipulating cache headers and responses.</p>
+        <p class="hi" style="display:none;">Cache headers aur responses manipulate karke cache ko malicious content ke saath poison karo.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="poison-url" class="en">Target URL:</label>
+            <label for="poison-url" class="hi" style="display:none;">Target URL:</label>
+            <input type="text" id="poison-url" value="https://app.example.com/api/user" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="input-group">
+            <label for="poison-header" class="en">Cache Header:</label>
+            <label for="poison-header" class="hi" style="display:none;">Cache Header:</label>
+            <input type="text" id="poison-header" value="X-Custom: poison" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Example attack flow:
+// 1. Send malformed request with poison header
+// 2. Server responds with error, cache stores it
+// 3. Legitimate users get poisoned response
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Blind Deception Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Advanced Blind Techniques</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Uchatam Andha Tarika</h3>
+        <p class="en">Use advanced techniques like fat GET, cache busting, and timing attacks.</p>
+        <p class="hi" style="display:none;">Fat GET, cache busting, aur timing attacks jaise uchatam tarikon ka upyog karein.</p>
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="advanced-target" class="en">Blind Target:</label>
+            <label for="advanced-target" class="hi" style="display:none;">Andha Target:</label>
+            <input type="text" id="advanced-target" value="https://api.example.com/data" style="font-family: 'JetBrains Mono', monospace;">
+          </div>
+          <div class="code-block">
+// Blind exploitation:
+// 1. Request with cacheable extension
+// 2. Monitor cache behavior indirectly
+// 3. Use timing differences to detect cache hits/misses
+// 4. Leak data through cache poisoning
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent Web Cache Deception</h2>
+      <h2 class="section-title hi" style="display:none;">Web Cache Deception Ko Kaise Rokein</h2>
+
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Prevention Strategies</h3>
+        <h3 class="hi" style="display:none;">Bachav Ki Rahe</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">Malicious Request</div>
+            <div class="hi" style="display:none;">Dushit Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">/admin/dashboard.css</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Defense Layer</div>
+            <div class="hi" style="display:none;">Bachav Perton</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Path Normalization</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Blocked Request</div>
+            <div class="hi" style="display:none;">Rukawat Anurodh</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Access Denied</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Implementation Practices -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Secure Implementation Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Upadhan Abhyas</h3>
+
+        <!-- Path Normalization -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Implement Path Normalization</h4>
+          <p class="en">Normalize URLs before processing to remove extensions that don't belong to the actual resource.</p>
+          <p class="hi" style="display:none;">Actual resource ke extension ko hata kar URLs ko normalize karein processing se pahle.</p>
+          <div class="code-block">
+// Example: Normalize path before processing
+function normalizePath(path) {
+  // Remove file extensions from paths that shouldn't have them
+  if (path.endsWith('.css') || path.endsWith('.js') || path.endsWith('.png')) {
+    // Check if this is actually a static file or a spoofed request
+    const basePath = path.replace(/\.[^.]+$/, '');
+    // Implement logic to validate the base path
+    return validateResourcePath(basePath) ? basePath : null;
+  }
+  return path;
+}
+          </div>
+        </div>
+
+        <!-- Cache-Control Headers -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Proper Cache-Control Headers</h4>
+          <p class="en">Set appropriate cache headers for sensitive endpoints to prevent caching of private data.</p>
+          <p class="hi" style="display:none;">Sensitive endpoints ke liye appropriate cache headers set karein private data ke caching ko rokne ke liye.</p>
+          <div class="code-block">
+// Set no-cache for sensitive endpoints
+app.get('/dashboard', (req, res) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  // Serve private data
+});
+          </div>
+        </div>
+
+        <!-- Server-Side Path Validation -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Server-Side Path Validation</h4>
+          <p class="en">Validate paths on the server side and strip file extensions that don't belong.</p>
+          <p class="hi" style="display:none;">Server side par paths validate karein aur woh file extensions strip karein jo belong nahi karte.</p>
+          <div class="code-block">
+// Strip cacheable extensions from sensitive paths
+function securePathProcessing(reqPath) {
+  const sensitivePrefixes = ['/admin', '/user', '/api/private'];
+
+  for (let prefix of sensitivePrefixes) {
+    if (reqPath.startsWith(prefix)) {
+      // Strip common cacheable extensions
+      const cleanPath = reqPath.replace(/\.(css|js|png|jpg|gif|ico)$/, '');
+      return cleanPath;
+    }
+  }
+  return reqPath;
+}
+          </div>
+        </div>
+
+        <!-- CDN Configuration -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. CDN Configuration</h4>
+          <p class="en">Configure CDNs and proxy servers to strip cache-busting parameters and file extensions.</p>
+          <p class="hi" style="display:none;">Cache-busting parameters aur file extensions ko strip karne ke liye CDN aur proxy servers configure karein.</p>
+          <div class="code-block">
+// Nginx configuration example
+location /admin {
+  # Strip cacheable extensions
+  rewrite ^(/admin.*)\.(css|js|png|jpg|gif)$ $1 break;
+
+  # Set cache control headers
+  add_header Cache-Control "no-cache, no-store";
+  add_header X-Content-Type-Options nosniff;
+
+  proxy_pass http://backend;
+}
+          </div>
+        </div>
+      </div>
+
+      <!-- Lab Environment Simulation -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Prevention Testing Lab</h3>
+        <h3 class="hi" style="display:none;">Bachav Parikshan Lab</h3>
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--neon-green);">Test Your Prevention Measures</h4>
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="test-url" class="en">Test URL:</label>
+              <label for="test-url" class="hi" style="display:none;">Parikshan URL:</label>
+              <input type="text" id="test-url" value="https://app.example.com/admin/dashboard.css" placeholder="Enter URL to test">
+            </div>
+            <button class="button" onclick="testCacheDeceptionProtection()" style="position: relative; z-index: 10;">Test Protection</button>
+            <div class="result-box" id="protection-result">
+// Results will appear here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    let isHinglish = false;
+
+    // Card Interaction Functions (global scope)
+    function highlightCard(card) {
+      if (card) {
+        card.classList.add('pop-out');
+        showNotification('Hovering: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    function unhighlightCard(card) {
+      if (card && !card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    }
+
+    function focusCard(card) {
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+
+      if (card) {
+        card.classList.add('focused');
+        card.classList.add('pop-out');
+        showNotification('Focused on: ' + card.querySelector('h3').textContent);
+      }
+    }
+
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+    });
+
+    function initializeApp() {
+      // Initialize Three.js
+      const canvas = document.getElementById('three-canvas');
+      if (canvas) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerWidth, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+        gridHelper.position.z = -20;
+        scene.add(gridHelper);
+
+        // Floating Points
+        const geometry = new THREE.BufferGeometry();
+        const count = 500;
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+          positions[i] = (Math.random() - 0.5) * 100;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // Add floating cubes
+        const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const cubeMaterial = new THREE.MeshBasicMaterial({
+          color: 0x00aaff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5
+        });
+        const cubes = [];
+        for (let i = 0; i < 10; i++) {
+          const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+          cube.position.x = (Math.random() - 0.5) * 50;
+          cube.position.y = (Math.random() - 0.5) * 50;
+          cube.position.z = (Math.random() - 0.5) * 50;
+          cube.rotation.x = Math.random() * Math.PI;
+          cube.rotation.y = Math.random() * Math.PI;
+          cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+          scene.add(cube);
+        }
+
+        camera.position.z = 30;
+
+        // Animation
+        function animate() {
+          requestAnimationFrame(animate);
+          gridHelper.rotation.y += 0.005;
+          points.rotation.y += 0.003;
+          cubes.forEach(cube => {
+            cube.mesh.rotation.x += cube.speed;
+            cube.mesh.rotation.y += cube.speed;
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerWidth;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      // Initialize keyword modal
+      const keywordModal = document.getElementById('keyword-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const modalClose = document.getElementById('modal-close');
+
+      if (keywordModal && modalTitle && modalBody && modalClose) {
+        document.querySelectorAll('.keyword').forEach(keyword => {
+          keyword.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalTitle.textContent = this.getAttribute('data-title');
+            modalBody.textContent = this.getAttribute('data-content');
+            keywordModal.classList.add('active');
+          });
+        });
+
+        modalClose.addEventListener('click', () => {
+          keywordModal.classList.remove('active');
+        });
+
+        keywordModal.addEventListener('click', (e) => {
+          if (e.target === keywordModal) {
+            keywordModal.classList.remove('active');
+          }
+        });
+      }
+
+      // Initialize quiz
+      renderQuiz();
+
+      // Initialize scroll animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // Language Toggle
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+
+      enElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'none' : 'block';
+      });
+
+      hiElements.forEach(el => {
+        if (el) el.style.display = isHinglish ? 'block' : 'none';
+      });
+
+      // Update both translator buttons
+      const translatorBtns = document.querySelectorAll('.translator-btn');
+      translatorBtns.forEach(btn => {
+        if (btn) btn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      });
+
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+
+      // Re-render quiz with new language
+      renderQuiz();
+    }
+
+    // Quiz Questions (10 Questions)
+    const quizQuestions = [
+      {
+        question: {
+          en: "What is the main goal of web cache deception attacks?",
+          hi: "Web cache deception attacks ka mukhya uddeshya kya hota hai?"
+        },
+        options: {
+          en: [
+            "To speed up website loading",
+            "To steal sensitive user data by tricking caches",
+            "To improve SEO rankings",
+            "To create user accounts"
+          ],
+          hi: [
+            "Website ke loading ko tez karna",
+            "Caches ko dhokha de kar sensitive user data chori karna",
+            "SEO rankings improve karna",
+            "User accounts banana"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Cache deception exploits misconfigurations to expose private data as cached static files.",
+          hi: "Cache deception misconfigurations ka faida utha kar private data ko cached static files ke roop mein expose kar deti hai."
+        }
+      },
+      {
+        question: {
+          en: "When was web cache deception first discovered?",
+          hi: "Web cache deception kab pehli baar discover hui thi?"
+        },
+        options: {
+          en: [
+            "2015",
+            "2017",
+            "2019",
+            "2021"
+          ],
+          hi: [
+            "2015",
+            "2017",
+            "2019",
+            "2021"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Cache deception was discovered by Omer Gil in 2017.",
+          hi: "Cache deception 2017 mein Omer Gil dwara discover ki gayi thi."
+        }
+      },
+      {
+        question: {
+          en: "Which file extensions are commonly cacheable and dangerous?",
+          hi: "Kaunse file extensions common hain aur khatarnaak?"
+        },
+        options: {
+          en: [
+            ".php and .asp",
+            ".css and .js",
+            ".html and .xml",
+            ".exe and .bin"
+          ],
+          hi: [
+            ".php aur .asp",
+            ".css aur .js",
+            ".html aur .xml",
+            ".exe aur .bin"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Static file extensions like .css and .js are cached aggressively by CDNs and proxies.",
+          hi: "Static file extensions jaise .css aur .js CDN aur proxies dwara aggressively cache ki jati hain."
+        }
+      },
+      {
+        question: {
+          en: "What is the most effective prevention for cache deception?",
+          hi: "Cache deception ke liye sabse effective bachav kya hai?"
+        },
+        options: {
+          en: [
+            "Use HTTPS only",
+            "Path normalization on server",
+            "Disable all caching",
+            "Use single-page applications"
+          ],
+          hi: [
+            "Kewal HTTPS ka upyog karein",
+            "Server par path normalization",
+            "Sabh caching disable karein",
+            "Single-page applications ka upyog karein"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Server-side path normalization strips cacheable extensions from sensitive paths.",
+          hi: "Server-side path normalization sensitive paths se cacheable extensions ko strip kar deti hai."
+        }
+      },
+      {
+        question: {
+          en: "Which component is most likely to be vulnerable to cache deception?",
+          hi: "Kaunsa component cache deception ke liye sabse zyada vulnerable hai?"
+        },
+        options: {
+          en: [
+            "Web browser",
+            "CDN/Proxy cache",
+            "Database server",
+            "Email server"
+          ],
+          hi: [
+            "Web browser",
+            "CDN/Proxy cache",
+            "Database server",
+            "Email server"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "External caches like CDNs and reverse proxies are the primary attack surface.",
+          hi: "External caches jaise CDN aur reverse proxies primary attack surface hain."
+        }
+      },
+      {
+        question: {
+          en: "What happens when you request /admin/dashboard.css?",
+          hi: "Jab aap /admin/dashboard.css request karte hain toh kya hota hai?"
+        },
+        options: {
+          en: [
+            "Server returns the CSS file",
+            "Server processes /dashboard and cache stores as CSS",
+            "Access is denied immediately",
+            "Page reloads automatically"
+          ],
+          hi: [
+            "Server CSS file return karta hai",
+            "Server /dashboard process karta hai aur cache CSS ke roop mein store karta hai",
+            "Access immediately deny ho jata hai",
+            "Page automatically reload hota hai"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "The server processes the dynamic path but proxy cache stores the response as a static .css file.",
+          hi: "Server dynamic path process karta hai par proxy cache response ko ek static .css file ke roop mein store kar leta hai."
+        }
+      },
+      {
+        question: {
+          en: "Which cache header prevents sensitive data caching?",
+          hi: "Kaunsa cache header sensitive data ke caching ko prevent karta hai?"
+        },
+        options: {
+          en: [
+            "Cache-Control: public",
+            "Cache-Control: no-cache",
+            "Cache-Control: only-if-cached",
+            "Cache-Control: immutable"
+          ],
+          hi: [
+            "Cache-Control: public",
+            "Cache-Control: no-cache",
+            "Cache-Control: only-if-cached",
+            "Cache-Control: immutable"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "no-cache directive prevents proxies from caching the response.",
+          hi: "no-cache directive proxies ko response cache karne se prevent karta hai."
+        }
+      },
+      {
+        question: {
+          en: "What type of data can be leaked through cache deception?",
+          hi: "Cache deception ke through kaunsa data leak ho sakta hai?"
+        },
+        options: {
+          en: [
+            "Only public data",
+            "Only server-side code",
+            "Private user data like profiles, settings",
+            "Only image files"
+          ],
+          hi: [
+            "Kewal public data",
+            "Kewal server-side code",
+            "Private user data jaise profiles, settings",
+            "Kewal image files"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "Any private data that a logged-in user can access can be leaked through cache deception.",
+          hi: "Koi bhi private data jo logged-in user access kar sakta hai cache deception ke through leak ho sakta hai."
+        }
+      },
+      {
+        question: {
+          en: "Which is NOT an effective mitigation for cache deception?",
+          hi: "Cache deception ke liye kaunsa effective mitigation NAHI hai?"
+        },
+        options: {
+          en: [
+            "Strip cacheable extensions on server",
+            "Use different ports for static/dynamic content",
+            "Allow caching of all sensitive endpoints",
+            "Configure CDN to normalize paths"
+          ],
+          hi: [
+            "Server par cacheable extensions strip karein",
+            "Static/dynamic content ke liye alag ports ka upyog karein",
+            "Sabh sensitive endpoints ko cache karne ki anumati dein",
+            "Path normalize karne ke liye CDN configure karein"
+          ]
+        },
+        correct: 2,
+        explanation: {
+          en: "Never allow caching of sensitive endpoints - this makes cache deception trivial.",
+          hi: "Sensitive endpoints ko kabhi cache karne ki anumati na dein - yeh cache deception ko trivial bana deti hai."
+        }
+      },
+      {
+        question: {
+          en: "What role do reverse proxies play in cache deception?",
+          hi: "Reverse proxies cache deception mein kya role play karte hain?"
+        },
+        options: {
+          en: [
+            "They prevent cache deception",
+            "They are usually the vulnerable component",
+            "They only cache static files",
+            "They ignore HTTP headers"
+          ],
+          hi: [
+            "Woh cache deception ko prevent karte hain",
+            "Woh usually vulnerable component hote hain",
+            "Woh kewal static files cache karte hain",
+            "Woh HTTP headers ignore karte hain"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "Reverse proxies and CDNs are the most common attack vectors for cache deception.",
+          hi: "Reverse proxies aur CDN cache deception ke liye sabse common attack vectors hain."
+        }
+      }
+    ];
+
+    // Render Quiz
+    function renderQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      if (!quizContainer) return;
+
+      quizContainer.innerHTML = '';
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedAnswers = new Array(quizQuestions.length).fill(-1);
+
+    // Select Option
+    window.selectOption = function(questionIndex, optionIndex) {
+      const optionsContainer = document.getElementById(`options-${questionIndex}`);
+      if (!optionsContainer) return;
+
+      optionsContainer.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      optionsContainer.querySelectorAll('.option')[optionIndex].classList.add('selected');
+      selectedAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit Quiz
+    window.submitQuiz = function() {
+      let score = 0;
+      const scoreDisplay = document.getElementById('score-display');
+      const quizContainer = document.getElementById('quiz-questions');
+
+      if (!scoreDisplay || !quizContainer) return;
+
+      // Show loading message while generating results
+      quizContainer.innerHTML = `<div style="text-align: center; padding: 40px;"><p style="color: var(--neon-green); font-size: 1.2rem;">🔄 Generating Quiz Summary...</p></div>`;
+
+      setTimeout(() => {
+        // Clear existing quiz results
+        quizContainer.innerHTML = '';
+
+        let resultsHTML = isHinglish ? '<h3 class="en" style="color: var(--neon-green); margin-bottom: 20px; text-align: center;">📊 Quiz Results - Correct Answers Summary</h3>' :
+                                     '<h3 class="hi" style="display:none; color: var(--neon-green); margin-bottom: 20px; text-align: center;">📊 Quiz Results - Correct Answers Summary</h3>';
+
+        resultsHTML += '<div style="margin-bottom: 20px; text-align: center;">';
+        resultsHTML += `<h4 style="color: var(--light-gray); margin-bottom: 10px;">${isHinglish ? 'प्रश्नों का संक्षिप्त विश्लेषण' : 'Question Review Summary'}</h4>`;
+        resultsHTML += '<div style="background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 20px;">';
+
+        quizQuestions.forEach((q, index) => {
+          const userAnswer = selectedAnswers[index];
+          const correctAnswer = q.correct;
+          const qText = isHinglish ? q.question.hi : q.question.en;
+          const opts = isHinglish ? q.options.hi : q.options.en;
+          const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+          const isCorrect = userAnswer === correctAnswer;
+          const isUnanswered = userAnswer === -1;
+
+          if (isCorrect) {
+            score++;
+          }
+
+          // Question result card
+          resultsHTML += `<div style="margin-bottom: 20px; padding: 15px; border-radius: 8px; border: 1px solid ${isUnanswered ? 'var(--neon-pink)' : (isCorrect ? 'var(--neon-green)' : 'var(--neon-orange)')}; background: rgba(0, 0, 0, 0.2);">`;
+
+          // Question number and status indicator
+          resultsHTML += `<div style="display: flex; align-items: center; margin-bottom: 10px;">`;
+          resultsHTML += `<h4 style="color: var(--neon-green); margin-right: 10px;">Question ${index + 1}:</h4>`;
+
+          if (isUnanswered) {
+            resultsHTML += `<span style="background: var(--neon-pink); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">❌ UNANSWERED</span>`;
+          } else if (isCorrect) {
+            resultsHTML += `<span style="background: var(--neon-green); color: var(--primary); padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">✅ CORRECT</span>`;
+          } else {
+            resultsHTML += `<span style="background: var(--neon-orange); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">❌ INCORRECT</span>`;
+          }
+          resultsHTML += `</div>`;
+
+          // Question text
+          resultsHTML += `<p style="margin-bottom: 15px; font-weight: bold; font-size: 1.1rem; line-height: 1.4;">${qText}</p>`;
+
+          // User's answer (if provided)
+          if (!isUnanswered) {
+            resultsHTML += `<div style="margin-bottom: 10px;">`;
+            resultsHTML += `<p style="color: ${isCorrect ? '#00ff88' : '#ff8800'}; font-weight: bold; margin-bottom: 5px;">`;
+            resultsHTML += isHinglish ? `👤 आपका उत्तर: <strong>${opts[userAnswer]}</strong>` : `👤 Your Answer: <strong>${opts[userAnswer]}</strong>`;
+            resultsHTML += `</p></div>`;
+          }
+
+          // Correct answer (always shown)
+          resultsHTML += `<div style="margin-bottom: 15px;">`;
+          resultsHTML += `<p style="color: var(--electric-blue); font-weight: bold; margin-bottom: 5px;">`;
+          resultsHTML += isHinglish ? `🎯 सही उत्तर: <strong>${opts[correctAnswer]}</strong>` : `🎯 Correct Answer: <strong>${opts[correctAnswer]}</strong>`;
+          resultsHTML += `</p></div>`;
+
+          // Explanation section
+          resultsHTML += `<div style="background: rgba(0, 20, 40, 0.4); padding: 12px; border-radius: 6px; border-left: 3px solid var(--neon-green);">`;
+          resultsHTML += `<p style="margin: 0; color: var(--light-gray);"><strong>`;
+          resultsHTML += isHinglish ? '📚 व्याख्या:' : '📚 Explanation:';
+          resultsHTML += `</strong></p>`;
+          resultsHTML += `<p style="margin: 8px 0 0 0; color: #cccccc; font-style: italic;">${explanation}</p>`;
+          resultsHTML += `</div>`;
+
+          resultsHTML += '</div>';
+        });
+
+        // Final score section
+        resultsHTML += `<div style="text-align: center; margin-top: 30px; padding: 25px; background: ${score > 6 ? 'rgba(0, 255, 136, 0.15)' : (score > 3 ? 'rgba(255, 136, 0, 0.15)' : 'rgba(255, 0, 128, 0.15)')}; border-radius: 12px; border: 2px solid ${score > 6 ? 'var(--neon-green)' : (score > 3 ? 'var(--neon-orange)' : 'var(--neon-pink)')};">`;
+
+        resultsHTML += `<h3 style="color: var(--neon-green); margin-bottom: 15px; font-size: 1.8rem;">`;
+        resultsHTML += isHinglish ? '🎯 अंतिम परिणाम' : '🎯 Final Score';
+        resultsHTML += `</h3>`;
+
+        resultsHTML += `<div style="font-size: 3rem; color: ${score > 6 ? '#00ff88' : (score > 3 ? '#ff8800' : '#ff0080')}; font-weight: bold; margin-bottom: 15px;">`;
+        resultsHTML += `${score} / ${quizQuestions.length}</div>`;
+
+        // Performance message with emoji and encouragement
+        resultsHTML += `<div style="font-size: 1.1rem; margin-bottom: 15px;">`;
+
+        if (score === quizQuestions.length) {
+          resultsHTML += isHinglish ?
+            '<p style="color: var(--neon-green); font-weight: bold; font-size: 1.3rem;">🌟 बधाई! आपने सभी प्रश्नों का सही उत्तर दिया! 🌟</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">आप वेब कैश डिसेप्शन के बारे में पहले से ज्ञान रखते हैं! 🎉</p>' :
+            '<p style="color: var(--neon-green); font-weight: bold; font-size: 1.3rem;">🌟 Congratulations! You got everything correct! 🌟</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">You have excellent knowledge about web cache deception! 🎉</p>';
+        } else if (score >= 7) {
+          resultsHTML += isHinglish ?
+            '<p style="color: #00ff88; font-weight: bold; font-size: 1.2rem;">🏆 बहुत बढ़िया प्रदर्शन!</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">आपने वेब कैश डिसेप्शन की बुनियादी बातों को बहुत अच्छी तरह समझा है! 📝</p>' :
+            '<p style="color: #00ff88; font-weight: bold; font-size: 1.2rem;">🏆 Excellent Performance!</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">You have a strong understanding of web cache deception fundamentals! 📝</p>';
+        } else if (score >= 5) {
+          resultsHTML += isHinglish ?
+            '<p style="color: #ff8800; font-weight: bold; font-size: 1.2rem;">📈 अच्छा प्रयास!</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">आपने कुछ महत्वपूर्ण अवधारणाओं को सीखा है और लैब्स का अभ्यास करने से उनमें मजबूती आएगी! 🔬</p>' :
+            '<p style="color: #ff8800; font-weight: bold; font-size: 1.2rem;">📈 Good Effort!</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">You\'ve learned some important concepts! Practice with the labs will strengthen your understanding! 🔬</p>';
+        } else {
+          resultsHTML += isHinglish ?
+            '<p style="color: var(--neon-pink); font-weight: bold; font-size: 1.2rem;">📚 चलिए पुनः शुरू करते हैं!</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">वेब कैश डिसेप्शन एक महत्वपूर्ण विषय है। लैक्चर को फिर से पढ़ें और इंटरएक्टिव देमोज़ का इस्तेमाल करें! 💡</p>' :
+            '<p style="color: var(--neon-pink); font-weight: bold; font-size: 1.2rem;">📚 Let\'s Start Again!</p>' +
+            '<p style="color: var(--light-gray); margin-top: 10px;">Web cache deception is an important topic! Re-read the lecture and practice with the interactive demos! 💡</p>';
+        }
+
+        resultsHTML += '</div></div></div>';
+
+        // Statistics summary
+        const unansweredCount = selectedAnswers.filter(answer => answer === -1).length;
+        const correctCount = quizQuestions.filter((_, index) => selectedAnswers[index] === quizQuestions[index].correct).length;
+        const incorrectCount = quizQuestions.length - correctCount - unansweredCount;
+
+        resultsHTML += `<div style="margin-top: 20px; text-align: center;">`;
+        resultsHTML += `<h4 style="color: var(--light-gray); margin-bottom: 10px;">${isHinglish ? '📈 प्रदर्शन संक्षेप' : '📈 Performance Summary'}</h4>`;
+        resultsHTML += '<div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">';
+
+        // Correct answers stat
+        resultsHTML += `<div style="background: rgba(0, 255, 136, 0.1); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--neon-green); min-width: 80px;">`;
+        resultsHTML += `<div style="color: #00ff88; font-weight: bold;">${correctCount}</div>`;
+        resultsHTML += `<div style="color: var(--light-gray); font-size: 0.8rem;">${isHinglish ? 'सही' : 'Correct'}</div></div>`;
+
+        // Incorrect answers stat
+        resultsHTML += `<div style="background: rgba(255, 136, 0, 0.1); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--neon-orange); min-width: 80px;">`;
+        resultsHTML += `<div style="color: #ff8800; font-weight: bold;">${incorrectCount}</div>`;
+        resultsHTML += `<div style="color: var(--light-gray); font-size: 0.8rem;">${isHinglish ? 'गलत' : 'Incorrect'}</div></div>`;
+
+        // Unanswered stat
+        if (unansweredCount > 0) {
+          resultsHTML += `<div style="background: rgba(255, 0, 128, 0.1); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--neon-pink); min-width: 80px;">`;
+          resultsHTML += `<div style="color: var(--neon-pink); font-weight: bold;">${unansweredCount}</div>`;
+          resultsHTML += `<div style="color: var(--light-gray); font-size: 0.8rem;">${isHinglish ? 'अनुत्तरित' : 'Unanswered'}</div></div>`;
+        }
+
+        resultsHTML += '</div></div>';
+
+        // Update quiz container with results
+        quizContainer.innerHTML = resultsHTML;
+
+        scoreDisplay.textContent = `Score: ${score} / ${quizQuestions.length}`;
+        showNotification(isHinglish ? `Quiz पूरा हुआ! स्कोर: ${score}/${quizQuestions.length}` : `Quiz complete! You scored ${score}/${quizQuestions.length}`);
+      }, 500); // Small delay to show loading message
+    };
+
+    // Notification
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notification-text');
+
+      if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+      }
+    }
+
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+      const progressBar = document.getElementById('progress-bar');
+      if (!progressBar) return;
+
+      const winHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.pageYOffset;
+      const trackLength = docHeight - winHeight;
+      const progress = scrollTop / trackLength * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    // Interactive Demo Functions
+    function runCacheDeceptionExploit() {
+      const input = document.getElementById('cache-deception-input');
+      const extension = document.getElementById('cache-extension');
+      const result = document.getElementById('cache-deception-result');
+
+      if (!input || !extension || !result) return;
+
+      const url = input.value;
+      const ext = extension.value;
+
+      if (url && ext) {
+        const exploitedUrl = url + ext;
+        result.innerHTML = isHinglish
+          ? `<span style="color: #00ff88">🏗️ CACHE DECEPTION ATTEMPT:</span><br>📍 Original: ${url}<br>🚨 Exploited: ${exploitedUrl}<br><br>This demonstrates how sensitive endpoints can be accessed with cacheable extensions.<br><span style="color: #ff8800">⚠️ In a real attack, this could expose private user data!</span>`
+          : `<span style="color: #00ff88">🏗️ CACHE DECEPTION ATTEMPT:</span><br>📍 Original: ${url}<br>🚨 Exploited: ${exploitedUrl}<br><br>This demonstrates how sensitive endpoints can be accessed with cacheable extensions.<br><span style="color: #ff8800">⚠️ In a real attack, this could expose private user data!</span>`;
+      } else {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #ff8800">❌ Please provide both URL and extension to test.</span>`
+          : `<span style="color: #ff8800">❌ Please provide both URL and extension to test.</span>`;
+      }
+      showNotification(isHinglish ? 'Cache deception simulated!' : 'Cache deception simulated!');
+    }
+
+    function testCacheDeceptionProtection() {
+      const urlInput = document.getElementById('test-url');
+      const result = document.getElementById('protection-result');
+
+      if (!urlInput || !result) return;
+
+      const url = urlInput.value;
+
+      if (!url) {
+        result.innerHTML = isHinglish
+          ? `<span style="color: #ff8800">❌ Please enter a URL to test.</span>`
+          : `<span style="color: #ff8800">❌ Please enter a URL to test.</span>`;
+        return;
+      }
+
+      const protectionTests = [
+        { name: 'Path Normalization', status: '✅ PASSED' },
+        { name: 'Cache Control Headers', status: '✅ PASSED' },
+        { name: 'Extension Stripping', status: '✅ PASSED' },
+        { name: 'CDN Configuration', status: '⚠️ WARNING' },
+        { name: 'Request Validation', status: '✅ PASSED' }
+      ];
+
+      result.innerHTML = `<span style="color: #00ff88">🛡️ CACHE DECEPTION PROTECTION TEST for:</span> ${url}<br><br>` +
+        protectionTests.map(test => `${test.name}: ${test.status}`).join('<br>') +
+        '<br><br><span style="color: #ff8800">💡 This test simulates prevention mechanisms that should protect against cache deception attacks.</span>';
+
+      showNotification(isHinglish ? 'Protection test completed!' : 'Protection test completed!');
+    }
+  </script>
+</body>
+</html>

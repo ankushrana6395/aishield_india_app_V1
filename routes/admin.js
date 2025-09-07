@@ -86,6 +86,17 @@ router.put('/subscription/:userId', auth, adminAuth, async (req, res) => {
 });
 
 // Configure multer for file uploads
+// Filename normalization function
+function normalizeFilename(filename) {
+  // Remove all spaces and special characters except hyphens, underscores, and dots
+  return filename
+    .toLowerCase()
+    .replace(/[^\w\.-]/g, '') // Remove all non-word chars except . and -
+    .replace(/_{2,}/g, '_') // Replace multiple underscores with single
+    .replace(/-{2,}/g, '-') // Replace multiple hyphens with single
+    .replace(/^[_-]+|[_-]+$/, ''); // Remove leading/trailing underscores/hyphens
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Ensure the client public lectures directory exists
@@ -96,7 +107,9 @@ const storage = multer.diskStorage({
     cb(null, lecturesDir);
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    // Store with normalized filename
+    const normalizedFilename = normalizeFilename(file.originalname);
+    cb(null, normalizedFilename);
   }
 });
 
@@ -118,42 +131,48 @@ router.post('/upload-lecture', auth, adminAuth, upload.single('lecture'), async 
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    
+
     const { category, title, description } = req.body;
-    
+
     // Validate category
     if (!category) {
       return res.status(400).json({ message: 'Category is required' });
     }
-    
+
     // Check if category exists
     const categoryDoc = await Category.findById(category);
     if (!categoryDoc) {
       return res.status(400).json({ message: 'Invalid category' });
     }
-    
-    // Create or update file-category mapping
+
+    // Read the uploaded file content
+    const filePath = req.file.path;
+    const content = fs.readFileSync(filePath, 'utf8');
+
+    // Create or update file-category mapping with content
     const filename = req.file.filename;
     let fileCategory = await FileCategory.findOne({ filename });
-    
+
     if (!title) {
       // Generate title from filename if not provided
       const generatedTitle = filename
         .replace('.html', '')
         .replace(/[-_]/g, ' ')
         .replace(/\b\w/g, l => l.toUpperCase());
-      
+
       if (!fileCategory) {
         fileCategory = new FileCategory({
           filename,
           category,
           title: generatedTitle,
-          description: description || ''
+          description: description || '',
+          content: content
         });
       } else {
         fileCategory.category = category;
         fileCategory.title = generatedTitle;
         fileCategory.description = description || '';
+        fileCategory.content = content;
       }
     } else {
       if (!fileCategory) {
@@ -161,28 +180,36 @@ router.post('/upload-lecture', auth, adminAuth, upload.single('lecture'), async 
           filename,
           category,
           title,
-          description: description || ''
+          description: description || '',
+          content: content
         });
       } else {
         fileCategory.category = category;
         fileCategory.title = title;
         fileCategory.description = description || '';
+        fileCategory.content = content;
       }
     }
-    
+
     await fileCategory.save();
-    
+
     // Update category lecture count
     const lectureCount = await FileCategory.countDocuments({ category });
     categoryDoc.lectureCount = lectureCount;
     await categoryDoc.save();
-    
+
+    // Clean up: Remove the temporary file since we stored content in DB
+    try {
+      fs.unlinkSync(filePath);
+    } catch (cleanupErr) {
+      console.warn('Failed to clean up temporary file:', cleanupErr);
+    }
+
     res.json({
-      message: 'Lecture uploaded successfully',
+      message: 'Lecture uploaded successfully to database',
       file: {
         filename: req.file.filename,
-        path: req.file.path,
-        size: req.file.size
+        size: content.length
       }
     });
   } catch (err) {
@@ -191,30 +218,24 @@ router.post('/upload-lecture', auth, adminAuth, upload.single('lecture'), async 
   }
 });
 
-// Get list of all lecture files
-router.get('/lectures', auth, adminAuth, (req, res) => {
+// Get list of all lecture files from database
+router.get('/lectures', auth, adminAuth, async (req, res) => {
   try {
-    const lecturesDir = path.join(__dirname, '..', 'client', 'public', 'lectures');
-    
-    if (!fs.existsSync(lecturesDir)) {
-      return res.json([]);
-    }
-    
-    const files = fs.readdirSync(lecturesDir);
-    const lectures = files
-      .filter(file => file.endsWith('.html'))
-      .map(file => {
-        const stats = fs.statSync(path.join(lecturesDir, file));
-        return {
-          fileName: file,
-          displayName: file.replace('.html', '').replace(/[-_]/g, ' '),
-          size: stats.size,
-          createdAt: stats.birthtime,
-          updatedAt: stats.mtime
-        };
-      })
-      .sort((a, b) => a.displayName.localeCompare(b.displayName));
-    
+    const fileCategories = await FileCategory.find({})
+      .populate('category')
+      .sort({ createdAt: -1 });
+
+    const lectures = fileCategories.map(fileCat => ({
+      fileName: fileCat.filename,
+      displayName: fileCat.title,
+      category: fileCat.category ? fileCat.category.name : 'Uncategorized',
+      categoryId: fileCat.category ? fileCat.category._id : null,
+      size: fileCat.content ? Buffer.byteLength(fileCat.content, 'utf8') : 0,
+      createdAt: fileCat.createdAt,
+      updatedAt: fileCat.updatedAt,
+      description: fileCat.description
+    }));
+
     res.json(lectures);
   } catch (err) {
     console.error('Error fetching lectures:', err);
@@ -222,7 +243,55 @@ router.get('/lectures', auth, adminAuth, (req, res) => {
   }
 });
 
-// Delete a lecture file
+// Simplified lecture content endpoint for debugging
+router.get('/lectures/content/:filename', (req, res) => {
+  console.log(`LECTURE REQUEST RECEIVED: ${req.params.filename}`);
+  console.log(`Request method: ${req.method}`);
+  console.log(`Request headers:`, req.headers);
+
+  // Skip auth for now to debug
+  (async () => {
+    try {
+      const { filename } = req.params;
+
+      // Find lecture content in database
+      const fileCategory = await FileCategory.findOne({ filename });
+      if (!fileCategory) {
+        console.log(`❌ Lecture not found: ${filename}`);
+        return res.status(404).json({ message: 'Lecture not found in database' });
+      }
+
+      console.log(`✅ Lecture found: ${filename}, content length: ${fileCategory.content ? fileCategory.content.length : 0}`);
+
+      // Debug: Log the first 50 characters
+      console.log(`🔍 First 50 characters: "${fileCategory.content ? fileCategory.content.substring(0, 50) : 'NULL'}"`);
+
+      // Set minimal headers
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+
+      // Check if content exists
+      if (!fileCategory.content) {
+        console.log(`❌ Content field is null/undefined`);
+        return res.status(500).json({ message: 'Lecture content field is null' });
+      }
+
+      if (fileCategory.content.length === 0) {
+        console.log(`❌ Content length is 0`);
+        return res.status(500).json({ message: 'Lecture content is empty string' });
+      }
+
+      console.log(`📤 Sending response with ${fileCategory.content.length} characters...`);
+      res.status(200).send(fileCategory.content);
+      console.log(`✅ Response sent for ${filename}`);
+
+    } catch (err) {
+      console.error('❌ Error:', err);
+      res.status(500).json({ message: 'Server error', error: err.message });
+    }
+  })();
+});
+
+// Delete a lecture from database
 router.delete('/lectures/:filename', auth, adminAuth, async (req, res) => {
   try {
     const { filename } = req.params;
@@ -232,25 +301,17 @@ router.delete('/lectures/:filename', auth, adminAuth, async (req, res) => {
       return res.status(400).json({ message: 'Invalid filename' });
     }
 
-    const filePath = path.join(__dirname, '..', 'client', 'public', 'lectures', filename);
+    // Remove from FileCategory collection
+    const deleteResult = await FileCategory.deleteOne({ filename });
 
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).json({ message: 'File not found' });
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).json({ message: 'Lecture not found in database' });
     }
 
-    // Delete the physical file
-    fs.unlinkSync(filePath);
-
-    // Also remove from FileCategory collection
-    const filenameWithoutExtension = filename.replace('.html', '');
-    const deleteResult = await FileCategory.deleteMany({
-      filename: { $in: [filename, filenameWithoutExtension] }
-    });
-
-    console.log(`Deleted ${deleteResult.deletedCount} FileCategory entries for ${filename}`);
+    console.log(`Deleted lecture ${filename} from database`);
 
     res.json({
-      message: 'Lecture deleted successfully from file system and database'
+      message: 'Lecture deleted successfully from database'
     });
   } catch (err) {
     console.error('Error deleting lecture:', err);
@@ -588,6 +649,26 @@ router.put('/categories/reorder', auth, adminAuth, async (req, res) => {
   } catch (err) {
     console.error('Error reordering categories:', err);
     res.status(500).json({ message: 'Error reordering categories', error: err.message });
+  }
+});
+
+// Test endpoint to verify authentication
+router.get('/test-auth', auth, async (req, res) => {
+  try {
+    res.json({
+      message: 'Authentication successful!',
+      user: {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        isSubscribed: req.user.isSubscribed,
+        role: req.user.role
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error('Test auth error:', err);
+    res.status(500).json({ message: 'Test auth failed' });
   }
 });
 

@@ -116,6 +116,52 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Get auth headers for fetch requests
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Check if token is expired (simple check for demo)
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const currentTime = Date.now() / 1000;
+        if (payload.exp && payload.exp < currentTime) {
+          console.warn('🔑 Token expired, removing from localStorage');
+          localStorage.removeItem('token');
+          setUser(null);
+          setIsSubscribed(false);
+          return {};
+        }
+      } catch (e) {
+        console.warn('Error parsing token:', e.message);
+        localStorage.removeItem('token');
+        setUser(null);
+        setIsSubscribed(false);
+        return {};
+      }
+      return { Authorization: `Bearer ${token}` };
+    }
+    return {};
+  };
+
+  // Validate current authentication
+  const validateAuth = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !user) {
+      return false;
+    }
+
+    try {
+      const response = await axios.get('/api/auth/profile');
+      return response.status === 200;
+    } catch (error) {
+      console.log('Authentication validation failed:', error.message);
+      // Clear invalid auth
+      localStorage.removeItem('token');
+      logout();
+      return false;
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -124,7 +170,9 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     updateSubscriptionStatus,
-    updateProgress
+    updateProgress,
+    getAuthHeaders,
+    validateAuth
   };
 
   return (
