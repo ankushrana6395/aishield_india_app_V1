@@ -11,10 +11,16 @@ const path = require('path');
 const loadEnvironmentConfig = () => {
   const env = process.env.NODE_ENV || 'development';
 
-  // Load base .env file
+  // In production (Render), DON'T load local .env files to avoid overriding runtime PORT
+  if (env === 'production') {
+    console.log('🔧 Production (Render) - Using runtime environment variables only');
+    return;
+  }
+
+  // Load base .env file for development
   dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
-  // Load environment-specific .env file
+  // Load environment-specific .env file for development
   const envPath = path.join(__dirname, '..', `.env.${env}`);
   try {
     dotenv.config({ path: envPath });
@@ -22,15 +28,7 @@ const loadEnvironmentConfig = () => {
     // Environment-specific file doesn't exist, continue with base .env
   }
 
-  // Load production env file if exists
-  if (env === 'production') {
-    const prodPath = path.join(__dirname, '..', '.env.production');
-    try {
-      dotenv.config({ path: prodPath });
-    } catch (error) {
-      // Production file doesn't exist
-    }
-  }
+  console.log('🔧 Development - Loaded environment from .env files');
 };
 
 // Load configurations
@@ -38,9 +36,24 @@ loadEnvironmentConfig();
 
 // Configuration object with validation and defaults
 const config = {
-  // Server Configuration
+  // Server Configuration - Handle Render's PORT assignment
   NODE_ENV: process.env.NODE_ENV || 'development',
-  PORT: parseInt(process.env.PORT) || 5002,
+
+  // Critical fix: Handle Render's runtime PORT assignment
+  PORT: (() => {
+    // If it's the default string from .env.production, use Render's actual PORT
+    if (process.env.PORT === 'Automatically set by Render') {
+      // In actual Render deployment, PORT will be the real numeric value
+      return 10000; // Default fallback for Render (typically 10000+)
+    }
+    // For actual numeric values or undefined, parse normally
+    const port = process.env.PORT ? parseInt(process.env.PORT.replace(/[^0-9]/g, '')) : null;
+    if (port && port >= 1000 && port <= 65536) {
+      return port; // Valid port number
+    }
+    // Fall back to appropriate defaults
+    return process.env.NODE_ENV === 'production' ? 10000 : 5002;
+  })(),
   VERSION: process.env.npm_package_version || '2.0.0',
 
   // Database Configuration
