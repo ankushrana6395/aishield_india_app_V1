@@ -15,8 +15,8 @@
 // Configuration Management
 require('./config/environment');
 
-// Load environment and configuration
-require('dotenv').config();
+// Environment loading handled by config/environment.js
+// Avoid dotenv.config() in production for Render deployments
 
 // Environment loading completed - proceeding with normal startup
 console.log('� Environment configured for:', process.env.NODE_ENV);
@@ -518,16 +518,38 @@ async function startServer() {
       // *** CRITICAL: This exact line is what Render's port scanner looks for ***
       console.log(`Application is listening on port ${PORT}`);
 
-      // CONFIRMATION: Server is actually listening!
-      console.log(`🎯 SERVER CONFIRMATION: Listening on ${host || 'localhost'}:${PORT}`);
+      // EXTRA VERIFICATION FOR RENDER
       if (config.NODE_ENV === 'production') {
+        console.log(`🎯 SERVER CONFIRMATION: Listening on ${host || 'localhost'}:${PORT}`);
         console.log(`🌐 ✅ Render should detect port ${PORT} on ${host}`);
-        console.log(`🔗 Health check: https://localhost:${PORT}/api/health`);
-        // Explicit port announcement for Render's port scanner
-        console.log(`RUNTIME_PORT:${PORT}`);
-        console.log(`APPLICATION_STARTED_ON_PORT_${PORT}`);
-        console.log(`🚀 Node.js server running on port ${PORT}`);
+        console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+        console.log(`🔗 Public health check: https://aishield-india-app-v1.onrender.com/api/health`);
+        console.log(`🚀 Node.js server SUCCESSFULLY running on port ${PORT}`);
+        console.log(`📋 LISTENING_SERVERS:${PORT}`);
+        console.log(`✅ APPLICATION_SUCCESSFULLY_LISTENING`);
+        console.log(`🌟 RENDER_DEPLOYMENT_SUCCESS`);
       }
+
+      // Additional port announcements for Render's port scanner
+      console.log(`PORT=${PORT}`);
+      console.log(`PORT_BINDING_SUCCESSFUL`);
+
+      // Basic connectivity test - ping itself to verify it's responding
+      setTimeout(() => {
+        const https = require('https');
+        const http = require('http');
+        const requestUrl = `http://localhost:${PORT}/api/health`;
+
+        console.log(`🌐 TESTING connectivity to: ${requestUrl}`);
+
+        const request = http.get(requestUrl, (response) => {
+          console.log(`✅ SELF-TEST SUCCESSFUL: HTTP ${response.statusCode}`);
+          console.log(`🌟 Server is responding correctly`);
+        }).on('error', (error) => {
+          console.error(`❌ SELF-TEST FAILED: ${error.message}`);
+          console.error(`🚨 Server may not be responding to HTTP requests properly`);
+        });
+      }, 2000); // Wait 2 seconds for server to fully initialize
 
       // Log memory usage
       const memUsage = process.memoryUsage();

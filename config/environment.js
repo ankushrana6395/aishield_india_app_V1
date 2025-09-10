@@ -36,6 +36,19 @@ const loadEnvironmentConfig = () => {
 // Load configurations
 loadEnvironmentConfig();
 
+// Add more persistent rendering and database troubleshooting
+console.log('\n🚀 SERVER DIAGNOSTICS:');
+console.log('  Platform:', process.platform);
+console.log('  Architecture:', process.arch);
+console.log('  Node Version:', process.version);
+console.log('  Working Directory:', process.cwd());
+
+if (process.platform === 'darwin' || process.platform === 'linux') {
+  console.log('  ✓ Compatible platform for deployment');
+} else {
+  console.log('  ⚠️  Platform may not be optimal for this deployment');
+}
+
 // Configuration object with validation and defaults
 const config = {
   // Server Configuration - Handle Render's PORT assignment
