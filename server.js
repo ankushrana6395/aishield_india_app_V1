@@ -483,5 +483,10 @@ async function startServer() {
   }
 }
 
-// Start the server
-startServer();
+// Export the Express app for use in server-render.js
+module.exports = app;
+
+// Start the server only if this file is run directly (not imported)
+if (require.main === module) {
+  startServer();
+}
