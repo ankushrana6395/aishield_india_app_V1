@@ -43,6 +43,14 @@ const config = {
 
   // Simplified Render-compliant PORT handling
   PORT: (() => {
+    console.log('🔍Extended PORT Debug Info:');
+    console.log(`  process.env.PORT: "${process.env.PORT}"`);
+    console.log(`  process.env.NODE_ENV: "${process.env.NODE_ENV}"`);
+    console.log(`  All environment vars containing PORT:`);
+    Object.keys(process.env).filter(key => key.includes('PORT')).forEach(key => {
+      console.log(`    ${key}: "${process.env[key]}"`);
+    });
+
     const renderPort = process.env.PORT;
 
     if (renderPort && !isNaN(parseInt(renderPort)) && parseInt(renderPort) > 0) {
@@ -53,7 +61,7 @@ const config = {
       // Fallback for development or manual testing
       const fallbackPort = process.env.NODE_ENV === 'production' ? 10000 : 3000;
       console.log(`⚠️  Invalid or missing PORT "${renderPort}", using fallback: ${fallbackPort}`);
-      console.log(`🔄 Check Render environment variables for PORT configuration`);
+      console.log(`🔄 Check Render dashboard > Service > Environment for PORT variable`);
       return fallbackPort;
     }
   })(),
