@@ -562,50 +562,73 @@ async function startServer() {
 // Export the Express app for use in server-render.js
 module.exports = app;
 
+console.log('🔄 DEBUG: Render Deployment Detection');
+console.log('  require.main === module?', require.main === module);
+console.log('  process.env.NODE_ENV:', process.env.NODE_ENV);
+
 // Check if this file is being run directly (not required by another file)
 // This handles both local development and Render deployment scenarios
 if (require.main === module) {
+  console.log('✅ DEBUG: Running directly as main module');
+
   // Check if we're running on Render (production environment)
   if (process.env.NODE_ENV === 'production') {
+    console.log('🚀 DEBUG: Production environment detected');
     console.log('🚀 Starting production server for Render...');
-    
+
     // Force production environment
     process.env.NODE_ENV = 'production';
-    
+
     // Get port from environment (Render assigns this)
     const RENDER_PORT = process.env.PORT ? parseInt(process.env.PORT) : 10000;
-    
+    console.log(`📍 DEBUG: Configured port: ${RENDER_PORT} (type: ${typeof RENDER_PORT})`);
+
     // Update the config with Render's port
     process.env.PORT = RENDER_PORT.toString();
-    
+
     console.log(`📍 Port configured: ${RENDER_PORT}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
     console.log(`🔗 Binding to 0.0.0.0:${RENDER_PORT}`);
-    
+
     // Explicitly log that the port is open for Render to detect
     console.log(`📡 PORT ${RENDER_PORT} IS NOW OPEN AND LISTENING`);
-    
-    // Start server with Render-specific configuration
-    startServer().catch((error) => {
-      console.error('🚨 CRITICAL: Server startup failed:', error.message);
-      console.error('🔍 ERROR DETAILS:', error);
-      
-      // Render-specific failsafe
-      console.log('🔄 ATTEMPTING RENDER FAILSAFE STARTUP');
-      
-      const host = '0.0.0.0';
-      console.log(`🛡️  Starting server at ${host}:${RENDER_PORT} (fallback mode)`);
-      
-      const server = app.listen(RENDER_PORT, host, () => {
-        console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${RENDER_PORT} (FAILSAFE MODE)`);
-        console.log(`🌐 ✅ Render should detect port ${RENDER_PORT} on ${host} - EVEN IF DATABASE FAILS`);
-        console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
-        console.log(`📡 PORT ${RENDER_PORT} IS NOW OPEN AND LISTENING`);
-      }).on('error', (fallbackError) => {
-        console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
-        process.exit(1);
+    console.log(`🎯 Starting server startup process...`);
+
+    try {
+      console.log('🔄 Calling startServer()...');
+      // Start server with Render-specific configuration
+      startServer().then(() => {
+        console.log('✅ startServer() completed successfully');
+      }).catch((error) => {
+        console.error('🚨 CRITICAL ERROR: startServer failed');
+        console.error('Error message:', error.message);
+        console.error('Stack trace:', error.stack);
+
+        // Render-specific failsafe
+        console.log('🔄 ATTEMPTING RENDER FAILSAFE STARTUP');
+
+        const host = '0.0.0.0';
+        console.log(`🛡️  Starting server at ${host}:${RENDER_PORT} (fallback mode)`);
+
+        try {
+          const server = app.listen(RENDER_PORT, host, () => {
+            console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${RENDER_PORT} (FAILSAFE MODE)`);
+            console.log(`🌐 ✅ Render should detect port ${RENDER_PORT} on ${host} - EVEN IF DATABASE FAILS`);
+            console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
+            console.log(`📡 PORT ${RENDER_PORT} IS NOW OPEN AND LISTENING`);
+          }).on('error', (fallbackError) => {
+            console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
+            process.exit(1);
+          });
+        } catch (failsafeError) {
+          console.error('❌ Fail-safe server creation failed:', failsafeError.message);
+          process.exit(1);
+        }
       });
-    });
+    } catch (syncError) {
+      console.error('🚨 SYNCHRONOUS ERROR during server startup:', syncError.message);
+      process.exit(1);
+    }
   } else {
     // Local development
     console.log('🚀 Starting server directly...');
