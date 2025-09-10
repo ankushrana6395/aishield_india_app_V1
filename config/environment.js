@@ -41,17 +41,37 @@ const config = {
 
   // Critical fix: Handle Render's runtime PORT assignment
   PORT: (() => {
-    // If it's the default string from .env.production, use Render's actual PORT
+
+    console.log('🔍 PORT DEBUG INFO:');
+    console.log(`  process.env.PORT value: "${process.env.PORT}"`);
+    console.log(`  process.env.PORT type: ${typeof process.env.PORT}`);
+
+    // Handle Render's explicit "Automatically set by Render" string
     if (process.env.PORT === 'Automatically set by Render') {
-      // In actual Render deployment, PORT will be the real numeric value
-      return 10000; // Default fallback for Render (typically 10000+)
+      console.log('📝 PORT explicitly set to "Automatically set by Render" in dashboard');
+      console.log('🔄 Falling back to default Render port range (10000)');
+      return 10000; // Render typically uses 10000+
     }
-    // For actual numeric values or undefined, parse normally
-    const port = process.env.PORT ? parseInt(process.env.PORT.replace(/[^0-9]/g, '')) : null;
+
+    // Handle undefined PORT (normal development)
+    if (!process.env.PORT) {
+      if (config.NODE_ENV === 'production') {
+        console.log('📝 No PORT set in production, using Render default');
+        return 10000;
+      } else {
+        console.log('📝 No PORT set in development, using localhost default');
+        return 5002;
+      }
+    }
+
+    // Handle numeric PORT values (shouldn't happen in Render but just in case)
+    const port = parseInt(process.env.PORT.toString().replace(/[^0-9]/g, ''));
     if (port && port >= 1000 && port <= 65536) {
-      return port; // Valid port number
+      console.log(`✅ Using provided PORT: ${port}`);
+      return port;
     }
-    // Fall back to appropriate defaults
+
+    console.log(`❓ Invalid PORT "${process.env.PORT}", using fallback`);
     return process.env.NODE_ENV === 'production' ? 10000 : 5002;
   })(),
   VERSION: process.env.npm_package_version || '2.0.0',

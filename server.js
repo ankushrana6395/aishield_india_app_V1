@@ -504,6 +504,13 @@ async function startServer() {
         pid: process.pid
       });
 
+      // CONFIRMATION: Server is actually listening!
+      console.log(`🎯 SERVER CONFIRMATION: Listening on ${host || 'localhost'}:${PORT}`);
+      if (config.NODE_ENV === 'production') {
+        console.log(`🌐 ✅ Render should detect port ${PORT} on ${host}`);
+        console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+      }
+
       // Log memory usage
       const memUsage = process.memoryUsage();
       Logger.info('Server memory usage', {
