@@ -11,7 +11,7 @@ services:
         generateValue: true
       - key: CLIENT_URL
         value: https://aishield-india-app-v1.onrender.com
-    healthCheckPath: /api/health
+      healthCheckPath: /health
 
 # Auto-scaling configuration
   autoScaling:

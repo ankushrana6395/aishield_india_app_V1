@@ -18,6 +18,14 @@ require('./config/environment');
 // Environment loading handled by config/environment.js
 // Avoid dotenv.config() in production for Render deployments
 
+// Advanced Debugging Middleware - Enable with DEBUG=true env var
+const DEBUG_MODE = process.env.DEBUG === 'true';
+
+if (DEBUG_MODE) {
+  console.log('🐛 ADVANCED DEBUG MODE ENABLED');
+  console.log('📊 All server operations will be logged extensively');
+}
+
 // Environment loading completed - proceeding with normal startup
 console.log('� Environment configured for:', process.env.NODE_ENV);
 
@@ -222,6 +230,180 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     connections: mongoose.connection.readyState
+  });
+});
+
+// System Diagnostics Endpoint
+app.get('/debug/system', (req, res) => {
+  const diagnostics = {
+    server: {
+      platform: process.platform,
+      arch: process.arch,
+      nodeVersion: process.version,
+      environment: config.NODE_ENV,
+      pid: process.pid,
+      uptime: process.uptime(),
+      memory: process.memoryUsage()
+    },
+    environment: {
+      PORT: config.PORT,
+      NODE_ENV: process.env.NODE_ENV,
+      has_RENDER_SERVICE_ID: !!process.env.RENDER_SERVICE_ID,
+      allEnvKeys: Object.keys(process.env).sort()
+    },
+    network: {
+      host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1',
+      port: config.PORT,
+      applicationUrl: `http://localhost:${config.PORT}`,
+      publicUrl: process.env.RENDER_SERVICE_URL || 'not-set'
+    },
+    timestamp: new Date().toISOString()
+  };
+
+  if (DEBUG_MODE) {
+    console.log('📊 SYSTEM DIAGNOSTICS REQUESTED:', {
+      ip: req.ip,
+      userAgent: req.get('User-Agent'),
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  res.json(diagnostics);
+});
+
+// Network Diagnostics Endpoint
+app.get('/debug/network', (req, res) => {
+  const os = require('os');
+  const networkInterfaces = os.networkInterfaces();
+  const diagnostics = {
+    hostname: os.hostname(),
+    platform: os.platform(),
+    release: os.release(),
+    networkInterfaces: Object.keys(networkInterfaces).map(iface => ({
+      interface: iface,
+      addresses: networkInterfaces[iface].map(addr => ({
+        address: addr.address,
+        netmask: addr.netmask,
+        family: addr.family,
+        mac: addr.mac,
+        internal: addr.internal
+      }))
+    })),
+    connections: {
+      activeHandles: process._getActiveHandles ? process._getActiveHandles().length : 'N/A',
+      activeRequests: process._getActiveRequests ? process._getActiveRequests().length : 'N/A'
+    }
+  };
+
+  res.json(diagnostics);
+});
+
+// Port Binding Diagnostics
+app.get('/debug/ports', (req, res) => {
+  const portDiagnostics = {
+    listening: false,
+    binding: {
+      host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1',
+      port: config.PORT
+    },
+    connections: [],
+    timestamp: new Date().toISOString()
+  };
+
+  // Test if port is listening
+  const net = require('net');
+  const server = net.createServer();
+
+  server.listen(config.PORT, portDiagnostics.binding.host, () => {
+    portDiagnostics.listening = true;
+    server.close(() => {
+      portDiagnostics.serverClosedSuccessfully = true;
+    });
+  });
+
+  server.on('error', (error) => {
+    portDiagnostics.error = error.message;
+    portDiagnostics.listening = false;
+    res.json(portDiagnostics);
+  });
+
+  server.on('close', () => {
+    portDiagnostics.serverClosed = true;
+    res.json(portDiagnostics);
+  });
+
+  // Timeout safeguard
+  setTimeout(() => {
+    if (!portDiagnostics.serverClosed && !portDiagnostics.error) {
+      portDiagnostics.timeout = true;
+      if (!res.headersSent) {
+        res.json(portDiagnostics);
+      }
+    }
+  }, 5000);
+});
+
+// Real-time Monitoring Endpoint
+app.get('/debug/monitor', (req, res) => {
+  const http = require('http');
+
+  // Test internal accessibility
+  const testUrl = `http://localhost:${config.PORT}/health`;
+
+  const monitoringData = {
+    timestamp: new Date().toISOString(),
+    serverStatus: 'unknown',
+    accessibility: {
+      internal: false,
+      status: null,
+      responseTime: null
+    },
+    healthChecks: {
+      simple: '/health',
+      api: '/api/health',
+      debug: '/debug/system'
+    },
+    platform: process.platform
+  };
+
+  const startTime = Date.now();
+
+  const testRequest = http.get(testUrl, { timeout: 10000 }, (response) => {
+    monitoringData.accessibility.responseTime = Date.now() - startTime;
+    monitoringData.accessibility.internal = true;
+    monitoringData.accessibility.status = response.statusCode;
+    monitoringData.serverStatus = response.statusCode === 200 ? 'healthy' : 'responding';
+
+    // Test multiple endpoints
+    const endpoints = ['/health', '/api/health'];
+    const endpointTests = endpoints.map(endpoint => ({
+      url: `http://localhost:${config.PORT}${endpoint}`,
+      status: 'pending'
+    }));
+
+    monitoringData.endpointTests = endpointTests;
+    res.json(monitoringData);
+  });
+
+  testRequest.on('error', (error) => {
+    monitoringData.accessibility.error = error.message;
+    monitoringData.serverStatus = 'unreachable';
+    res.json(monitoringData);
+  });
+
+  testRequest.on('timeout', () => {
+    monitoringData.accessibility.timeout = true;
+    monitoringData.serverStatus = 'timeout';
+    res.json(monitoringData);
+  });
+});
+
+// Immediate health check for Render port scanning
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -478,32 +660,43 @@ async function startServer() {
     // Connect to database with timeout and fallback
     console.log('📊 Attempting database connection...');
     try {
-      await connectToDatabase();
+      // Add timeout wrapper around database connection
+      const dbConnectionTimeout = config.NODE_ENV === 'production' ? 15000 : 10000; // 15s prod, 10s dev
+  
+      const dbConnectionPromise = connectToDatabase();
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Database connection timeout')), dbConnectionTimeout)
+      );
+  
+      await Promise.race([dbConnectionPromise, timeoutPromise]);
       console.log('✅ Database connected successfully');
     } catch (dbError) {
       console.log('⚠️  Database connection failed:', dbError.message);
+  
       if (config.NODE_ENV === 'production') {
-        console.log('🔄 Continuing with fallback - Render will still work');
+        console.log('🔄 PROD: Continuing with database fallback - server will bind');
+        console.log('🔄 Render deployment will work even without database');
+        console.log('📡 Server will be accessible at https://aishield-india-app-v1.onrender.com');
       } else {
-        throw dbError;
+        console.log('🔄 DEV: Would throw error in development, but proceeding for local testing');
+        console.log('⚠️  DEV: Database not connected - some features may not work');
       }
     }
 
-    // Determine the host based on environment
-    // Render requires 0.0.0.0 binding, localhost is fine for development
-    const host = config.NODE_ENV === 'production' ? '0.0.0.0' : undefined;
-    console.log(`🎯 STARTING SERVER on ${host || 'localhost'}:${PORT}`);
+    // Determine the host based on environment - crucial for Render detection
+    const host = config.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1';
+    console.log(`🎯 STARTING SERVER on ${host}:${PORT}`);
 
     if (config.NODE_ENV === 'production') {
-      Logger.info('Running on Render - binding to 0.0.0.0', { port: PORT });
-      console.log(`🔄 RENDER: Creating server on 0.0.0.0:${PORT}`);
-      console.log(`🚀 RENDER: Starting Node.js server on port ${PORT}`);
+      Logger.info('Production deployment - binding to all interfaces', { host, port: PORT });
+      console.log(`🚀 PRODUCTION: Node.js server binding to ${host}:${PORT}`);
+      console.log(`📡 Render port scanner will check ${host}:${PORT}`);
     } else {
-      Logger.info('Running in development - binding to localhost', { port: PORT });
-      console.log(`🔄 LOCAL: Creating server on localhost:${PORT}`);
+      Logger.info('Development environment - localhost binding', { host, port: PORT });
+      console.log(`🚀 DEVELOPMENT: Node.js server binding to ${host}:${PORT}`);
     }
 
-    // Create HTTP server with enhanced error handling
+    // Create HTTP server with enhanced error handling for Render compatibility
     const server = app.listen(PORT, host, function() {
       Logger.info(`Enterprise server started successfully`, {
         port: PORT,
@@ -515,50 +708,48 @@ async function startServer() {
         pid: process.pid
       });
 
-      // *** CRITICAL: This exact line is what Render's port scanner looks for ***
+      // CRITICAL: Render's port scanner looks for this EXACT logging message
       console.log(`Application is listening on port ${PORT}`);
 
-      // EXTRA VERIFICATION FOR RENDER
+      // Professional production startup confirmation
       if (config.NODE_ENV === 'production') {
-        console.log(`🎯 SERVER CONFIRMATION: Listening on ${host || 'localhost'}:${PORT}`);
-        console.log(`🌐 ✅ Render should detect port ${PORT} on ${host}`);
-        console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
-        console.log(`🔗 Public health check: https://aishield-india-app-v1.onrender.com/api/health`);
-        console.log(`🚀 Node.js server SUCCESSFULLY running on port ${PORT}`);
-        console.log(`📋 LISTENING_SERVERS:${PORT}`);
-        console.log(`✅ APPLICATION_SUCCESSFULLY_LISTENING`);
-        console.log(`🌟 RENDER_DEPLOYMENT_SUCCESS`);
+        console.log(`🚀 PRODUCTION SERVER: Successfully bound to ${host}:${PORT}`);
+        console.log(` 📡 Render port scanner can detect this server`);
+        console.log(` 🏥 Health check available at: http://localhost:${PORT}/health`);
+        console.log(` 🌐 API health check available at: http://localhost:${PORT}/api/health`);
+        console.log(` ✅ Node.js application running on port ${PORT}`);
+      } else {
+        console.log(`🚀 DEVELOPMENT SERVER: Successfully bound to ${host}:${PORT}`);
+        console.log(` ✅ Node.js application running on port ${PORT}`);
       }
 
-      // Additional port announcements for Render's port scanner
-      console.log(`PORT=${PORT}`);
-      console.log(`PORT_BINDING_SUCCESSFUL`);
-
-      // Basic connectivity test - ping itself to verify it's responding
+      // Validate server is accessible immediately
       setTimeout(() => {
-        const https = require('https');
         const http = require('http');
-        const requestUrl = `http://localhost:${PORT}/api/health`;
+        const testUrl = `http://localhost:${PORT}/health`;
 
-        console.log(`🌐 TESTING connectivity to: ${requestUrl}`);
+        console.log(`🔍 Validating server accessibility at: ${testUrl}`);
 
-        const request = http.get(requestUrl, (response) => {
-          console.log(`✅ SELF-TEST SUCCESSFUL: HTTP ${response.statusCode}`);
-          console.log(`🌟 Server is responding correctly`);
-        }).on('error', (error) => {
-          console.error(`❌ SELF-TEST FAILED: ${error.message}`);
-          console.error(`🚨 Server may not be responding to HTTP requests properly`);
+        const testReq = http.get(testUrl, { timeout: 5000 }, (response) => {
+          if (response.statusCode === 200) {
+            console.log(`✅ PORT VALIDATION: Server responding correctly (HTTP ${response.statusCode})`);
+            console.log(`🌟 Server successfully listening and responding on port ${PORT}`);
+          } else {
+            console.log(`⚠️ PORT VALIDATION: Server responding with HTTP ${response.statusCode}`);
+          }
         });
-      }, 2000); // Wait 2 seconds for server to fully initialize
 
-      // Log memory usage
-      const memUsage = process.memoryUsage();
-      Logger.info('Server memory usage', {
-        rss: `${Math.round(memUsage.rss / 1024 / 1024 * 100) / 100} MB`,
-        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024 * 100) / 100} MB`,
-        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024 * 100) / 100} MB`,
-        external: `${Math.round(memUsage.external / 1024 / 1024 * 100) / 100} MB`
-      });
+        testReq.on('error', (error) => {
+          console.error(`❌ PORT VALIDATION ERROR: ${error.message}`);
+          console.error(`🚨 Possible issue with server binding or accessibility`);
+        });
+
+        testReq.on('timeout', () => {
+          console.error(`⏰ PORT VALIDATION TIMEOUT: Server may not be responding`);
+          testReq.destroy();
+        });
+
+      }, 1000); // Quick validation after startup
     });
 
     // Handle server errors

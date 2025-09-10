@@ -9,7 +9,14 @@
     "build": "echo 'Installing root dependencies...' && npm install && echo 'Installing client dependencies...' && cd client && npm install --legacy-peer-deps && echo 'Building React app...' && npm run build",
     "client": "cd client && npm start",
     "dev:client": "cd client && npm run dev",
-    "dev:server": "nodemon server.js"
+    "dev:server": "nodemon server.js",
+    "debug:local": "DEBUG=true node server.js",
+    "debug:health": "node debug-server.js",
+    "debug:system": "node debug-server.js system",
+    "debug:network": "node debug-server.js network",
+    "debug:ports": "node debug-server.js ports",
+    "debug:monitor": "node debug-server.js monitor",
+    "test:deploy": "node test-deployment.js"
   },
   "keywords": [
     "penetration-testing",
