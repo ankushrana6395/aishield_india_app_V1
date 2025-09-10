@@ -18,7 +18,29 @@ require('./config/environment');
 // Load environment and configuration
 require('dotenv').config();
 
-// Log environment setup for debugging
+// EMERGENCY SERVER STARTUP - BEFORE ANYTHING ELSE
+const EMERGENCY_PORT = parseInt(process.env.PORT) || 10000;
+console.log(`🚨 EMERGENCY SERVER STARTUP - FORCE BINDING TO 0.0.0.0:${EMERGENCY_PORT}`);
+
+const express = require('express');
+const emergencyApp = express();
+
+emergencyApp.get('/', (req, res) => {
+  res.send('Server is running - emergency mode!');
+});
+
+emergencyApp.get('/health', (req, res) => {
+  res.json({ status: 'healthy', port: EMERGENCY_PORT });
+});
+
+// Start emergency server IMMEDIATELY
+const emergencyServer = emergencyApp.listen(EMERGENCY_PORT, '0.0.0.0', () => {
+  console.log(`🚨 EMERGENCY SERVER: LISTENING on 0.0.0.0:${EMERGENCY_PORT}`);
+  console.log(`🚨 EMERGENCY SERVER: RENDER SHOULD DETECT THIS PORT`);
+  console.log(`🚨 EMERGENCY SERVER: HEALTH CHECK: http://localhost:${EMERGENCY_PORT}/health`);
+});
+
+// Continue with original setup
 console.log('🔧 Environment Setup:', {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
