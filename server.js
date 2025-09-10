@@ -442,10 +442,21 @@ async function startServer() {
     // Connect to database
     await connectToDatabase();
 
+    // Determine the host based on environment
+    // Render requires 0.0.0.0 binding, localhost is fine for development
+    const host = config.NODE_ENV === 'production' ? '0.0.0.0' : undefined;
+
+    if (config.NODE_ENV === 'production') {
+      Logger.info('Running on Render - binding to 0.0.0.0', { port: PORT });
+    } else {
+      Logger.info('Running in development - binding to localhost', { port: PORT });
+    }
+
     // Create HTTP server
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, host, () => {
       Logger.info(`Enterprise server started successfully`, {
         port: PORT,
+        host: host || 'localhost',
         environment: config.NODE_ENV,
         version: config.VERSION || '2.0.0',
         nodeVersion: process.version,
