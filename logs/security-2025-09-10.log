@@ -8822,3 +8822,795 @@
   "environment": "production",
   "version": "2.0.0"
 }
+{
+  "timestamp": "2025-09-10 14:58:27.381",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 14:58:27.433",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 14:58:27.451",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 14:58:27.457",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 14:58:27.492",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 14:58:27.493",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 14:58:27.534",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 14:58:27.534",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 14:58:27.555",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 14:58:27.555",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 14:58:27.557",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 29938
+}
+{
+  "timestamp": "2025-09-10 14:58:28.569",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:28:28 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"-\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.308",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.313",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.323",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.324",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.387",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.397",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.436",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/subscription-plans/plans?limit=10 HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:35.442",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:35 +0000] \"GET /api/subscription-plans/plans?limit=10 HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.970",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.972",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/admin/categories HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.974",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.974",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/admin/categories HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.975",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.975",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/admin/categories HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.976",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.977",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.987",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.988",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/admin/users HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.989",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.989",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/admin/subscribers HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.992",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:37.992",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:37 +0000] \"OPTIONS /api/admin/lectures HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.022",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/categories HTTP/1.1\" 200 803 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.024",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/categories HTTP/1.1\" 200 803 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.025",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/categories HTTP/1.1\" 200 803 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.034",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.035",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"OPTIONS /api/admin/categories HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.035",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.036",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"OPTIONS /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.037",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.037",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"OPTIONS /api/admin/users HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.038",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/subscribers HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.045",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.046",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/categories HTTP/1.1\" 200 803 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.048",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.048",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"OPTIONS /api/admin/subscribers HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.053",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.053",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"OPTIONS /api/admin/lectures HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.055",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.072",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/users HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.072",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/users HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.076",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/subscribers HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.076",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/lectures HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:38.082",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:38 +0000] \"GET /api/admin/lectures HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:42.499",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:42 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:01:42.499",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:31:42 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:02:15.543",
+  "level": "INFO",
+  "message": "Allowing localhost origin in development",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:5002"
+}
+{
+  "timestamp": "2025-09-10 15:02:15.596",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:32:15 +0000] \"POST /api/courses/admin/courses HTTP/1.1\" 201 174 \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:02:15.616",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:32:15 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:04:44.160",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:34:44 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:04:44.168",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:34:44 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:04:44.171",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:34:44 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:04:44.173",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:34:44 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:04:44.198",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:34:44 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:04:44.200",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:34:44 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:15.311",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 15:05:15.361",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 15:05:15.379",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 15:05:15.384",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 15:05:15.419",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 15:05:15.420",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 15:05:15.451",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 15:05:15.452",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:15.467",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 15:05:15.467",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 15:05:15.469",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 30986
+}
+{
+  "timestamp": "2025-09-10 15:05:16.491",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:16 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"-\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:18.612",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:18 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:18.614",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:18 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:18.628",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:18 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:18.630",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:18 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:18.669",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:18 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:18.669",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:18 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:47.726",
+  "level": "INFO",
+  "message": "Allowing localhost origin in development",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:5002"
+}
+{
+  "timestamp": "2025-09-10 15:05:47.777",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:47 +0000] \"POST /api/courses/admin/courses HTTP/1.1\" 201 170 \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 15:05:47.794",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [10/Sep/2025:09:35:47 +0000] \"GET /api/courses/admin/courses?page=1&limit=10&status=all&search=&sortBy=createdAt&sortOrder=desc HTTP/1.1\" 200 - \"http://localhost:3000/admin/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}

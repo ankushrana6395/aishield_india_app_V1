@@ -255,5 +255,35 @@ try {
   }
 }
 
+// Database connectivity status for graceful degradation
+config.isDatabaseConnected = false;
+
+// Test database connectivity (non-blocking)
+if (process.NODE_ENV === 'production') {
+  setTimeout(async () => {
+    try {
+      const mongoose = require('mongoose');
+      const conn = mongoose.connection;
+
+      // Quick test with timeout
+      if (conn.readyState === 1) {
+        config.isDatabaseConnected = true;
+        console.log('📊 DATABASE: Connected and ready for operations');
+      } else {
+        console.log('📊 DATABASE: Connection test pending...');
+        // Safe test that won't throw in production
+        const testDoc = await mongoose.connection.db?.admin()?.ping();
+        if (testDoc) {
+          config.isDatabaseConnected = true;
+          console.log('📊 DATABASE: Connection recovered - operations enabled');
+        }
+      }
+    } catch (error) {
+      console.log('📊 DATABASE: Not connected - running in degraded mode');
+      console.log('⚠️  All database operations will return 503 or fallback');
+    }
+  }, 5000); // Test connection 5 seconds after config load
+}
+
 // Export configuration object
 module.exports = config;

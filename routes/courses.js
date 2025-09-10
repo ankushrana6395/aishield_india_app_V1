@@ -1,10 +1,41 @@
 const express = require('express');
 const router = express.Router();
+// Check database connectivity for production safety
+const config = require('../config/environment');
+
+// Database availability middleware for production
+const requireDatabase = async (req, res, next) => {
+  try {
+    // In production without database, return appropriate error
+    if (!config.isDatabaseConnected && config.NODE_ENV === 'production') {
+      console.log('🚨 DATABASE NOT AVAILABLE - Blocking course operation');
+      return res.status(503).json({
+        error: 'Database temporarily unavailable',
+        message: 'The service is experiencing database connectivity issues. Please try again later.',
+        retryAfter: 30,
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Update connection status if needed
+    if (mongoose?.connection?.readyState !== 1) {
+      console.log('⚠️  Database connection state may be stale');
+    }
+
+    next();
+  } catch (error) {
+    console.error('Database availability check failed:', error.message);
+    // Continue to allow graceful degradation
+    next();
+  }
+};
+
 const Course = require('../models/Course');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 const subscription = require('../middleware/subscription');
 const { body, param, validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
 // Validation rules
 const courseValidation = [
@@ -526,7 +557,7 @@ router.get('/admin/courses', async (req, res) => {
 });
 
 // Create new course (admin)
-router.post('/admin/courses', courseValidation, async (req, res) => {
+router.post('/admin/courses', requireDatabase, courseValidation, async (req, res) => {
   try {
     const validationErrors = validationResult(req);
     if (!validationErrors.isEmpty()) {
@@ -536,18 +567,28 @@ router.post('/admin/courses', courseValidation, async (req, res) => {
       });
     }
 
-    // Check if slug already exists before creating
-    const existingCourse = await Course.findOne({ slug: req.body.slug });
-    if (existingCourse) {
-      console.error('Duplicate slug validation - existing course found:', existingCourse.slug);
-      return res.status(409).json({
-        error: 'Duplicate course',
-        message: `A course with slug "${req.body.slug}" already exists. Please use a different slug.`,
-        existingCourse: {
-          id: existingCourse._id,
-          title: existingCourse.title,
-          slug: existingCourse.slug
-        }
+    // Check if slug already exists before creating - with database error handling
+    try {
+      const existingCourse = await Course.findOne({ slug: req.body.slug });
+      if (existingCourse) {
+        console.error('Duplicate slug validation - existing course found:', existingCourse.slug);
+        return res.status(409).json({
+          error: 'Duplicate course',
+          message: `A course with slug "${req.body.slug}" already exists. Please use a different slug.`,
+          existingCourse: {
+            id: existingCourse._id,
+            title: existingCourse.title,
+            slug: existingCourse.slug
+          }
+        });
+      }
+    } catch (dbError) {
+      console.error('Database query failed during slug validation:', dbError.message);
+      return res.status(503).json({
+        error: 'Database unavailable',
+        message: 'Unable to verify course uniqueness. Database is temporarily unavailable.',
+        details: 'Please try again in a few minutes.',
+        timestamp: new Date().toISOString()
       });
     }
 
