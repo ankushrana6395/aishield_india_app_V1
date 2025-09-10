@@ -6,6 +6,11 @@ const lectureSchema = new mongoose.Schema({
     ref: 'Category',
     required: true
   },
+  course: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course',
+    required: false // Allow lectures without courses initially
+  },
   title: {
     type: String,
     required: true,

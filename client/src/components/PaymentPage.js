@@ -6,14 +6,55 @@ import axios from 'axios';
 const PaymentPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const { user, updateSubscriptionStatus } = useAuth();
   const navigate = useNavigate();
   const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || 'your_razorpay_key_id';
 
-  // If user is already subscribed, redirect to dashboard
+  // Load selected plan details from localStorage
   useEffect(() => {
+    console.log('🚀 PaymentPage: useEffect triggered for plan loading');
+    const planData = localStorage.getItem('selectedPlan');
+    console.log('📦 PaymentPage: localStorage planData:', planData);
+
+    if (planData) {
+      try {
+        const plan = JSON.parse(planData);
+        console.log('🔄 PaymentPage: Loaded selected plan:', {
+          name: plan.name,
+          price: plan.pricing?.price,
+          currency: plan.pricing?.currency,
+          planId: plan._id
+        });
+        setSelectedPlan(plan);
+      } catch (error) {
+        console.error('❌ PaymentPage: Error parsing selected plan data:', error);
+        setError('Invalid plan data. Please select a plan again.');
+      }
+    } else {
+      console.log('⚠️ PaymentPage: No selected plan found in localStorage');
+      setError('No plan selected. Please choose a subscription plan first.');
+      // Don't redirect immediately - let user see the error
+      // setTimeout(() => navigate('/'), 3000);
+    }
+  }, []);
+
+  // If user is already subscribed to any plan, redirect to dashboard
+  useEffect(() => {
+    console.log('🔐 PaymentPage: Subscription check useEffect');
+    console.log('👤 PaymentPage: User details:', {
+      userPresent: !!user,
+      userName: user?.name,
+      isSubscribed: user?.isSubscribed,
+      subscription: user?.subscription
+    });
+
     if (user && user.isSubscribed) {
+      console.log('⚠️ PaymentPage: User already has active subscription, redirecting to dashboard');
+      console.log('📋 PaymentPage: User subscription details:', user.subscription);
       navigate('/');
+    } else {
+      console.log('✅ PaymentPage: User can proceed with payment (no active subscription)');
     }
   }, [user, navigate]);
 
@@ -35,44 +76,114 @@ const PaymentPage = () => {
     setLoading(true);
     setError('');
 
+    console.log('🚀 PaymentPage: Starting payment process');
+
+    // Ensure selected plan exists
+    if (!selectedPlan) {
+      console.error('❌ PaymentPage: No plan selected');
+      setError('No plan selected. Please go back and choose a plan.');
+      setLoading(false);
+      return;
+    }
+    console.log('✅ PaymentPage: Plan verified:', { name: selectedPlan.name, planId: selectedPlan._id });
+
     // Load Razorpay script
+    console.log('⏳ PaymentPage: Loading Razorpay script...');
     const res = await loadRazorpayScript();
-    
+
     if (!res) {
+      console.error('❌ PaymentPage: Failed to load Razorpay script');
       setError('Failed to load payment gateway. Please try again later.');
       setLoading(false);
       return;
     }
+    console.log('✅ PaymentPage: Razorpay script loaded successfully');
 
     try {
-      // Create order
-      const orderResponse = await axios.post('/api/payment/order', {
-        amount: 1999, // ₹19.99
-        currency: 'INR'
+      // Use plan-specific pricing
+      const planPrice = selectedPlan.pricing?.price || selectedPlan.price || 19.99;
+      const planCurrency = selectedPlan.pricing?.currency || 'INR';
+      const planId = selectedPlan._id;
+
+      console.log('💳 PaymentPage: Creating order for plan:', {
+        planName: selectedPlan.name,
+        planId,
+        price: planPrice,
+        currency: planCurrency,
+        razorpayKey: razorpayKey ? '[SET]' : '[NOT SET]'
       });
+
+      // Get auth token
+      const token = localStorage.getItem('token');
+      console.log('🎫 PaymentPage: Auth token present:', !!token);
+
+      // Create order with plan-specific amount and planId
+      console.log('📡 PaymentPage: Making API call to /api/payment/order');
+      const orderResponse = await axios.post('/api/payment/order', {
+        amount: planPrice,
+        currency: planCurrency,
+        planId: planId
+      }, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('✅ PaymentPage: Order created successfully:', {
+        orderId: orderResponse.data.orderId,
+        amount: orderResponse.data.amount,
+        currency: orderResponse.data.currency,
+        status: orderResponse.status
+      });
+
+      // Check if Razorpay is available
+      console.log('🔍 PaymentPage: Checking if Razorpay object is available:', !!window.Razorpay);
+      if (!window.Razorpay) {
+        console.error('❌ PaymentPage: Razorpay object not found on window');
+        setError('Payment gateway not loaded. Please refresh the page.');
+        setLoading(false);
+        return;
+      }
 
       const options = {
         key: razorpayKey,
         amount: orderResponse.data.amount,
         currency: orderResponse.data.currency,
-        name: 'PenTest Learning Platform',
-        description: 'Full Course Access',
+        name: 'AIShield India',
+        description: `${selectedPlan.name} - Course Access`,
         order_id: orderResponse.data.orderId,
         handler: async function (response) {
           try {
-            // Verify payment
+            console.log('🔄 PaymentPage: Payment completed, verifying...', response);
+
+            // Verify payment with planId
             const verifyResponse = await axios.post('/api/payment/verify', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature
+              razorpay_signature: response.razorpay_signature,
+              planId: planId
+            }, {
+              headers: {
+                Authorization: token ? `Bearer ${token}` : undefined,
+                'Content-Type': 'application/json'
+              }
             });
-            
+
+            console.log('✅ PaymentPage: Payment verified:', verifyResponse.data);
+
             if (verifyResponse.data.success) {
+              // Clear the selected plan from localStorage after successful payment
+              localStorage.removeItem('selectedPlan');
               updateSubscriptionStatus(true);
+              console.log('🏠 PaymentPage: Redirecting to dashboard after successful payment');
               navigate('/');
+            } else {
+              console.error('❌ PaymentPage: Payment verification failed');
+              setError('Payment verification failed. Please contact support.');
             }
           } catch (err) {
-            console.error('Payment verification error:', err);
+            console.error('❌ PaymentPage: Payment verification error:', err);
             setError('Payment verification failed. Please contact support.');
           }
         },
@@ -85,10 +196,32 @@ const PaymentPage = () => {
         }
       };
 
+      console.log('🎯 PaymentPage: Initializing Razorpay with options:', {
+        key: razorpayKey,
+        amount: options.amount,
+        currency: options.currency,
+        orderId: options.order_id
+      });
+
       const paymentObject = new window.Razorpay(options);
+
+      // Add error callback
+      paymentObject.on('payment.failed', function (response){
+        console.error('❌ PaymentPage: Payment failed:', response.error);
+        setError('Payment failed. Please try again.');
+      });
+
+      console.log('🔓 PaymentPage: Opening Razorpay payment modal');
       paymentObject.open();
+
     } catch (err) {
-      console.error('Payment initialization error:', err);
+      console.error('❌ PaymentPage: Payment initialization error:', err);
+      console.error('Error details:', {
+        message: err.message,
+        code: err.code,
+        status: err.response?.status,
+        responseData: err.response?.data
+      });
       setError('Failed to initialize payment. Please try again.');
     } finally {
       setLoading(false);
@@ -351,66 +484,144 @@ const PaymentPage = () => {
       
       <div className="payment-container">
         <div className="payment-header">
-          <h1 className="payment-title">Get Full <span style={{color: '#00ff88'}}>Course</span> Access</h1>
-          <p className="payment-subtitle">Unlock all penetration testing lectures and resources</p>
+          <h1 className="payment-title">Subscribe to <span style={{color: '#00ff88'}}>{selectedPlan?.name || 'Course Plan'}</span></h1>
+          <p className="payment-subtitle">
+            {selectedPlan?.description || 'Unlock premium course content with this subscription plan'}
+          </p>
         </div>
-        
+
         <div className="payment-layout">
           <div className="features-section">
-            <h2 className="features-title">Course Features</h2>
-            
-            <div className="feature-item">
-              <div className="feature-icon">✓</div>
-              <div className="feature-text">30+ Comprehensive Penetration Testing Lectures</div>
-            </div>
-            
-            <div className="feature-item">
-              <div className="feature-icon">✓</div>
-              <div className="feature-text">Hands-on Practical Examples</div>
-            </div>
-            
-            <div className="feature-item">
-              <div className="feature-icon">✓</div>
-              <div className="feature-text">Regular Content Updates</div>
-            </div>
-            
-            <div className="feature-item">
-              <div className="feature-icon">✓</div>
-              <div className="feature-text">Certificate of Completion</div>
-            </div>
-            
-            <div className="feature-item">
-              <div className="feature-icon">✓</div>
-              <div className="feature-text">24/7 Access to All Materials</div>
-            </div>
+            <h2 className="features-title">Plan Features</h2>
+
+            {/* Display courses included in the plan */}
+            {selectedPlan?.includedCourses?.length > 0 && (
+              <div className="feature-item">
+                <div className="feature-icon">📚</div>
+                <div className="feature-text">
+                  <strong>{selectedPlan.includedCourses.length} Course{selectedPlan.includedCourses.length !== 1 ? 's' : ''} Included:</strong>
+                  <ul style={{ margin: '10px 0', paddingLeft: '20px' }}>
+                    {selectedPlan.includedCourses.slice(0, 3).map((course, index) => (
+                      <li key={index} style={{ marginBottom: '5px' }}>
+                        {course.courseName || course.name || `Course ${index + 1}`}
+                      </li>
+                    ))}
+                    {selectedPlan.includedCourses.length > 3 && (
+                      <li style={{ fontStyle: 'italic', color: '#00aaff' }}>
+                        +{selectedPlan.includedCourses.length - 3} more courses
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* Display features from the plan */}
+            {selectedPlan?.features && (
+              <>
+                {selectedPlan.features.certificates && (
+                  <div className="feature-item">
+                    <div className="feature-icon">✓</div>
+                    <div className="feature-text">Certificate of Completion</div>
+                  </div>
+                )}
+
+                {selectedPlan.features.unlimitedLectures && (
+                  <div className="feature-item">
+                    <div className="feature-icon">✓</div>
+                    <div className="feature-text">Unlimited Lecture Access</div>
+                  </div>
+                )}
+
+                {selectedPlan.features.mobileAccess && (
+                  <div className="feature-item">
+                    <div className="feature-icon">✓</div>
+                    <div className="feature-text">Mobile & Desktop Access</div>
+                  </div>
+                )}
+
+                {selectedPlan.features.lifetimeAccess && (
+                  <div className="feature-item">
+                    <div className="feature-icon">✓</div>
+                    <div className="feature-text">Lifetime Access</div>
+                  </div>
+                )}
+
+                {selectedPlan.features.prioritySupport && (
+                  <div className="feature-item">
+                    <div className="feature-icon">✓</div>
+                    <div className="feature-text">Priority Support</div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Default features if no plan-specific features */}
+            {(!selectedPlan?.features || Object.keys(selectedPlan.features).length === 0) && (
+              <>
+                <div className="feature-item">
+                  <div className="feature-icon">✓</div>
+                  <div className="feature-text">30+ Comprehensive Lectures</div>
+                </div>
+
+                <div className="feature-item">
+                  <div className="feature-icon">✓</div>
+                  <div className="feature-text">Hands-on Practical Examples</div>
+                </div>
+
+                <div className="feature-item">
+                  <div className="feature-icon">✓</div>
+                  <div className="feature-text">Regular Content Updates</div>
+                </div>
+
+                <div className="feature-item">
+                  <div className="feature-icon">✓</div>
+                  <div className="feature-text">Certificate of Completion</div>
+                </div>
+
+                <div className="feature-item">
+                  <div className="feature-icon">✓</div>
+                  <div className="feature-text">24/7 Access to All Materials</div>
+                </div>
+              </>
+            )}
           </div>
-          
+
           <div className="pricing-section">
-            <div className="price-display">₹19.99</div>
-            <div className="price-description">One-time payment for lifetime access</div>
-            
+            <div className="price-display">
+              {selectedPlan?.pricing?.currency === 'INR' ? '₹' : '$'}
+              {selectedPlan?.pricing?.price || selectedPlan?.price || '19.99'}
+            </div>
+            <div className="price-description">
+              {selectedPlan?.pricing?.billingCycle === 'monthly' ? 'Monthly subscription' :
+               selectedPlan?.pricing?.billingCycle === 'yearly' ? 'Yearly subscription' :
+               selectedPlan?.pricing?.billingCycle === 'quarterly' ? 'Quarterly subscription' :
+               selectedPlan?.pricing?.billingCycle === 'lifetime' ? 'One-time payment for lifetime access' :
+               'One-time payment for lifetime access'}
+            </div>
+
             <div className="security-info">
               <div className="security-icon">🔒</div>
               <div className="security-text">
                 Secure payment powered by Razorpay. Your payment information is encrypted and secure.
               </div>
             </div>
-            
+
             {error && (
               <div className="error-message">{error}</div>
             )}
-            
+
             <button
               className="payment-button"
               onClick={displayRazorpay}
-              disabled={loading}
+              disabled={loading || !selectedPlan}
             >
               {loading ? (
                 <span>
                   <span className="loading-spinner"></span> Processing...
                 </span>
               ) : (
-                'Proceed to Payment'
+                `Subscribe to ${selectedPlan?.name || 'Plan'}`
               )}
             </button>
           </div>

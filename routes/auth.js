@@ -97,6 +97,57 @@ router.get('/profile', auth, async (req, res) => {
   }
 });
 
+// Update user profile
+router.put('/profile', auth, async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    // Check if new email is already taken by another user
+    const existingUser = await User.findOne({
+      email,
+      _id: { $ne: req.user._id }
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already taken by another user' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { name, email },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    res.json({
+      message: 'Profile updated successfully',
+      user
+    });
+  } catch (err) {
+    console.error('Profile update error:', err);
+    res.status(500).json({ message: 'Server error updating profile' });
+  }
+});
+
+// Delete user account
+router.delete('/profile', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(req.user._id);
+
+    res.json({
+      message: 'Account deleted successfully'
+    });
+  } catch (err) {
+    console.error('Profile delete error:', err);
+    res.status(500).json({ message: 'Server error deleting account' });
+  }
+});
+
 // Update user progress
 router.put('/progress', auth, async (req, res) => {
   try {

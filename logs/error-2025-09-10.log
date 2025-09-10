@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-09-10 09:28:53.469",
+  "level": "ERROR",
+  "message": "Server error",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "error": "listen EADDRINUSE: address already in use :::5002"
+}
+{
+  "timestamp": "2025-09-10 10:15:03.791",
+  "level": "ERROR",
+  "message": "Server error",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "error": "listen EADDRINUSE: address already in use :::5002"
+}
+{
+  "timestamp": "2025-09-10 10:29:55.217",
+  "level": "ERROR",
+  "message": "Server error",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "error": "listen EADDRINUSE: address already in use :::5002"
+}

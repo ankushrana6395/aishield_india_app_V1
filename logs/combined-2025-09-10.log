@@ -1,0 +1,3845 @@
+{
+  "timestamp": "2025-09-10 09:15:32.034",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:15:32.091",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:15:32.116",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:15:32.121",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:15:32.160",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:15:32.161",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:15:32.196",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:15:32.196",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:15:32.225",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:15:32.227",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 1616
+}
+{
+  "timestamp": "2025-09-10 09:15:32.227",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "104.16 MB",
+  "heapTotal": "62.41 MB",
+  "heapUsed": "28.65 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:16:00.261",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:16:02.354",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:16:02.356",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:22:23.791",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:22:23.793",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:22:25.493",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:22:25.497",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:24:33.551",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:24:33.554",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:24:34.927",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:25:18.469",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:25:18.521",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:25:18.541",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:25:18.547",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:25:18.594",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:25:18.595",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:25:18.637",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:25:18.638",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:25:18.652",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:25:18.655",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 2938
+}
+{
+  "timestamp": "2025-09-10 09:25:18.655",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "104.05 MB",
+  "heapTotal": "62.66 MB",
+  "heapUsed": "28.58 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:25:24.825",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:25:36.521",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:25:42.335",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:26:08.161",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:26:08.163",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:26:08.167",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:26:08.177",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:26:12.234",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:22.422",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:22.429",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:23.612",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:23.614",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:23.619",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:23.621",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:25.173",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:28:53.286",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:28:53.339",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:28:53.362",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:28:53.367",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:28:53.411",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:28:53.413",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:28:53.449",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:28:53.450",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:28:53.467",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:29:13.780",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:29:13.829",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:29:13.850",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:29:13.856",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:29:13.894",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:29:13.895",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:29:13.934",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:29:13.934",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:29:13.943",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:29:13.946",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 3775
+}
+{
+  "timestamp": "2025-09-10 09:29:13.947",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "103.63 MB",
+  "heapTotal": "58.66 MB",
+  "heapUsed": "38.02 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:29:16.032",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:29:16.047",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:29:17.266",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:29:17.274",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:29:17.277",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:29:17.281",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:29:18.823",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:30:40.674",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:30:40.728",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:30:40.748",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:30:40.753",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:30:40.790",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:30:40.792",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:30:40.821",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:30:40.821",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:30:40.830",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:30:40.832",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 4110
+}
+{
+  "timestamp": "2025-09-10 09:30:40.832",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "103.13 MB",
+  "heapTotal": "59.16 MB",
+  "heapUsed": "37.61 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:31:36.618",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:31:36.634",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:31:37.762",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:31:37.764",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:31:37.774",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:31:37.781",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:31:39.289",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:34:40.035",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:34:40.037",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:34:40.050",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:34:40.053",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:34:49.064",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:36:19.605",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:36:19.608",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:01.960",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:01.961",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:01.962",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:01.963",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:01.964",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:04.218",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:04.312",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:14.598",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:19.849",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:37:24.673",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:39:10.521",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/favicon.ico",
+  "method": "GET",
+  "userId": "68c0059399895e416990eef4"
+}
+{
+  "timestamp": "2025-09-10 09:39:29.094",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:39:29.145",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:39:29.164",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:39:29.169",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:39:29.205",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:39:29.207",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:39:29.241",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:39:29.242",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:39:29.251",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:39:29.253",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 5262
+}
+{
+  "timestamp": "2025-09-10 09:39:29.254",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "102.63 MB",
+  "heapTotal": "58.91 MB",
+  "heapUsed": "37.89 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:40:18.261",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:43:21.789",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:43:21.840",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:43:21.862",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:43:21.868",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:43:21.906",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:43:21.907",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:43:21.940",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:43:21.940",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:43:21.954",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:43:21.956",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 5723
+}
+{
+  "timestamp": "2025-09-10 09:43:21.957",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "104.41 MB",
+  "heapTotal": "62.91 MB",
+  "heapUsed": "28.59 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:45:10.991",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:45:11.040",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:45:11.062",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:45:11.067",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:45:11.106",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:45:11.107",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:45:11.142",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:45:11.142",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:45:11.155",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:45:11.157",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 6113
+}
+{
+  "timestamp": "2025-09-10 09:45:11.157",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "103.19 MB",
+  "heapTotal": "58.41 MB",
+  "heapUsed": "38.09 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:46:03.224",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.b27087ca9c821c8b8a02.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 09:46:03.268",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15",
+  "url": "/main.b27087ca9c821c8b8a02.hot-update.json",
+  "method": "GET",
+  "userId": "68b98419467cfade7b3fbb3f"
+}
+{
+  "timestamp": "2025-09-10 09:46:03.665",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:05.316",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:05.321",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:05.947",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:05.948",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:08.260",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:09.613",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:46:13.378",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.b27087ca9c821c8b8a02.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 09:46:14.253",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15",
+  "url": "/main.b27087ca9c821c8b8a02.hot-update.json",
+  "method": "GET",
+  "userId": "68b98419467cfade7b3fbb3f"
+}
+{
+  "timestamp": "2025-09-10 09:50:07.943",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:07.964",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:07.965",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/main.f87b708a30bac53190e5.hot-update.json",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 09:50:12.103",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.866",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.868",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.870",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.877",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.886",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.888",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.891",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.921",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.922",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.924",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:15.956",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:28.483",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:28.484",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:28.485",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:28.489",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:28.495",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:35.287",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:42.695",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:50:51.185",
+  "level": "INFO",
+  "message": "Allowing localhost origin in development",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:5002"
+}
+{
+  "timestamp": "2025-09-10 09:50:53.158",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:12.203",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:12.205",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:12.207",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:12.208",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:19.005",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:22.680",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:25.942",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:25.943",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:27.504",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:51:29.061",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:53:13.031",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:646:15\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:265:14)\n    at router.handle (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:175:3)\n    at router (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:47:12)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/payment/test",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 09:54:41.675",
+  "level": "INFO",
+  "message": "Health check requested",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0"
+}
+{
+  "timestamp": "2025-09-10 09:56:11.542",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 09:56:11.594",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:56:11.614",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 09:56:11.620",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 09:56:11.664",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:56:11.666",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 09:56:11.695",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 09:56:11.695",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 09:56:11.712",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 09:56:11.713",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 8218
+}
+{
+  "timestamp": "2025-09-10 09:56:11.714",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "104.47 MB",
+  "heapTotal": "62.66 MB",
+  "heapUsed": "28.64 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 09:56:23.012",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 09:56:37.757",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:01:44.606",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:01:44.677",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:01:44.699",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:01:44.705",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:01:44.765",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:01:44.766",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:01:44.795",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:01:44.795",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:01:44.809",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:01:44.813",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 9029
+}
+{
+  "timestamp": "2025-09-10 10:01:44.813",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "103.88 MB",
+  "heapTotal": "62.66 MB",
+  "heapUsed": "28.59 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 10:02:52.024",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:646:15\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:265:14)\n    at router.handle (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:175:3)\n    at router (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:47:12)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/payment/test",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:03:47.658",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:03:47.670",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:03:59.975",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:646:15\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:265:14)\n    at router.handle (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:175:3)\n    at router (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:47:12)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/payment/test",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:08:59.541",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:09:28.399",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:09:28.446",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:09:28.466",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:09:28.471",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:09:28.515",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:09:28.517",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:09:28.554",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:09:28.554",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:09:28.571",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:09:28.574",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 10103
+}
+{
+  "timestamp": "2025-09-10 10:09:28.575",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "104.64 MB",
+  "heapTotal": "62.66 MB",
+  "heapUsed": "28.63 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 10:10:11.153",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:10:13.591",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/main.e962108c3b988255fccb.hot-update.json",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:10:13.613",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.e962108c3b988255fccb.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:10:13.704",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.e962108c3b988255fccb.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:10:13.980",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:10:13.982",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/profile",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:10:13.985",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/profile",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:10:15.865",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:10:15.897",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:10:17.618",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:10:17.634",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/api/api/auth/profile",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:10:17.637",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:10:17.641",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/api/api/auth/profile",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:10:48.700",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:11:25.122",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:11:25.171",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:11:25.191",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:11:25.196",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:11:25.235",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:11:25.236",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:11:25.271",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:11:25.272",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:11:25.285",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:11:25.287",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 10972
+}
+{
+  "timestamp": "2025-09-10 10:11:25.287",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "104.8 MB",
+  "heapTotal": "62.41 MB",
+  "heapUsed": "28.63 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 10:12:00.870",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:12:00.886",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:12:01.691",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/main.7827c578ee61039b8eac.hot-update.json",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:12:01.804",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.7827c578ee61039b8eac.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:12:01.916",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.7827c578ee61039b8eac.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:15:03.614",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:15:03.667",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:15:03.690",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:15:03.697",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:15:03.736",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:15:03.738",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:15:03.774",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:15:03.774",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:15:03.789",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:15:24.181",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:15:24.231",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:15:24.251",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:15:24.255",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:15:24.290",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:15:24.292",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:15:24.318",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:15:24.318",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:15:24.327",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:15:24.328",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 11995
+}
+{
+  "timestamp": "2025-09-10 10:15:24.329",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "102.77 MB",
+  "heapTotal": "59.41 MB",
+  "heapUsed": "38.1 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 10:16:39.966",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/main.6d005170765df78982b6.hot-update.json",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:16:40.005",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.6d005170765df78982b6.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:16:40.073",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.6d005170765df78982b6.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:16:43.232",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:16:43.257",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:16:48.881",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:16:48.896",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:21:11.372",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:21:11.401",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:646:15\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:265:14)\n    at router.handle (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:175:3)\n    at router (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:47:12)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/payment/test",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 10:23:25.201",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:23:30.846",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:23:30.850",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:23:40.586",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:23:40.590",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:29:07.624",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:29:55.048",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:29:55.096",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:29:55.116",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:29:55.120",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:29:55.158",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:29:55.160",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:29:55.191",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:29:55.191",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:29:55.215",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:30:09.509",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:30:09.539",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:30:09.548",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:30:09.554",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:30:09.585",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:30:09.587",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:30:09.612",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:30:09.612",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:30:09.621",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:30:09.623",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 14556
+}
+{
+  "timestamp": "2025-09-10 10:30:09.623",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "103.73 MB",
+  "heapTotal": "58.91 MB",
+  "heapUsed": "37.89 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 10:30:15.822",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:30:16.822",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:30:17.487",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:30:17.675",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:30:17.855",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:30:23.284",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:30:23.287",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:32:09.494",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:34:22.733",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:34:27.444",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:34:27.447",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at SessionStrategy.authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:126:10)\n    at attempt (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:378:16)\n    at authenticate (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:379:7)",
+  "ip": "::ffff:127.0.0.1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0",
+  "url": "/api/api/auth/login",
+  "method": "POST"
+}
+{
+  "timestamp": "2025-09-10 10:35:08.952",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ]
+}
+{
+  "timestamp": "2025-09-10 10:35:09.002",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:35:09.021",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 10:35:09.025",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 10:35:09.063",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:35:09.064",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 10:35:09.097",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 10:35:09.098",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 10:35:09.107",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 10:35:09.109",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 15283
+}
+{
+  "timestamp": "2025-09-10 10:35:09.109",
+  "level": "INFO",
+  "message": "Server memory usage",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "rss": "102.81 MB",
+  "heapTotal": "58.66 MB",
+  "heapUsed": "38.04 MB",
+  "external": "20.72 MB"
+}
+{
+  "timestamp": "2025-09-10 10:35:51.289",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.207498c1b83cec233eee.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:35:51.519",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at strategy.pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/middleware/authenticate.js:355:9)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/strategies/session.js:120:12\n    at pass (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:352:31)\n    at deserialized (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/passport/lib/authenticator.js:364:7)",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "url": "/main.207498c1b83cec233eee.hot-update.json",
+  "method": "GET",
+  "userId": "68b7d94e78a7eb9ca52a5f82"
+}
+{
+  "timestamp": "2025-09-10 10:35:54.290",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:35:56.495",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:35:56.535",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:35:58.729",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:36:00.444",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 10:36:02.773",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}

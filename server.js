@@ -1,135 +1,335 @@
+/**
+ * Enterprise-Level Node.js Application Server
+ *
+ * Architecture:
+ * - Service Layer Pattern
+ * - Repository Pattern
+ * - Controller Pattern
+ * - Validation Layers
+ * - Middleware for Cross-cutting Concerns
+ * - Comprehensive Error Handling
+ * - Security Features
+ * - Monitoring and Logging
+ */
+
+// Configuration Management
+require('./config/environment');
+
+// Load environment and configuration
+require('dotenv').config();
+
+// Core dependencies
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose').set('strictQuery', true);
 const cors = require('cors');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const compression = require('compression');
+const morgan = require('morgan');
 const passport = require('passport');
 
-// Load environment variables
-dotenv.config();
+// Enterprise error handling and utilities
+const { errorHandler, notFoundHandler } = require('./utils/errorHandler');
+const Logger = require('./utils/logger');
+const config = require('./config/environment');
 
-// Debug environment variables
-console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID ? 'SET' : 'NOT SET');
-console.log('GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET ? 'SET' : 'NOT SET');
-console.log('GOOGLE_CALLBACK_URL:', process.env.GOOGLE_CALLBACK_URL);
-console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
-
-// Create Express app
+// Initialize application
 const app = express();
-const PORT = process.env.PORT && !isNaN(parseInt(process.env.PORT)) ? parseInt(process.env.PORT) : 5002;
-console.log('process.env.PORT:', process.env.PORT);
-console.log('Parsed PORT value:', parseInt(process.env.PORT) || 'NaN');
-console.log('Using PORT:', PORT);
+const PORT = config.PORT;
 
-// Security middleware disabled for lecture compatibility
+// Security middleware - Enterprise grade
 app.use(helmet({
-  contentSecurityPolicy: false, // Disable CSP completely for lecture content compatibility
-  crossOriginEmbedderPolicy: false,
-}));
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? [process.env.CLIENT_URL, 'https://aishield-india-app-v1.onrender.com']
-    : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5000', 'http://127.0.0.1:3000'],
-  credentials: true
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: ["'self'", "https://checkout.razorpay.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://checkout.razorpay.com"]
+    }
+  },
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true }
 }));
 
-// Configure CORS for static files and resources
-app.use('/favicon.ico', cors({ origin: '*' }));
-app.use('/favicon.*', cors({ origin: '*' }));
-app.use('/robots.txt', cors({ origin: '*' }));
-app.use('/manifest.json', cors({ origin: '*' }));
-app.use('/static/', cors({ origin: '*' }));
-
-// Rate limiting (increased for testing/development)
+// Rate limiting - Enterprise protection
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour (increased from 15 minutes for testing)
-  max: 1000, // limit each IP to 1000 requests per window (increased from 100)
-  message: 'Too many requests from this IP, please try again later.',
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: config.RATE_LIMIT || 100, // limit each IP to 100 requests per windowMs
+  message: {
+    success: false,
+    code: 'RATE_LIMIT_EXCEEDED',
+    message: 'Too many requests from this IP, please try again later.',
+    retryAfter: '15 minutes'
+  },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.user && req.user.role === 'admin' // Allow higher limits for admins
 });
-app.use(limiter);
 
-// Sessions for Passport
-app.use(require('express-session')({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
-  resave: false,
-  saveUninitialized: false
+app.use('/api/', limiter);
+
+// API-specific rate limiting
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100, // High limit for development
+  message: { success: false, code: 'AUTH_RATE_LIMIT', message: 'Too many auth attempts' },
+  skip: (req, res) => {
+    // Skip rate limiting for options requests (CORS preflight)
+    if (req.method === 'OPTIONS') return true;
+
+    // Extract token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) return false;
+
+    try {
+      const token = authHeader.substring(7);
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload && payload.role === 'admin';
+    } catch (error) {
+      return false;
+    }
+  }
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 20,
+  message: { success: false, code: 'UPLOAD_RATE_LIMIT', message: 'Upload limit exceeded' }
+});
+
+// Compression middleware
+app.use(compression());
+
+// Logging middleware - Enterprise logging
+if (config.NODE_ENV !== 'test') {
+  app.use(morgan('combined', { stream: Logger.stream }));
+}
+
+// CORS configuration - Enhanced for development
+const allowedOrigins = config.CLIENT_URLS || ['http://localhost:3000'];
+
+Logger.info('CORS Configuration', {
+  allowedOrigins,
+  environment: config.NODE_ENV
+});
+
+// CORS preflight handler
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+  Logger.info('OPTIONS preflight request', { origin, method: req.method });
+
+  // Handle CORS for preflight
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins.includes(origin) ? origin : 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-API-Key, Accept');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  res.status(200).send();
+});
+
+// Main CORS configuration
+const corsConfig = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+
+    // In development, allow localhost origins
+    if (config.NODE_ENV === 'development' && origin.match(/^http:\/\/localhost:\d+$/)) {
+      Logger.info('Allowing localhost origin in development', { origin });
+      return callback(null, true);
+    }
+
+    Logger.warn('CORS blocked origin', { origin, allowedOrigins });
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-API-Key', 'Accept'],
+  maxAge: 86400 // 24 hours
+};
+
+app.use(cors(corsConfig));
+
+// Body parsing with size limits
+app.use(express.json({
+  limit: '10mb',
+  verify: (req, res, buf) => {
+    if (buf && buf.length > 1024 * 1024 * 10) {
+      throw new Error('Request body too large');
+    }
+  }
 }));
 
-// Initialize Passport
+app.use(express.urlencoded({
+  extended: true,
+  limit: '10mb'
+}));
+
+// Session configuration - Secure enterprise session management
+app.use(session({
+  secret: config.SESSION_SECRET,
+  name: 'sessionId',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: config.MONGODB_URI,
+    ttl: config.SESSION_TTL || 24 * 60 * 60, // 1 day
+    autoRemove: 'interval',
+    autoRemoveInterval: 10 // Remove expired sessions every 10 minutes
+  }),
+  cookie: {
+    maxAge: config.SESSION_TTL * 1000 || 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    secure: config.NODE_ENV === 'production',
+    sameSite: 'strict',
+    domain: config.SESSION_DOMAIN
+  }
+}));
+
+// Passport configuration - Enterprise authentication
+require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Load passport configuration
-require('./config/passport');
+// Static files with security
+app.use('/lectures', express.static('client/public/lectures', {
+  dotfiles: 'deny',
+  cacheControl: true,
+  maxAge: '1d'
+}));
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Health check endpoints - Enterprise monitoring
+app.get('/api/health', (req, res) => {
+  Logger.info('Health check requested', { ip: req.ip, userAgent: req.get('User-Agent') });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/penetration-testing-platform', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch((err) => console.error('MongoDB connection error:', err));
+  res.json({
+    success: true,
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    environment: config.NODE_ENV,
+    version: config.VERSION || '2.0.0',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    connections: mongoose.connection.readyState
+  });
+});
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/payment', require('./routes/payment'));
-app.use('/api/content', require('./routes/content'));
-app.use('/api/admin', require('./routes/admin'));
-
-// Middleware function to selectively apply auth
-const lectureMiddleware = (req, res, next) => {
-  // Skip authentication for static HTML files and assets
-  if (req.path.match(/\.(html|css|js|png|jpg|jpeg|gif|svg|ico)$/i)) {
-    return next();
-  }
-
-  // For other requests (potentially future dynamic content), apply auth
+// Database health check
+app.get('/api/health/database', async (req, res) => {
   try {
-    // Use auth middleware but handle it properly
-    const auth = require('./middleware/auth');
-    auth(req, res, (err) => {
-      if (err || res.headersSent) return;
-      const subscription = require('./middleware/subscription');
-      subscription(req, res, next);
+    // Test database connectivity
+    const dbState = mongoose.connection.readyState;
+    const dbStates = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+
+    // Get database statistics
+    const db = mongoose.connection.db;
+    const stats = await db.stats();
+
+    res.json({
+      success: true,
+      database: {
+        status: dbStates[dbState],
+        connected: dbState === 1,
+        name: db.databaseName,
+        collections: stats.collections,
+        documents: stats.objects,
+        storageSize: stats.storageSize,
+        indexSize: stats.indexSize
+      },
+      timestamp: new Date().toISOString()
     });
-  } catch (err) {
-    // If auth fails, serve the file anyway (graceful fallback)
-    console.log('Auth middleware error for lecture, serving statically:', req.path);
-    next();
+  } catch (error) {
+    Logger.error('Database health check failed', { error: error.message });
+    res.status(503).json({
+      success: false,
+      error: 'Database health check failed',
+      timestamp: new Date().toISOString()
+    });
   }
-};
+});
 
-// Lecture content is now served exclusively from database via API endpoints
-// Remove static file serving to enforce database-only access
-// app.use('/lectures-no-csp',
-//   lectureMiddleware,
-//   express.static('client/public/lectures')
-// );
+// API Routes - Enterprise modular routing
+const routes = [
+  { path: '/auth', module: './routes/auth', limiter: authLimiter },
+  { path: '/admin', module: './routes/admin' },
+  { path: '/content', module: './routes/content' },
+  { path: '/courses', module: './routes/courses' },
+  { path: '/subscription-plans', module: './routes/subscription-plans' },
+  { path: '/payment', module: './routes/payment' },
+];
 
-// Serve React frontend
+routes.forEach(({ path, module, limiter }) => {
+  const routeModule = require(module);
+  if (limiter) {
+    app.use(`/api${path}`, limiter);
+  }
+  app.use(`/api${path}`, routeModule);
+
+  Logger.info(`Route loaded: /api${path}`, {
+    module: module,
+    hasLimiter: !!limiter,
+    methodCount: routeModule.stack ? routeModule.stack.length : 'unknown'
+  });
+});
+
+// API Documentation endpoint
+app.get('/api/docs', (req, res) => {
+  const documentation = {
+    title: 'AI Shield Learning Platform API - Enterprise Edition',
+    version: '2.0.0',
+    baseUrl: `${req.protocol}://${req.get('host')}/api`,
+    endpoints: {
+      auth: '/auth',
+      courses: '/courses',
+      'subscription-plans': '/subscription-plans',
+      content: '/content',
+      admin: '/admin',
+      payment: '/payment',
+      users: '/users',
+      analytics: '/analytics'
+    },
+    authentication: 'Bearer token required for protected endpoints',
+    rateLimits: {
+      global: '100 requests per 15 minutes',
+      auth: '5 requests per 15 minutes',
+      upload: '20 requests per hour'
+    },
+    security: 'Enterprise security with JWT, RBAC, rate limiting, and input validation'
+  };
+
+  res.json(documentation);
+});
+
+// Serve React frontend for production
 if (process.env.NODE_ENV === 'production') {
-  console.log('Checking for client build...');
+  Logger.info('Setting up production static file serving');
+
   if (require('fs').existsSync('client/build/index.html')) {
-    console.log('✅ Client build found, serving static files');
+    Logger.info('✅ Client build found, serving static files');
     app.use(express.static('client/build'));
     app.get('*', (req, res) => {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
   } else {
-    console.error('❌ Client build not found at client/build/index.html');
-    // Fallback: serve a simple HTML page
+    Logger.error('❌ Client build not found at client/build/index.html');
+
     app.get('*', (req, res) => {
       res.send(`
         <html><body>
-        <h1>App Loading...</h1>
+        <h1>Enterprise Application Loading...</h1>
         <p>Please wait while we build your application.</p>
         <p>If this persists, check the build logs.</p>
         </body></html>
@@ -138,24 +338,150 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-// Health check endpoint (non-rate-limited for testing)
-// This endpoint bypasses rate limiting to allow health checks during testing
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running', timestamp: new Date().toISOString() });
-});
+// Catch-all route for 404 - must be before error handlers
+app.use(notFoundHandler);
 
-// Health check endpoint (rate limited)
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running' });
-});
+// Enterprise error handling - Global error middleware
+app.use(errorHandler);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
-});
+// Graceful shutdown handling
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
+
+async function gracefulShutdown(signal) {
+  Logger.warn(`Received ${signal}. Starting graceful shutdown...`);
+
+  try {
+    // Close database connections
+    await mongoose.connection.close();
+    Logger.info('Database connections closed');
+
+    // Close HTTP server
+    server.close(() => {
+      Logger.info('HTTP server closed');
+      process.exit(0);
+    });
+
+    // Force close after 10 seconds
+    setTimeout(() => {
+      Logger.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 10000);
+
+  } catch (error) {
+    Logger.error('Error during shutdown', { error: error.message });
+    process.exit(1);
+  }
+}
+
+// Database connection with retry logic
+async function connectToDatabase() {
+  const maxRetries = 5;
+  let retries = 0;
+
+  while (retries < maxRetries) {
+    try {
+      Logger.info(`Attempting database connection (${retries + 1}/${maxRetries})`);
+
+      await mongoose.connect(config.MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        maxPoolSize: 10,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+        family: 4
+      });
+
+      Logger.info('Successfully connected to MongoDB', {
+        database: mongoose.connection.db.databaseName,
+        host: mongoose.connection.host,
+        readyState: mongoose.connection.readyState
+      });
+
+      // Set up database event listeners
+      setupDatabaseListeners();
+
+      return;
+    } catch (error) {
+      retries++;
+      Logger.error(`Database connection attempt ${retries} failed`, {
+        error: error.message,
+        stack: error.stack ? error.stack.substring(0, 200) : undefined
+      });
+
+      if (retries >= maxRetries) {
+        Logger.error('Max database connection retries exceeded');
+        throw error;
+      }
+
+      // Exponential backoff
+      const delay = Math.min(1000 * Math.pow(2, retries), 30000);
+      Logger.info(`Waiting ${delay}ms before retry...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+
+function setupDatabaseListeners() {
+  mongoose.connection.on('error', (err) => {
+    Logger.error('Database connection error', { error: err.message });
+  });
+
+  mongoose.connection.on('disconnected', () => {
+    Logger.warn('Database disconnected');
+  });
+
+  mongoose.connection.on('reconnected', () => {
+    Logger.info('Database reconnected');
+  });
+}
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+async function startServer() {
+  try {
+    // Connect to database
+    await connectToDatabase();
+
+    // Create HTTP server
+    const server = app.listen(PORT, () => {
+      Logger.info(`Enterprise server started successfully`, {
+        port: PORT,
+        environment: config.NODE_ENV,
+        version: config.VERSION || '2.0.0',
+        nodeVersion: process.version,
+        platform: process.platform,
+        pid: process.pid
+      });
+
+      // Log memory usage
+      const memUsage = process.memoryUsage();
+      Logger.info('Server memory usage', {
+        rss: `${Math.round(memUsage.rss / 1024 / 1024 * 100) / 100} MB`,
+        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024 * 100) / 100} MB`,
+        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024 * 100) / 100} MB`,
+        external: `${Math.round(memUsage.external / 1024 / 1024 * 100) / 100} MB`
+      });
+    });
+
+    // Handle server errors
+    server.on('error', (error) => {
+      Logger.error('Server error', { error: error.message });
+      process.exit(1);
+    });
+
+    // Graceful shutdown
+    const gracefulShutdown = () => server.close();
+    process.on('SIGTERM', gracefulShutdown);
+    process.on('SIGINT', gracefulShutdown);
+
+  } catch (error) {
+    Logger.error('Failed to start server', {
+      error: error.message,
+      stack: error.stack
+    });
+    process.exit(1);
+  }
+}
+
+// Start the server
+startServer();

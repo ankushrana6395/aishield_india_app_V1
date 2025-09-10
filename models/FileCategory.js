@@ -17,13 +17,27 @@ const fileCategorySchema = new mongoose.Schema({
     default: ''
   },
   content: {
-    type: mongoose.Schema.Types.Buffer, // Store as Buffer to avoid string conversion issues
+    type: String, // Store HTML content as string
     required: true
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
     required: true
+  },
+  course: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course',
+    required: false // Optional course assignment
+  },
+  instructor: {
+    type: String,
+    trim: true,
+    default: 'Admin'
+  },
+  isAssignedToCourse: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,

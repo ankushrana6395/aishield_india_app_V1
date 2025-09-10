@@ -32,9 +32,20 @@ const LectureViewerNew = () => {
     try {
       setLoading(true);
       setError('');
-      
-      // Fetch the lecture from the new API endpoint with authorization
+
+      console.log('🎥 LECTURE VIEWER: Loading lecture:', slug);
+
+      // Check if user has proper authentication
       const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Authentication required. Please log in again.');
+        navigate('/login');
+        return;
+      }
+
+      console.log('🔐 LECTURE VIEWER: Authentication token present');
+
+      // Fetch the lecture from the new API endpoint with authorization
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/content/lectures/database/${slug}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -43,14 +54,30 @@ const LectureViewerNew = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to load lecture: ${response.status}`);
+        console.error('❌ LECTURE VIEWER: HTTP Error:', response.status, response.statusText);
+        if (response.status === 401) {
+          setError('Session expired. Please log in again.');
+          // Optionally redirect to login
+          navigate('/login');
+        } else if (response.status === 403) {
+          setError('Access denied. You may not have permission to view this lecture.');
+        } else if (response.status === 404) {
+          setError('Lecture not found.');
+        } else {
+          setError(`Failed to load lecture (${response.status}). Please try again.`);
+        }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('✅ LECTURE VIEWER: Lecture loaded successfully:', data.title);
       setLecture(data);
     } catch (err) {
-      console.error('Error loading lecture:', err);
-      setError('Failed to load lecture content. Please try again.');
+      console.error('💥 LECTURE VIEWER: Error loading lecture:', err.message);
+      // Don't set error here if it's already been set by HTTP status checks
+      if (!error) {
+        setError('Failed to load lecture content. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/ankush/Pictures/aishieldindia/aishield_india_app/logs/.42769a80c816a8b9bc7a7683ee1673f1047fef03-audit.json",
+    "files": [
+        {
+            "date": 1757314654866,
+            "name": "/Users/ankush/Pictures/aishieldindia/aishield_india_app/logs/performance-2025-09-08.log",
+            "hash": "11666ec8b8bdd6df2d4d621c1101a09f9de8fc247aff58119d2465ea84d62d93"
+        },
+        {
+            "date": 1757398508326,
+            "name": "/Users/ankush/Pictures/aishieldindia/aishield_india_app/logs/performance-2025-09-09.log",
+            "hash": "bef6d358338dc5eee9aa23d4d3632328738a25dfcd34bd9e07556a82e6b57c41"
+        },
+        {
+            "date": 1757475932031,
+            "name": "/Users/ankush/Pictures/aishieldindia/aishield_india_app/logs/performance-2025-09-10.log",
+            "hash": "28540284421cb587ec74233167c4791c830f18d6137dd7e7a6d9330ef7048fa4"
+        }
+    ],
+    "hashType": "sha256"
+}

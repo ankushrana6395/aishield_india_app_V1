@@ -37,18 +37,79 @@ const userSchema = new mongoose.Schema({
     default: false
   },
   subscription: {
-    paymentId: String,
-    orderId: String,
+    // Plan Information
+    planId: String,
+    planName: String,
+
+    // Pricing Information
     amount: Number,
     currency: String,
+
+    // Billing Details
+    billingCycle: String,
+
+    // Payment Information
+    paymentId: String,
+    orderId: String,
+
+    // Timing Information
+    subscribedAt: Date,
+    startDate: Date,
+    expiresAt: Date,
+    expiryDate: Date,
+
+    // Administrative Information
     status: {
       type: String,
-      enum: ['pending', 'completed', 'failed', 'cancelled'],
+      enum: ['pending', 'completed', 'failed', 'cancelled', 'suspended'],
       default: 'pending'
     },
-    subscribedAt: Date,
-    expiresAt: Date
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    grantedBy: String,
+    grantDate: Date,
+
+    // Feature Access
+    features: [String]
   },
+  enrolledCourses: [{
+    courseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      required: true
+    },
+    enrolledDate: {
+      type: Date,
+      default: Date.now
+    },
+    progress: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100
+    },
+    lastAccessed: Date,
+    completedDate: Date,
+    certificateEarned: {
+      type: Boolean,
+      default: false
+    },
+    categoryProgress: [{
+      categoryId: String,
+      categoryName: String,
+      progress: Number,
+      totalLectures: Number,
+      completedLectures: Number,
+      lectureProgress: [{
+        lectureId: String,
+        lectureTitle: String,
+        completed: Boolean,
+        lastAccessed: Date
+      }]
+    }]
+  }],
   lectureProgress: [{
     lectureName: String,
     completed: {

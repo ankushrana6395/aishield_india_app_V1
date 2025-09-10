@@ -187,19 +187,43 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                 ></div>
                 <div className="dropdown-menu">
+                  <div
+                    className="dropdown-item"
+                    onClick={() => navigate('/dashboard')}
+                  >
+                    📊 Dashboard
+                  </div>
+                  <div
+                    className="dropdown-item"
+                    onClick={() => navigate('/subscription')}
+                  >
+                    🔒 My Subscription
+                  </div>
+                  <div
+                    className="dropdown-item"
+                    onClick={() => navigate('/profile')}
+                  >
+                    👤 My Profile
+                  </div>
+                  <div
+                    className="dropdown-item"
+                    onClick={() => navigate('/courses')}
+                  >
+                    📚 Browse Courses
+                  </div>
                   {user.role === 'admin' && (
-                    <div 
+                    <div
                       className="dropdown-item"
                       onClick={handleAdmin}
                     >
-                      Admin Dashboard
+                      🛠️ Admin Dashboard
                     </div>
                   )}
-                  <div 
+                  <div
                     className="dropdown-item"
                     onClick={handleLogout}
                   >
-                    Logout
+                    🚪 Logout
                   </div>
                 </div>
               </>
