@@ -22,8 +22,8 @@ require('dotenv').config();
 const EMERGENCY_PORT = parseInt(process.env.PORT) || 10000;
 console.log(`🚨 EMERGENCY SERVER STARTUP - FORCE BINDING TO 0.0.0.0:${EMERGENCY_PORT}`);
 
-const express = require('express');
-const emergencyApp = express();
+const EMERGENCY_EXPRESS = require('express');
+const emergencyApp = EMERGENCY_EXPRESS();
 
 emergencyApp.get('/', (req, res) => {
   res.send('Server is running - emergency mode!');
