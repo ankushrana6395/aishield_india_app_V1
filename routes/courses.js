@@ -557,7 +557,7 @@ router.get('/admin/courses', async (req, res) => {
 });
 
 // Create new course (admin)
-router.post('/admin/courses', requireDatabase, courseValidation, async (req, res) => {
+router.post('/admin/courses', courseValidation, async (req, res) => {
   try {
     const validationErrors = validationResult(req);
     if (!validationErrors.isEmpty()) {
