@@ -100,10 +100,26 @@ const config = {
   SESSION_TTL: parseInt(process.env.SESSION_TTL) || 24 * 60 * 60, // 1 day in seconds
   SESSION_DOMAIN: process.env.SESSION_DOMAIN,
 
-  // CORS Configuration
-  CLIENT_URLS: process.env.CLIENT_URL ?
-    process.env.CLIENT_URL.split(',').map(url => url.trim()) :
-    ['http://localhost:3000'],
+  // CORS Configuration - Enhanced with production defaults
+  CLIENT_URLS: (() => {
+    if (process.env.CLIENT_URL) {
+      const urls = process.env.CLIENT_URL.split(',').map(url => url.trim());
+      console.log('🔧 CORS - Using CLIENT_URL environment variable:', urls);
+      return urls;
+    }
+
+    // Production defaults for known deployment URLs
+    if (process.env.NODE_ENV === 'production') {
+      const productionUrls = ['https://aishield-india-app-v1.onrender.com'];
+      console.log('🔧 CORS - Production detected, using default URLs:', productionUrls);
+      return productionUrls;
+    }
+
+    // Development default
+    const devUrls = ['http://localhost:3000'];
+    console.log('🔧 CORS - Development detected, using default URLs:', devUrls);
+    return devUrls;
+  })(),
 
   // File Upload Configuration
   UPLOAD_MAX_SIZE: parseInt(process.env.UPLOAD_MAX_SIZE) || 10 * 1024 * 1024, // 10MB

@@ -125,7 +125,8 @@ const allowedOrigins = config.CLIENT_URLS || ['http://localhost:3000'];
 
 Logger.info('CORS Configuration', {
   allowedOrigins,
-  environment: config.NODE_ENV
+  environment: config.NODE_ENV,
+  hasRenderUrl: allowedOrigins.includes('https://aishield-india-app-v1.onrender.com')
 });
 
 // CORS preflight handler
