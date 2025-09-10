@@ -41,40 +41,21 @@ const config = {
   // Server Configuration - Handle Render's PORT assignment
   NODE_ENV: process.env.NODE_ENV || 'development',
 
-  // Critical fix: Handle Render's runtime PORT assignment
+  // Simplified Render-compliant PORT handling
   PORT: (() => {
+    const renderPort = process.env.PORT;
 
-    console.log('🔍 PORT DEBUG INFO:');
-    console.log(`  process.env.PORT value: "${process.env.PORT}"`);
-    console.log(`  process.env.PORT type: ${typeof process.env.PORT}`);
-
-    // Handle undefined PORT (normal development)
-    if (!process.env.PORT) {
-      if (config.NODE_ENV === 'production') {
-        console.log('📝 No PORT set in production, using Render default');
-        return 10000;
-      } else {
-        console.log('📝 No PORT set in development, using localhost default');
-        return 5002;
-      }
-    }
-
-    // Handle Render's explicit "Automatically set by Render" string OR any non-numeric string
-    if (process.env.PORT === 'Automatically set by Render' || isNaN(parseInt(process.env.PORT))) {
-      console.log('📝 PORT set automatically by Render or is non-numeric');
-      console.log('🔄 Falling back to default Render port range (10000)');
-      return 10000; // Render typically uses 10000+ but scanner looks for this port
-    }
-
-    // Handle numeric PORT values
-    const port = parseInt(process.env.PORT.toString().replace(/[^0-9]/g, ''));
-    if (port && port >= 1000 && port <= 65536) {
-      console.log(`✅ Using provided numeric PORT: ${port}`);
+    if (renderPort && !isNaN(parseInt(renderPort)) && parseInt(renderPort) > 0) {
+      const port = parseInt(renderPort);
+      console.log(`✅ Using Render-assigned PORT: ${port}`);
       return port;
+    } else {
+      // Fallback for development or manual testing
+      const fallbackPort = config.NODE_ENV === 'production' ? 10000 : 3000;
+      console.log(`⚠️  Invalid or missing PORT "${renderPort}", using fallback: ${fallbackPort}`);
+      console.log(`🔄 Check Render environment variables for PORT configuration`);
+      return fallbackPort;
     }
-
-    console.log(`❓ Invalid PORT "${process.env.PORT}", using fallback`);
-    return process.env.NODE_ENV === 'production' ? 10000 : 5002;
   })(),
   VERSION: process.env.npm_package_version || '2.0.0',
 
@@ -208,10 +189,10 @@ const validateConfig = () => {
   console.log('✅ Configuration validation passed');
 };
 
-// Log current configuration for debugging
+// Log current configuration for debugging (simplified)
 console.log('⚙️  CONFIGURATION STATUS:');
 console.log(`  NODE_ENV: ${config.NODE_ENV}`);
-console.log(`  PORT: ${config.PORT}`);
+console.log(`  PORT: ${config.PORT} (type: ${typeof config.PORT})`);
 console.log(`  MONGODB_URI: ${config.MONGODB_URI ? '✅ SET' : '❌ MISSING'}`);
 console.log(`  JWT_SECRET: ${config.JWT_SECRET ? '✅ SET' : '❌ MISSING'}`);
 console.log(`  SESSION_SECRET: ${config.SESSION_SECRET ? '✅ SET' : '❌ MISSING'}`);
