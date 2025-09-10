@@ -18,6 +18,15 @@ require('./config/environment');
 // Load environment and configuration
 require('dotenv').config();
 
+// Log environment setup for debugging
+console.log('🔧 Environment Setup:', {
+  NODE_ENV: process.env.NODE_ENV,
+  PORT: process.env.PORT,
+  has_MONGODB_URI: !!process.env.MONGODB_URI,
+  has_JWT_SECRET: !!process.env.JWT_SECRET,
+  has_SESSION_SECRET: !!process.env.SESSION_SECRET
+});
+
 // Core dependencies
 const express = require('express');
 const path = require('path');
@@ -219,6 +228,37 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     connections: mongoose.connection.readyState
+  });
+});
+
+// Debug endpoint for Render deployment troubleshooting
+app.get('/api/debug', (req, res) => {
+  console.log('🐛 DEBUG ENDPOINT CALLED');
+  res.json({
+    success: true,
+    timestamp: new Date().toISOString(),
+    environment: {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      has_MONGODB_URI: !!process.env.MONGODB_URI,
+      has_JWT_SECRET: !!process.env.JWT_SECRET,
+      has_SESSION_SECRET: !!process.env.SESSION_SECRET,
+      has_CLIENT_URL: !!process.env.CLIENT_URL
+    },
+    config: {
+      NODE_ENV: config.NODE_ENV,
+      PORT: config.PORT,
+      MONGODB_URI: config.MONGODB_URI ? 'CONNECTION_STRING_SET' : 'MISSING',
+      CLIENT_URLS: config.CLIENT_URLS
+    },
+    server: {
+      platform: process.platform,
+      nodeVersion: process.version,
+      uptime: process.uptime(),
+      memoryUsage: process.memoryUsage(),
+      pid: process.pid
+    },
+    debug_message: "If you can see this, server is running and responding to requests!"
   });
 });
 
