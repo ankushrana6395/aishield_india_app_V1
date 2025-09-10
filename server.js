@@ -559,11 +559,12 @@ app.use(notFoundHandler);
 
 // CORS Error Handler - Must come before general error handling
 app.use((error, req, res, next) => {
-  if (error.message === 'Not allowed by CORS') {
+  if (error.message && error.message.includes('Not allowed by CORS')) {
     console.log('🚫 CORS BLOCK: Access denied for origin:', req.headers.origin);
     return res.status(403).json({
       error: 'CORS_ERROR',
       message: 'Cross-origin request blocked',
+      origin: req.headers.origin || 'not-provided',
       timestamp: new Date().toISOString()
     });
   }
