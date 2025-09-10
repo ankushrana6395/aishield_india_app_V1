@@ -18,36 +18,8 @@ require('./config/environment');
 // Load environment and configuration
 require('dotenv').config();
 
-// EMERGENCY SERVER STARTUP - BEFORE ANYTHING ELSE
-const EMERGENCY_PORT = parseInt(process.env.PORT) || 10000;
-console.log(`🚨 EMERGENCY SERVER STARTUP - FORCE BINDING TO 0.0.0.0:${EMERGENCY_PORT}`);
-
-const EMERGENCY_EXPRESS = require('express');
-const emergencyApp = EMERGENCY_EXPRESS();
-
-emergencyApp.get('/', (req, res) => {
-  res.send('Server is running - emergency mode!');
-});
-
-emergencyApp.get('/health', (req, res) => {
-  res.json({ status: 'healthy', port: EMERGENCY_PORT });
-});
-
-// Start emergency server IMMEDIATELY
-const emergencyServer = emergencyApp.listen(EMERGENCY_PORT, '0.0.0.0', () => {
-  console.log(`🚨 EMERGENCY SERVER: LISTENING on 0.0.0.0:${EMERGENCY_PORT}`);
-  console.log(`🚨 EMERGENCY SERVER: RENDER SHOULD DETECT THIS PORT`);
-  console.log(`🚨 EMERGENCY SERVER: HEALTH CHECK: http://localhost:${EMERGENCY_PORT}/health`);
-});
-
-// Continue with original setup
-console.log('🔧 Environment Setup:', {
-  NODE_ENV: process.env.NODE_ENV,
-  PORT: process.env.PORT,
-  has_MONGODB_URI: !!process.env.MONGODB_URI,
-  has_JWT_SECRET: !!process.env.JWT_SECRET,
-  has_SESSION_SECRET: !!process.env.SESSION_SECRET
-});
+// Environment loading completed - proceeding with normal startup
+console.log('� Environment configured for:', process.env.NODE_ENV);
 
 // Core dependencies
 const express = require('express');
