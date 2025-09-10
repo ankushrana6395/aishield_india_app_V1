@@ -51,6 +51,12 @@ const config = require('./config/environment');
 const app = express();
 const PORT = config.PORT;
 
+// Trust proxy for proper IP detection and rate limiting
+app.set('trust proxy', 1);
+
+// Disable X-Powered-By header for security
+app.disable('x-powered-by');
+
 // Security middleware - Enterprise grade
 app.use(helmet({
   contentSecurityPolicy: {
@@ -120,8 +126,11 @@ if (config.NODE_ENV !== 'test') {
   app.use(morgan('combined', { stream: Logger.stream }));
 }
 
-// CORS configuration - Enhanced for development
-const allowedOrigins = config.CLIENT_URLS || ['http://localhost:3000'];
+// CORS configuration - Enhanced for development and production
+const allowedOrigins = config.CLIENT_URLS || [
+  'http://localhost:3000',
+  'https://aishield-india-app-v1.onrender.com' // Emergency production domain
+];
 
 Logger.info('CORS Configuration', {
   allowedOrigins,
