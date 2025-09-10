@@ -105,6 +105,15 @@ const config = {
     if (process.env.CLIENT_URL) {
       const urls = process.env.CLIENT_URL.split(',').map(url => url.trim());
       console.log('🔧 CORS - Using CLIENT_URL environment variable:', urls);
+
+      // Ensure the correct production URL is included
+      const correctUrl = 'https://aishield-india-app-v1.onrender.com';
+      const hasCorrectUrl = urls.some(url => url === correctUrl);
+      if (process.env.NODE_ENV === 'production' && !hasCorrectUrl) {
+        urls.push(correctUrl);
+        console.log('🔧 CORS - Added correct production URL:', correctUrl);
+      }
+
       return urls;
     }
 
