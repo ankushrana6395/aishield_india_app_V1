@@ -11,16 +11,18 @@ const path = require('path');
 const loadEnvironmentConfig = () => {
   const env = process.env.NODE_ENV || 'development';
 
-  // In production (Render), DON'T load local .env files to avoid overriding runtime PORT
+  // CRITICAL FIX: In production (Render), NEVER load local .env files EVER
+  // Even if they're uploaded to Render, they can override runtime variables
   if (env === 'production') {
-    console.log('🔧 Production (Render) - Using runtime environment variables only');
+    console.log('🔧 Production (Render) - Using RUNTIME environment variables ONLY');
+    console.log('⚠️  WARNING: Do not upload .env files to Render - use Environment Variables dashboard');
     return;
   }
 
-  // Load base .env file for development
+  // Load base .env file for development only
   dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
-  // Load environment-specific .env file for development
+  // Load environment-specific .env file for development only
   const envPath = path.join(__dirname, '..', `.env.${env}`);
   try {
     dotenv.config({ path: envPath });
@@ -46,13 +48,6 @@ const config = {
     console.log(`  process.env.PORT value: "${process.env.PORT}"`);
     console.log(`  process.env.PORT type: ${typeof process.env.PORT}`);
 
-    // Handle Render's explicit "Automatically set by Render" string
-    if (process.env.PORT === 'Automatically set by Render') {
-      console.log('📝 PORT explicitly set to "Automatically set by Render" in dashboard');
-      console.log('🔄 Falling back to default Render port range (10000)');
-      return 10000; // Render typically uses 10000+
-    }
-
     // Handle undefined PORT (normal development)
     if (!process.env.PORT) {
       if (config.NODE_ENV === 'production') {
@@ -64,10 +59,17 @@ const config = {
       }
     }
 
-    // Handle numeric PORT values (shouldn't happen in Render but just in case)
+    // Handle Render's explicit "Automatically set by Render" string OR any non-numeric string
+    if (process.env.PORT === 'Automatically set by Render' || isNaN(parseInt(process.env.PORT))) {
+      console.log('📝 PORT set automatically by Render or is non-numeric');
+      console.log('🔄 Falling back to default Render port range (10000)');
+      return 10000; // Render typically uses 10000+ but scanner looks for this port
+    }
+
+    // Handle numeric PORT values
     const port = parseInt(process.env.PORT.toString().replace(/[^0-9]/g, ''));
     if (port && port >= 1000 && port <= 65536) {
-      console.log(`✅ Using provided PORT: ${port}`);
+      console.log(`✅ Using provided numeric PORT: ${port}`);
       return port;
     }
 

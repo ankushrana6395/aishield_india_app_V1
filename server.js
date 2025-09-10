@@ -496,12 +496,15 @@ async function startServer() {
 
     if (config.NODE_ENV === 'production') {
       Logger.info('Running on Render - binding to 0.0.0.0', { port: PORT });
+      console.log(`🔄 RENDER: Creating server on 0.0.0.0:${PORT}`);
+      console.log(`🚀 RENDER: Starting Node.js server on port ${PORT}`);
     } else {
       Logger.info('Running in development - binding to localhost', { port: PORT });
+      console.log(`🔄 LOCAL: Creating server on localhost:${PORT}`);
     }
 
-    // Create HTTP server
-    const server = app.listen(PORT, host, () => {
+    // Create HTTP server with enhanced error handling
+    const server = app.listen(PORT, host, function() {
       Logger.info(`Enterprise server started successfully`, {
         port: PORT,
         host: host || 'localhost',
@@ -512,11 +515,18 @@ async function startServer() {
         pid: process.pid
       });
 
+      // *** CRITICAL: This exact line is what Render's port scanner looks for ***
+      console.log(`Application is listening on port ${PORT}`);
+
       // CONFIRMATION: Server is actually listening!
       console.log(`🎯 SERVER CONFIRMATION: Listening on ${host || 'localhost'}:${PORT}`);
       if (config.NODE_ENV === 'production') {
         console.log(`🌐 ✅ Render should detect port ${PORT} on ${host}`);
-        console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+        console.log(`🔗 Health check: https://localhost:${PORT}/api/health`);
+        // Explicit port announcement for Render's port scanner
+        console.log(`RUNTIME_PORT:${PORT}`);
+        console.log(`APPLICATION_STARTED_ON_PORT_${PORT}`);
+        console.log(`🚀 Node.js server running on port ${PORT}`);
       }
 
       // Log memory usage
