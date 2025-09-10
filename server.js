@@ -478,13 +478,27 @@ function setupDatabaseListeners() {
 
 // Start server
 async function startServer() {
+  console.log(`🚀 STARTING SERVER ON ${config.NODE_ENV}...`);
+
   try {
-    // Connect to database
-    await connectToDatabase();
+    // Connect to database with timeout and fallback
+    console.log('📊 Attempting database connection...');
+    try {
+      await connectToDatabase();
+      console.log('✅ Database connected successfully');
+    } catch (dbError) {
+      console.log('⚠️  Database connection failed:', dbError.message);
+      if (config.NODE_ENV === 'production') {
+        console.log('🔄 Continuing with fallback - Render will still work');
+      } else {
+        throw dbError;
+      }
+    }
 
     // Determine the host based on environment
     // Render requires 0.0.0.0 binding, localhost is fine for development
     const host = config.NODE_ENV === 'production' ? '0.0.0.0' : undefined;
+    console.log(`🎯 STARTING SERVER on ${host || 'localhost'}:${PORT}`);
 
     if (config.NODE_ENV === 'production') {
       Logger.info('Running on Render - binding to 0.0.0.0', { port: PORT });
@@ -546,5 +560,27 @@ module.exports = app;
 
 // Start the server only if this file is run directly (not imported)
 if (require.main === module) {
-  startServer();
+  startServer().catch((error) => {
+    console.error('🚨 CRITICAL: Server startup failed:', error.message);
+
+    // FINAL FAILSAFE: Try to start server without database dependency
+    if (config.NODE_ENV === 'production') {
+      console.log('🔄 ATTEMPTING FINAL FAILSAFE STARTUP');
+
+      const host = '0.0.0.0';
+      console.log(`🛡️  Starting server at ${host}:${PORT} (fallback mode)`);
+
+      const server = app.listen(PORT, host, () => {
+        console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${PORT} (FAILSAFE MODE)`);
+        console.log(`🌐 ✅ Render should detect port ${PORT} on ${host} - EVEN IF DATABASE FAILS`);
+        console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
+      }).on('error', (fallbackError) => {
+        console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
+        process.exit(1);
+      });
+    } else {
+      console.error('❌ Development server crashed - exiting');
+      process.exit(1);
+    }
+  });
 }
