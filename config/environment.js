@@ -41,28 +41,36 @@ const config = {
   // Server Configuration - Handle Render's PORT assignment
   NODE_ENV: process.env.NODE_ENV || 'development',
 
-  // Simplified Render-compliant PORT handling
+  // Render-specific PORT handling with proper fallbacks
   PORT: (() => {
-    console.log('🔍Extended PORT Debug Info:');
+    console.log('🔍 PORT Environment Analysis:');
     console.log(`  process.env.PORT: "${process.env.PORT}"`);
-    console.log(`  process.env.NODE_ENV: "${process.env.NODE_ENV}"`);
-    console.log(`  All environment vars containing PORT:`);
-    Object.keys(process.env).filter(key => key.includes('PORT')).forEach(key => {
-      console.log(`    ${key}: "${process.env[key]}"`);
-    });
 
     const renderPort = process.env.PORT;
 
+    // Standard Render behavior - numeric port
     if (renderPort && !isNaN(parseInt(renderPort)) && parseInt(renderPort) > 0) {
       const port = parseInt(renderPort);
-      console.log(`✅ Using Render-assigned PORT: ${port}`);
+      console.log(`✅ Using Render-assigned numeric PORT: ${port}`);
       return port;
+    }
+
+    // Workaround for Render "Automatically set by Render" issue
+    if (renderPort === 'Automatically set by Render') {
+      console.log('⚠️  Render is setting PORT to literal "Automatically set by Render"');
+      console.log('🔄 This is a known Render configuration bug - using standard port');
+      const port = 10000;
+      console.log(`🚀 Server will bind to port ${port} to enable port scanning`);
+      return port;
+    }
+
+    // Fallback for development or other environments
+    if (process.env.NODE_ENV === 'production') {
+      console.log('⚠️  Production environment without proper PORT - using standard Render port');
+      return 10000;
     } else {
-      // Fallback for development or manual testing
-      const fallbackPort = process.env.NODE_ENV === 'production' ? 10000 : 3000;
-      console.log(`⚠️  Invalid or missing PORT "${renderPort}", using fallback: ${fallbackPort}`);
-      console.log(`🔄 Check Render dashboard > Service > Environment for PORT variable`);
-      return fallbackPort;
+      console.log('⚠️  Development environment - using default development port');
+      return 3000;
     }
   })(),
   VERSION: process.env.npm_package_version || '2.0.0',
