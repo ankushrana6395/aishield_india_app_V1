@@ -566,6 +566,7 @@ app.use((error, req, res, next) => {
       error: 'CORS_ERROR',
       message: 'Cross-origin request blocked',
       origin: req.headers.origin || 'not-provided',
+      allowedOrigins,
       timestamp: new Date().toISOString()
     });
   }
