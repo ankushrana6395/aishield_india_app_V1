@@ -51,7 +51,7 @@ const config = {
       return port;
     } else {
       // Fallback for development or manual testing
-      const fallbackPort = config.NODE_ENV === 'production' ? 10000 : 3000;
+      const fallbackPort = process.env.NODE_ENV === 'production' ? 10000 : 3000;
       console.log(`⚠️  Invalid or missing PORT "${renderPort}", using fallback: ${fallbackPort}`);
       console.log(`🔄 Check Render environment variables for PORT configuration`);
       return fallbackPort;
