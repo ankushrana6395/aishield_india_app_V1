@@ -558,29 +558,37 @@ async function startServer() {
 // Export the Express app for use in server-render.js
 module.exports = app;
 
-// Start the server only if this file is run directly (not imported)
-if (require.main === module) {
-  startServer().catch((error) => {
-    console.error('🚨 CRITICAL: Server startup failed:', error.message);
+// DEBUG: Force immediate server startup for Render
+console.log('📍 REQUIRE.MAIN CHECK:');
+console.log('  require.main:', require.main);
+console.log('  module:', module);
+console.log('  __filename:', __filename);
+console.log('  same?', require.main === module);
 
-    // FINAL FAILSAFE: Try to start server without database dependency
-    if (config.NODE_ENV === 'production') {
-      console.log('🔄 ATTEMPTING FINAL FAILSAFE STARTUP');
+// Force startup - don't rely on require.main check
+console.log('🚀 FORCING SERVER STARTUP FOR RENDER...');
 
-      const host = '0.0.0.0';
-      console.log(`🛡️  Starting server at ${host}:${PORT} (fallback mode)`);
+startServer().catch((error) => {
+  console.error('🚨 CRITICAL: Server startup failed:', error.message);
+  console.error('🔍 ERROR DETAILS:', error);
 
-      const server = app.listen(PORT, host, () => {
-        console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${PORT} (FAILSAFE MODE)`);
-        console.log(`🌐 ✅ Render should detect port ${PORT} on ${host} - EVEN IF DATABASE FAILS`);
-        console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
-      }).on('error', (fallbackError) => {
-        console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
-        process.exit(1);
-      });
-    } else {
-      console.error('❌ Development server crashed - exiting');
+  // FINAL FAILSAFE: Try to start server without database dependency
+  if (config.NODE_ENV === 'production') {
+    console.log('🔄 ATTEMPTING FINAL FAILSAFE STARTUP');
+
+    const host = '0.0.0.0';
+    console.log(`🛡️  Starting server at ${host}:${PORT} (fallback mode)`);
+
+    const server = app.listen(PORT, host, () => {
+      console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${PORT} (FAILSAFE MODE)`);
+      console.log(`🌐 ✅ Render should detect port ${PORT} on ${host} - EVEN IF DATABASE FAILS`);
+      console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
+    }).on('error', (fallbackError) => {
+      console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
       process.exit(1);
-    }
-  });
-}
+    });
+  } else {
+    console.error('❌ Development server crashed - exiting');
+    process.exit(1);
+  }
+});
