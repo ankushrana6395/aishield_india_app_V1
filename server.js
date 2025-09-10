@@ -562,9 +562,17 @@ async function startServer() {
 // Export the Express app for use in server-render.js
 module.exports = app;
 
-console.log('🔄 DEBUG: Render Deployment Detection');
+console.log('🚀 DEBUG: Starting server.js execution immediately');
+console.log('  Process PID:', process.pid);
+console.log('  Node version:', process.version);
+console.log('  Current working directory:', process.cwd());
 console.log('  require.main === module?', require.main === module);
 console.log('  process.env.NODE_ENV:', process.env.NODE_ENV);
+console.log('  Process environment:', {
+  NODE_ENV: process.env.NODE_ENV,
+  PORT: process.env.PORT,
+  has_MONGODB_URI: !!process.env.MONGODB_URI
+});
 
 // Check if this file is being run directly (not required by another file)
 // This handles both local development and Render deployment scenarios
