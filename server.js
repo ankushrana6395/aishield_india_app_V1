@@ -131,32 +131,11 @@ Logger.info('CORS Configuration', {
 // CORS preflight handler
 app.options('*', (req, res) => {
   const origin = req.headers.origin;
-  Logger.info('OPTIONS preflight request', { origin, method: req.method, allowedOrigins });
+  Logger.info('OPTIONS preflight request', { origin, method: req.method });
 
-  // Handle CORS for preflight - more permissive for production
-  console.log('🔔 CORS PREFLIGHT REQUEST RECEIVED');
-  console.log('   Origin:', origin);
-  console.log('   Method:', req.method);
-  console.log('   Allowed Origins:', allowedOrigins);
-
-  // Allow Render domain specifically
-  let allowOrigin = 'http://localhost:3000'; // Default fallback
-
-  if (origin && allowedOrigins.includes(origin)) {
-    allowOrigin = origin;
-    console.log('✅ Origin allowed:', origin);
-  } else if (origin && origin === 'https://aishield-india-app-v1.onrender.com') {
-    // Emergency allowance for Render domain
-    allowOrigin = origin;
-    console.log('🛡️ EMERGENCY: Allowed Render Origin:', origin);
-  } else if (config.NODE_ENV === 'production' && !origin) {
-    // Allow requests without origin (like server-to-server)
-    allowOrigin = '*';
-    console.log('🌐 Production: Allowed request without origin');
-  }
-
-  res.setHeader('Access-Control-Allow-Origin', allowOrigin);
-  res.setHeader('Access-Control-Allow-Credentials', allowOrigin === '*' ? 'false' : 'true');
+  // Handle CORS for preflight
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins.includes(origin) ? origin : 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-API-Key, Accept');
   res.setHeader('Access-Control-Max-Age', '86400');
@@ -166,62 +145,29 @@ app.options('*', (req, res) => {
 // Main CORS configuration
 const corsConfig = {
   origin: function (origin, callback) {
-    console.log('🌐 CORS CHECK - Origin:', origin);
-    console.log('🌐 CORS CHECK - Allowed origins:', allowedOrigins);
-    console.log('🌐 CORS CHECK - NODE_ENV:', config.NODE_ENV);
-
     // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) {
-      console.log('✅ CORS: Allowed (no origin)');
-      return callback(null, true);
-    }
+    if (!origin) return callback(null, true);
 
-    // Check against configured allowed origins
-    if (allowedOrigins && allowedOrigins.includes(origin)) {
-      console.log('✅ CORS: Allowed (configured origin)');
-      return callback(null, true);
-    }
-
-    // Emergency allowance for Render domain in production
-    if (config.NODE_ENV === 'production' && origin === 'https://aishield-india-app-v1.onrender.com') {
-      console.log('🛡️ CORS: Emergency allowed for Render domain');
+    if (allowedOrigins.indexOf(origin) !== -1) {
       return callback(null, true);
     }
 
     // In development, allow localhost origins
     if (config.NODE_ENV === 'development' && origin.match(/^http:\/\/localhost:\d+$/)) {
       Logger.info('Allowing localhost origin in development', { origin });
-      console.log('✅ CORS: Allowed (localhost in development)');
       return callback(null, true);
     }
 
-    // Block everything else
-    console.log('❌ CORS: BLOCKED origin:', origin);
-    console.log('❌ CORS: Allowed origins were:', allowedOrigins);
-
-    const error = new Error('Not allowed by CORS');
-    error.code = 'CORS_BLOCKED';
-    return callback(error);
+    Logger.warn('CORS blocked origin', { origin, allowedOrigins });
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-API-Key', 'Accept', 'x-api-key'],
-  optionsSuccessStatus: 200, // For legacy browsers
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-API-Key', 'Accept'],
   maxAge: 86400 // 24 hours
 };
 
-try {
-  app.use(cors(corsConfig));
-  console.log('✅ CORS middleware applied successfully');
-  console.log('🌐 CORS Config:', {
-    environment: config.NODE_ENV,
-    allowedOrigins: allowedOrigins,
-    methods: corsConfig.methods,
-    credentials: corsConfig.credentials
-  });
-} catch (error) {
-  console.error('🚨 CORS middleware failed to apply:', error.message);
-}
+app.use(cors(corsConfig));
 
 // Body parsing with size limits
 app.use(express.json({
@@ -613,22 +559,14 @@ app.use(notFoundHandler);
 
 // CORS Error Handler - Must come before general error handling
 app.use((error, req, res, next) => {
-  if (error.message && error.message.includes('CORS') || error.code === 'CORS_BLOCKED') {
-    console.log('🚫 CORS ERROR HANDLER TRIGGERED');
-    console.log('   Origin:', req.headers.origin);
-    console.log('   Method:', req.method);
-    console.log('   Path:', req.path);
-
-    return res.status(500).json({
-      error: 'INTERNAL_ERROR',
-      message: 'Not allowed by CORS',
-      timestamp: new Date().toISOString(),
-      path: req.path,
-      method: req.method
+  if (error.message === 'Not allowed by CORS') {
+    console.log('🚫 CORS BLOCK: Access denied for origin:', req.headers.origin);
+    return res.status(403).json({
+      error: 'CORS_ERROR',
+      message: 'Cross-origin request blocked',
+      timestamp: new Date().toISOString()
     });
   }
-
-  // Continue to next error handler if not CORS
   next(error);
 });
 
