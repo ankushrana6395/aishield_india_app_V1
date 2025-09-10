@@ -403,3 +403,12 @@
   "environment": "production",
   "version": "2.0.0"
 }
+{
+  "timestamp": "2025-09-10 16:05:22.459",
+  "level": "ERROR",
+  "message": "Server error",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "error": "listen EADDRINUSE: address already in use 127.0.0.1:5002"
+}

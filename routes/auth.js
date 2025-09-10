@@ -62,7 +62,19 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Check password
+    // Check if user is OAuth-only (Google OAuth users without passwords)
+    if (user.googleId && !user.password) {
+      return res.status(400).json({
+        message: 'This email is registered with Google. Please use Google sign-in instead.'
+      });
+    }
+
+    // For password-based authentication, ensure password exists
+    if (!user.password) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    // Check password using bcrypt comparison
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
@@ -188,16 +200,40 @@ router.get('/google',
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    // Successful authentication, generate JWT and redirect to client
-    const token = generateToken(req.user._id);
-    const baseUrl = process.env.NODE_ENV === 'production'
-      ? 'https://aishield-india-app-v1.onrender.com'
-      : (process.env.CLIENT_URL || 'http://localhost:3000');
-    const redirectUrl = `${baseUrl}/?token=${token}`;
-    console.log('OAuth redirect URL:', redirectUrl);
-    res.redirect(redirectUrl);
+    try {
+      // Successful authentication, generate JWT and redirect to client
+      console.log('✅ GOOGLE OAUTH: Authentication successful for user:', req.user.email);
+
+      const token = generateToken(req.user._id);
+      console.log('✅ GOOGLE OAUTH: JWT token generated for user ID:', req.user._id);
+
+      const baseUrl = process.env.NODE_ENV === 'production'
+        ? 'https://aishield-india-app-v1.onrender.com'
+        : (process.env.CLIENT_URL || 'http://localhost:3000');
+
+      const redirectUrl = `${baseUrl}/?token=${token}`;
+      console.log('🔄 GOOGLE OAUTH: Redirecting to:', redirectUrl);
+
+      res.redirect(redirectUrl);
+    } catch (error) {
+      console.error('❌ GOOGLE OAUTH: Callback error:', error);
+      res.status(500).json({ message: 'OAuth callback failed', error: error.message });
+    }
   }
 );
+
+// Debug endpoint for OAuth testing
+router.get('/oauth-debug', (req, res) => {
+  res.json({
+    timestamp: new Date().toISOString(),
+    node_env: process.env.NODE_ENV,
+    client_url: process.env.CLIENT_URL,
+    jwt_secret_exists: !!process.env.JWT_SECRET,
+    google_client_id_exists: !!process.env.GOOGLE_CLIENT_ID,
+    google_client_secret_exists: !!process.env.GOOGLE_CLIENT_SECRET,
+    google_callback_url: process.env.GOOGLE_CALLBACK_URL
+  });
+});
 
 // TEMPORARY ADMIN CREATION ROUTE REMOVED FOR SECURITY
 // All admin creation must now go through secure admin dashboard
