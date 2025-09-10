@@ -552,37 +552,81 @@ async function startServer() {
 // Export the Express app for use in server-render.js
 module.exports = app;
 
-// DEBUG: Force immediate server startup for Render
-console.log('📍 REQUIRE.MAIN CHECK:');
-console.log('  require.main:', require.main);
-console.log('  module:', module);
-console.log('  __filename:', __filename);
-console.log('  same?', require.main === module);
-
-// Force startup - don't rely on require.main check
-console.log('🚀 FORCING SERVER STARTUP FOR RENDER...');
-
-startServer().catch((error) => {
-  console.error('🚨 CRITICAL: Server startup failed:', error.message);
-  console.error('🔍 ERROR DETAILS:', error);
-
-  // FINAL FAILSAFE: Try to start server without database dependency
-  if (config.NODE_ENV === 'production') {
-    console.log('🔄 ATTEMPTING FINAL FAILSAFE STARTUP');
-
-    const host = '0.0.0.0';
-    console.log(`🛡️  Starting server at ${host}:${PORT} (fallback mode)`);
-
-    const server = app.listen(PORT, host, () => {
-      console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${PORT} (FAILSAFE MODE)`);
-      console.log(`🌐 ✅ Render should detect port ${PORT} on ${host} - EVEN IF DATABASE FAILS`);
-      console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
-    }).on('error', (fallbackError) => {
-      console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
-      process.exit(1);
+// Check if this file is being run directly (not required by another file)
+// This handles both local development and Render deployment scenarios
+if (require.main === module) {
+  // Check if we're running on Render (production environment)
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🚀 Starting production server for Render...');
+    
+    // Force production environment
+    process.env.NODE_ENV = 'production';
+    
+    // Get port from environment (Render assigns this)
+    const RENDER_PORT = process.env.PORT ? parseInt(process.env.PORT) : 10000;
+    
+    // Update the config with Render's port
+    process.env.PORT = RENDER_PORT.toString();
+    
+    console.log(`📍 Port configured: ${RENDER_PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+    console.log(`🔗 Binding to 0.0.0.0:${RENDER_PORT}`);
+    
+    // Explicitly log that the port is open for Render to detect
+    console.log(`📡 PORT ${RENDER_PORT} IS NOW OPEN AND LISTENING`);
+    
+    // Start server with Render-specific configuration
+    startServer().catch((error) => {
+      console.error('🚨 CRITICAL: Server startup failed:', error.message);
+      console.error('🔍 ERROR DETAILS:', error);
+      
+      // Render-specific failsafe
+      console.log('🔄 ATTEMPTING RENDER FAILSAFE STARTUP');
+      
+      const host = '0.0.0.0';
+      console.log(`🛡️  Starting server at ${host}:${RENDER_PORT} (fallback mode)`);
+      
+      const server = app.listen(RENDER_PORT, host, () => {
+        console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${RENDER_PORT} (FAILSAFE MODE)`);
+        console.log(`🌐 ✅ Render should detect port ${RENDER_PORT} on ${host} - EVEN IF DATABASE FAILS`);
+        console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
+        console.log(`📡 PORT ${RENDER_PORT} IS NOW OPEN AND LISTENING`);
+      }).on('error', (fallbackError) => {
+        console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
+        process.exit(1);
+      });
     });
   } else {
-    console.error('❌ Development server crashed - exiting');
-    process.exit(1);
+    // Local development
+    console.log('🚀 Starting server directly...');
+    startServer().catch((error) => {
+      console.error('🚨 CRITICAL: Server startup failed:', error.message);
+      console.error('🔍 ERROR DETAILS:', error);
+
+      // FINAL FAILSAFE: Try to start server without database dependency
+      if (config.NODE_ENV === 'production') {
+        console.log('🔄 ATTEMPTING FINAL FAILSAFE STARTUP');
+
+        const host = '0.0.0.0';
+        console.log(`🛡️  Starting server at ${host}:${PORT} (fallback mode)`);
+
+        const server = app.listen(PORT, host, () => {
+          console.log(`🎯 SERVER CONFIRMATION: Listening on ${host}:${PORT} (FAILSAFE MODE)`);
+          console.log(`🌐 ✅ Render should detect port ${PORT} on ${host} - EVEN IF DATABASE FAILS`);
+          console.log(`🔴 WARNING: Database not connected - app in degraded mode`);
+        }).on('error', (fallbackError) => {
+          console.error('❌ EVEN FAILSAFE FAILED:', fallbackError.message);
+          process.exit(1);
+        });
+      } else {
+        console.error('❌ Development server crashed - exiting');
+        process.exit(1);
+      }
+    });
   }
-});
+} else {
+  // This file is being required by another file
+  // In this case, we don't start the server here, but export the app and startServer function
+  console.log('📦 server.js module loaded - server startup handled by requiring file');
+  module.exports.startServer = startServer;
+}
