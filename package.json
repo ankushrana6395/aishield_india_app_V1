@@ -4,7 +4,8 @@
   "description": "A secure, subscription-based online learning platform for web application penetration testing",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "NODE_ENV=production node server-render.js",
+    "render": "NODE_ENV=production node server-render.js",
     "dev": "nodemon server.js",
     "build": "echo 'Installing root dependencies...' && npm install && echo 'Installing client dependencies...' && cd client && npm install --legacy-peer-deps && echo 'Building React app...' && npm run build",
     "client": "cd client && npm start",

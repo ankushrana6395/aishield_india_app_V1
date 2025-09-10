@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: aishield-india-app
+    runtime: node
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        generateValue: true
+      - key: CLIENT_URL
+        value: https://aishield-india-app-v1.onrender.com
+    healthCheckPath: /api/health
+
+# Auto-scaling configuration
+  autoScaling:
+    min: 1
+    max: 10
+
+# Database configuration
+# databases:
+#   - name: aishield-db
+#     databaseName: aishield_enterprise
+#     user: ankushrana2623_db_user
+#     plan: free
+
+# Storage (for lectures and files)
+# storage:
+#   - name: lectures
+#     region: frankfurt
+#     plan: starter
+
+# Environment groups for different deployment stages
+# environmentGroups:
+#   - name: production-env
+#     vars:
+#       - key: MONGODB_URI
+#         sync: false  # Manual entry required for production
+#       - key: JWT_SECRET
+#         sync: false
+#       - key: SESSION_SECRET
+#         sync: false
+#       - key: RAZORPAY_KEY_ID
+#         sync: false
+#       - key: RAZORPAY_KEY_SECRET
+#         sync: false
