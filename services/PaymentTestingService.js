@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 // Internal Dependencies
 const PaymentService = require('./paymentService');
-const FraudDetectionService = require('./fraudDetectionService');
+
 
 // Models
 const Payment = require('../models/Payment');

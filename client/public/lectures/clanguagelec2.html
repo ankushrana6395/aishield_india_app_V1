@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming - Lecture 2: Keywords, Data Types, Variables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        
+        .nav-btn {
+            background: white;
+            color: #1a2a6c;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .text-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .visual-content {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .code-keyword {
+            color: #ff79c6;
+        }
+        
+        .code-function {
+            color: #50fa7b;
+        }
+        
+        .code-comment {
+            color: #6272a4;
+        }
+        
+        .code-include {
+            color: #ff5555;
+        }
+        
+        .code-value {
+            color: #f1fa8c;
+        }
+        
+        .highlight {
+            background: #ffff00;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .hindi {
+            color: #b21f1f;
+            font-weight: bold;
+        }
+        
+        .example-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-left: 5px solid #2196f3;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .icon-box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .icon {
+            font-size: 3rem;
+            color: #1a2a6c;
+        }
+        
+        .visual-explanation {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .browser-mockup {
+            border: 3px solid #ddd;
+            border-top: 20px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            padding: 15px;
+        }
+        
+        .important-note {
+            background: #fff8e1;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #1a2a6c;
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .memory-visual {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .memory-box {
+            width: 100px;
+            height: 60px;
+            background: #fdbb2d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #1a2a6c;
+            border-radius: 5px;
+        }
+        
+        .memory-address {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        
+        .memory-value {
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .card-content {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>C Programming: Lecture 2</h1>
+            <p>Keywords, Data Types, Variables, and Input  </p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="#" class="nav-btn"><i class="fas fa-arrow-left"></i> Previous Lecture</a>
+            <a href="#" class="nav-btn">Next Lecture <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-key"></i> Keywords (Reserved Words)</h2>
+            <div class="card-content">
+                <div class="text-content">
+                    <p><span class="hindi">Keywords</span> wo special words hote hain jo C language mein already defined hote hain. Inka pre-defined meaning hota hai aur inhe variable names ya function names ke liye use nahi kar sakte.</p>
+                    <p>Examples: <span class="highlight">int, float, char, if, else, for, while, do, switch, case, break, continue, return</span>, etc.</p>
+                    
+                    <div class="example-box">
+                        <p><strong>Real-life Example:</strong> Jaise traffic signals ke colors ka pre-defined meaning hota hai - red means stop, green means go. Waise hi keywords ka pre-defined meaning hota hai.</p>
+                    </div>
+                    
+                    <div class="important-note">
+                        <p><strong>Note:</strong> C language mein total 32 keywords hote hain. Inhe aap variable name ke liye use nahi kar sakte.</p>
+                    </div>
+                </div>
+                <div class="visual-content">
+                    <img src="https://images.placeholders.dev/?width=300&height=200&text=Keywords&bgColor=%231a2a6c&textColor=white" alt="C Keywords" style="max-width: 100%; border-radius: 10px;">
+                    <div class="code-block">
+                        <span class="code-comment">// Valid variable names</span><br>
+                        <span class="code-keyword">int</span> age = 20;<br>
+                        <span class="code-keyword">float</span> salary = 50000.50;<br><br>
+                        
+                        <span class="code-comment">// Invalid - keyword can't be variable name</span><br>
+                        <span class="code-comment">// int int = 10;  // ERROR</span><br>
+                        <span class="code-comment">// float return = 5.5;  // ERROR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-cubes"></i> Data Types - Prakar ke Data</h2>
+            <div class="card-content">
+                <div class="text-content">
+                    <p>Data type batata hai ki variable kis type ka data store karega. Har data type ka apna size hota hai aur range hoti hai values ki.</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>Data Type</th>
+                                <th>Size (Bytes)</th>
+                                <th>Description</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td>int</td>
+                                <td>4</td>
+                                <td>Integer numbers</td>
+                                <td>10, -5, 0</td>
+                            </tr>
+                            <tr>
+                                <td>float</td>
+                                <td>4</td>
+                                <td>Floating point numbers</td>
+                                <td>3.14, -0.5</td>
+                            </tr>
+                            <tr>
+                                <td>double</td>
+                                <td>8</td>
+                                <td>Double precision floating point</td>
+                                <td>3.1415926535</td>
+                            </tr>
+                            <tr>
+                                <td>char</td>
+                                <td>1</td>
+                                <td>Single character</td>
+                                <td>'A', 'b', '5'</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="example-box">
+                        <p><span class="hindi">Real-life Example:</span> Jaise different containers alag alag cheezein store karte hain - bottle liquid ke liye, box solid items ke liye. Waise hi different data types alag alag data store karte hain.</p>
+                    </div>
+                </div>
+                <div class="visual-content">
+                    <img src="https://images.placeholders.dev/?width=300&height=200&text=Data+Types&bgColor=%23b21f1f&textColor=white" alt="Data Types" style="max-width: 100%; border-radius: 10px;">
+                    
+                    <div class="visual-explanation">
+                        <p><strong>Memory Visualization:</strong></p>
+                        <div class="memory-visual">
+                            <div class="memory-box">
+                                <div class="memory-address">0x1000</div>
+                                <div class="memory-value">10</div>
+                                <div>int</div>
+                            </div>
+                            <div class="memory-box">
+                                <div class="memory-address">0x1004</div>
+                                <div class="memory-value">3.14</div>
+                                <div>float</div>
+                            </div>
+                            <div class="memory-box">
+                                <div class="memory-address">0x1008</div>
+                                <div class="memory-value">A</div>
+                                <div>char</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-box-open"></i> Variables - Chuney</h2>
+            <div class="card-content">
+                <div class="text-content">
+                    <p><span class="hindi">Variable</span> ek named storage location hoti hai jahan aap data store kar sakte hain. Variable banane ke liye aapko uska data type aur name specify karna hota hai.</p>
+                    
+                    <p>Variable declare karne ka syntax:</p>
+                    <div class="code-block">
+                        <span class="code-keyword">data_type</span> variable_name;
+                    </div>
+                    
+                    <p>Variable initialize karne ka syntax:</p>
+                    <div class="code-block">
+                        <span class="code-keyword">data_type</span> variable_name = value;
+                    </div>
+                    
+                    <div class="important-note">
+                        <p><strong>Rules for variable names:</strong></p>
+                        <ul>
+                            <li>Variable name letters, digits, aur underscore (_) se start ho sakta hai</li>
+                            <li>Variable name case sensitive hota hai (age aur AGE alag hain)</li>
+                            <li>Variable name keyword nahi ho sakta</li>
+                            <li>Variable name space contain nahi kar sakta</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="visual-content">
+                    <img src="https://images.placeholders.dev/?width=300&height=200&text=Variables&bgColor=%23fdbb2d&textColor=white" alt="Variables" style="max-width: 100%; border-radius: 10px;">
+                    
+                    <div class="code-block">
+                        <span class="code-comment">// Variable declaration and initialization</span><br>
+                        <span class="code-keyword">int</span> age;          <span class="code-comment">// Declaration</span><br>
+                        age = 20;         <span class="code-comment">// Assignment</span><br><br>
+                        
+                        <span class="code-keyword">float</span> height = 5.9;  <span class="code-comment">// Initialization</span><br>
+                        <span class="code-keyword">char</span> grade = 'A';<br><br>
+                        
+                        <span class="code-comment">// Multiple variables</span><br>
+                        <span class="code-keyword">int</span> a = 5, b = 10, c = 15;
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-keyboard"></i> Input lena - scanf() Function</h2>
+            <div class="card-content">
+                <div class="text-content">
+                    <p><span class="hindi">scanf()</span> function ka use user se input lene ke liye hota hai. Ye stdio.h header file mein defined hota hai.</p>
+                    
+                    <p>Syntax:</p>
+                    <div class="code-block">
+                        <span class="code-function">scanf</span>(<span class="code-value">"format_specifier"</span>, &variable);
+                    </div>
+                    
+                    <p>Format specifiers:</p>
+                    <ul>
+                        <li><span class="highlight">%d</span> - integer ke liye</li>
+                        <li><span class="highlight">%f</span> - float ke liye</li>
+                        <li><span class="highlight">%lf</span> - double ke liye</li>
+                        <li><span class="highlight">%c</span> - character ke liye</li>
+                        <li><span class="highlight">%s</span> - string ke liye</li>
+                    </ul>
+                    
+                    <div class="important-note">
+                        <p><strong>Yaad rakhein:</strong> Variable se pehle <span class="highlight">&</span> (address of operator) lagana zaroori hai. Ye batata hai ki value kahan store karni hai.</p>
+                    </div>
+                </div>
+                <div class="visual-content">
+                    <img src="https://images.placeholders.dev/?width=300&height=200&text=Input+scanf&bgColor=%231a2a6c&textColor=white" alt="scanf Function" style="max-width: 100%; border-radius: 10px;">
+                    
+                    <div class="code-block">
+                        <span class="code-include">#include</span> <span class="code-keyword">&lt;stdio.h></span><br>
+                        <br>
+                        <span class="code-keyword">int</span> <span class="code-function">main</span>() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">int</span> age;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">float</span> height;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">char</span> grade;<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Enter your age: "</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">scanf</span>(<span class="code-value">"%d"</span>, &age);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Enter your height: "</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">scanf</span>(<span class="code-value">"%f"</span>, &height);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Enter your grade: "</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">scanf</span>(<span class="code-value">" %c"</span>, &grade);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Age: %d, Height: %.2f, Grade: %c\n"</span>, age, height, grade);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> 0;<br>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-laptop-code"></i> Complete Example - Poorna Udaharan</h2>
+            <div class="card-content">
+                <div class="text-content">
+                    <p>Chalo ek complete program dekhte hain jisme hum variables declare karte hain, user se input lete hain, aur output display karte hain:</p>
+                    
+                    <div class="code-block">
+                        <span class="code-include">#include</span> <span class="code-keyword">&lt;stdio.h></span><br>
+                        <br>
+                        <span class="code-keyword">int</span> <span class="code-function">main</span>() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Variable declarations</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">int</span> num1, num2;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">float</span> result;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">char</span> operator;<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Input from user</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Enter first number: "</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">scanf</span>(<span class="code-value">"%d"</span>, &num1);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Enter operator (+, -, *, /): "</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">scanf</span>(<span class="code-value">" %c"</span>, &operator);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Enter second number: "</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">scanf</span>(<span class="code-value">"%d"</span>, &num2);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Calculation</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (operator == '+') {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = num1 + num2;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;} <span class="code-keyword">else</span> <span class="code-keyword">if</span> (operator == '-') {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = num1 - num2;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;} <span class="code-keyword">else</span> <span class="code-keyword">if</span> (operator == '*') {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = num1 * num2;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;} <span class="code-keyword">else</span> <span class="code-keyword">if</span> (operator == '/') {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = (<span class="code-keyword">float</span>)num1 / num2;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;} <span class="code-keyword">else</span> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Invalid operator!\n"</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> 1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Output result</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">printf</span>(<span class="code-value">"Result: %.2f\n"</span>, result);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> 0;<br>
+                        }
+                    </div>
+                </div>
+                <div class="visual-content">
+                    <img src="https://images.placeholders.dev/?width=300&height=200&text=Example&bgColor=%23b21f1f&textColor=white" alt="Complete Example" style="max-width: 100%; border-radius: 10px;">
+                    
+                    <div class="browser-mockup">
+                        <p><strong>Program Output:</strong></p>
+                        <p>Enter first number: 15<br>
+                        Enter operator (+, -, *, /): *<br>
+                        Enter second number: 4<br>
+                        Result: 60.00</p>
+                    </div>
+                    
+                    <div class="important-note">
+                        <p><strong>Special Note:</strong> Character input lene se pehle agar koi aur input liya hai to <span class="highlight">" %c"</span> mein space use karein. Yeh extra newline character ko consume kar leta hai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-brain"></i> Practice Questions - Abhyas Prashn</h2>
+            <div class="card-content">
+                <div class="text-content">
+                    <p>In concepts ko practice mein laane ke liye ye exercises karein:</p>
+                    
+                    <ol>
+                        <li>Ek program likho jo user se uska name, age, aur favorite number le aur fir unhe display kare</li>
+                        <li>Temperature converter banayo jo Celsius ko Fahrenheit mein convert kare (Formula: F = C * 9/5 + 32)</li>
+                        <li>Simple calculator banayo jo do numbers par basic operations perform kare</li>
+                        <li>Ek program likho jo user se circle ka radius le aur uska area calculate kare (Area = πr²)</li>
+                    </ol>
+                    
+                    <div class="example-box">
+                        <p><strong>Tip:</strong> Practice karte waqt comments zaroor likhein. Comments aapke code ko samjhne mein help karte hain.</p>
+                    </div>
+                </div>
+                <div class="visual-content">
+                    <img src="https://images.placeholders.dev/?width=300&height=200&text=Practice&bgColor=%23fdbb2d&textColor=white" alt="Practice Exercises" style="max-width: 100%; border-radius: 10px;">
+                    
+                    <div class="visual-explanation">
+                        <p><strong>Learning Tips:</strong></p>
+                        <ul>
+                            <li>Roz code likhein, chahye woh chota hi kyun na ho</li>
+                            <li>Errors se ghabrayein nahi, unhe debug karna seekhein</li>
+                            <li>Program output ko samjhein aur analyze karein</li>
+                            <li>Dusre programmers ke code ko padhne ki koshish karein</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 C Programming Course for Beginners By Ankush Rana</p>
+            <p>Keep coding and keep learning! Happy Programming!</p>
+        </div>
+    </footer>
+</body>
+</html>

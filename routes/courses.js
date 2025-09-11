@@ -32,6 +32,8 @@ const requireDatabase = async (req, res, next) => {
 
 const Course = require('../models/Course');
 const User = require('../models/User');
+const Lecture = require('../models/Lecture');
+const Category = require('../models/Category');
 const auth = require('../middleware/auth');
 const subscription = require('../middleware/subscription');
 const { body, param, validationResult } = require('express-validator');
@@ -148,14 +150,8 @@ router.get('/:slug',
     const { slug } = req.params;
     const { includeProgress = true } = req.query;
 
-    // Get course
-    const course = await Course.findOne({ slug, published: true })
-      .populate({
-        path: 'categories.lectures.contentId',
-        model: 'FileCategory',
-        select: 'filename title'
-      })
-      .lean();
+    // Get course with basic population
+    const course = await Course.findOne({ slug, published: true }).lean();
 
     if (!course) {
       return res.status(404).json({
@@ -164,16 +160,81 @@ router.get('/:slug',
       });
     }
 
-    // Prepare course data
+    // Get all lectures for this course with better error handling
+    let lectures = await Lecture.find({ course: course._id })
+      .populate('category', 'name slug')
+      .sort({ createdAt: 1 })
+      .lean();
+
+    console.log(`📚 Found ${lectures.length} lectures directly linked to course "${course.title}"`);
+
+    // Fallback: Try to find lectures by category matching if no direct links
+    if (lectures.length === 0 && course.categories && course.categories.length > 0) {
+      console.log('🔍 No direct lecture links found, trying category-based lookup...');
+
+      const categoryIds = course.categories.map(cat => cat._id);
+      const categoryLectures = await Lecture.find({
+        category: { $in: categoryIds },
+        $or: [
+          { course: { $exists: false } },
+          { course: null },
+          { course: course._id }
+        ]
+      })
+        .populate('category', 'name slug')
+        .sort({ createdAt: 1 })
+        .lean();
+
+      if (categoryLectures.length > 0) {
+        console.log(`✅ Found ${categoryLectures.length} additional lectures by category matching`);
+
+        // Auto-link these lectures to the course
+        const bulkOps = categoryLectures.map(lecture => ({
+          updateOne: {
+            filter: { _id: lecture._id },
+            update: { $set: { course: course._id } }
+          }
+        }));
+
+        if (bulkOps.length > 0) {
+          await Lecture.bulkWrite(bulkOps);
+          console.log(`🔗 Auto-linked ${categoryLectures.length} lectures to course`);
+          lectures = categoryLectures;
+        }
+      }
+    }
+
+    // Group lectures by category
+    const lecturesByCategory = {};
+    lectures.forEach(lecture => {
+      const categoryId = lecture.category?._id?.toString() || 'uncategorized';
+      if (!lecturesByCategory[categoryId]) {
+        lecturesByCategory[categoryId] = {
+          category: lecture.category || { name: 'Uncategorized', slug: 'uncategorized' },
+          lectures: []
+        };
+      }
+      lecturesByCategory[categoryId].lectures.push({
+        _id: lecture._id,
+        title: lecture.title,
+        subtitle: lecture.subtitle,
+        description: lecture.description,
+        slug: lecture.slug,
+        contentId: lecture.contentId, // Points to HTML file
+        isRequired: lecture.isHinglish ? true : false,
+        duration: 15, // Default duration
+        order: 0, // Default order
+        createdAt: lecture.createdAt
+      });
+    });
+
+    // Create course structure with organized lectures
     let courseData = {
       ...course,
       url: `https://yourdomain.com/course/${course.slug}`,
-      totalLectures: course.categories?.reduce((total, category) =>
-        total + (category.lectures?.length || 0), 0
-      ) || 0,
-      totalDuration: course.categories?.reduce((total, category) =>
-        total + (category.estimatedDuration || 0), 0
-      ) || 0
+      categories: Object.values(lecturesByCategory),
+      totalLectures: lectures.length,
+      totalDuration: lectures.length * 15 // Default 15 minutes per lecture
     };
 
     // Final summary
@@ -187,14 +248,17 @@ router.get('/:slug',
     // Debug lecture fetching
     console.log('🔍 FETCH COURSE DEBUG - LECTURE STRUCTURE:');
     console.log(`   Course: ${course.title} (${course._id})`);
-    console.log(`   Categories found: ${course.categories?.length || 0}`);
+    console.log(`   Total Lectures: ${lectures.length}`);
+    console.log(`   Categories with Lectures: ${courseData.categories?.length || 0}`);
 
-    if (course.categories && course.categories.length > 0) {
-      course.categories.forEach((category, catIndex) => {
-        console.log(`   Category ${catIndex + 1}: "${category.name}" (${category._id})`);
-        console.log(`   Lectures in category: ${category.lectures?.length || 0}`);
+    if (courseData.categories && courseData.categories.length > 0) {
+      courseData.categories.forEach((categoryGroup, catIndex) => {
+        const category = categoryGroup.category;
+        const categoryLectures = categoryGroup.lectures;
+        console.log(`   Category ${catIndex + 1}: "${category.name}" (${category._id || category.slug})`);
+        console.log(`   Lectures in category: ${categoryLectures?.length || 0}`);
 
-        category.lectures?.forEach((lecture, lecIndex) => {
+        categoryLectures?.forEach((lecture, lecIndex) => {
           console.log(`     Lecture ${lecIndex + 1}: "${lecture.title}" (${lecture._id})`);
           console.log(`     Has Content ID: ${!!lecture.contentId}`);
           if (lecture.contentId) {
@@ -203,7 +267,7 @@ router.get('/:slug',
         });
       });
     } else {
-      console.log('   ⚠️ NO CATEGORIES FOUND - Need to trigger auto-linking for this course');
+      console.log('   ⚠️ NO LECTURES FOUND - Check if lectures are properly linked to this course');
     }
 
     // Add user progress if authenticated

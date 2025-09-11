@@ -19,6 +19,11 @@
             "date": 1757475932030,
             "name": "/Users/ankush/Pictures/aishieldindia/aishield_india_app/logs/security-2025-09-10.log",
             "hash": "090dda5fc1700607b6e1fa70f2e08801d719145aa760b59798b0e48dbf030637"
+        },
+        {
+            "date": 1757569925327,
+            "name": "/Users/ankush/Pictures/aishieldindia/aishield_india_app/logs/security-2025-09-11.log",
+            "hash": "b14a70b9679f3db86db8ba9c93f81bb47020d0839e1f14bfea40765241378323"
         }
     ],
     "hashType": "sha256"

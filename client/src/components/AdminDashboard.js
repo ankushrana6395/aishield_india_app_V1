@@ -563,7 +563,7 @@ const AdminDashboard = () => {
                     return {
                       id: cleanId || `lecture_${index}`,
                       title: lecture.displayName || lecture.title || 'Untitled',
-                      slug: lecture.displayName || 'No slug',
+                        slug: lecture.displayName || lecture.slug || lecture.fileName || lecture.title || 'No slug',
                       category: lecture.category || 'No Category',
                       categoryId: lecture.categoryId || null,
                       course: lecture.course || 'No Course',
@@ -645,9 +645,16 @@ const AdminDashboard = () => {
                           color="error"
                           startIcon={<DeleteIcon />}
                           onClick={() => {
-                            // Use filename for file-based lectures or title for database lectures
-                            const filename = params.row.slug || params.row.title;
-                            handleDeleteLecture(filename);
+                            // Use the actual ID and filename to ensure proper deletion
+                            const lectureData = {
+                              id: params.row.id,
+                              filename: params.row.slug || params.row.fileName, // Primary: stored filename
+                              title: params.row.title || params.row.slug || 'Unknown Lecture',
+                              displayName: params.row.displayName,
+                              slug: params.row.slug,
+                              fileName: params.row.fileName
+                            };
+                            handleDeleteLecture(lectureData);
                           }}
                         >
                           Delete
@@ -1114,23 +1121,62 @@ const AdminDashboard = () => {
     navigate('/login');
   };
 
-  const handleDeleteLecture = async (lectureFileName) => {
+  const handleDeleteLecture = async (lectureData) => {
     try {
       setError('');
       setSuccess('');
+      setLoading(true);
 
-      if (!window.confirm(`Are you sure you want to delete the lecture "${lectureFileName}"?`)) {
+      // Confirm deletion with better title
+      if (!window.confirm(`Are you sure you want to delete "${lectureData.title}"? This action cannot be undone.`)) {
         return;
       }
 
-      const response = await axios.delete(`/api/admin/lectures/${encodeURIComponent(lectureFileName)}`);
+      // Use the proper filename - prioritize the actual stored filename (slug/fileName)
+      const deleteIdentifier = lectureData.filename &&
+                              lectureData.filename !== 'No slug' &&
+                              lectureData.filename !== lectureData.title
+        ? lectureData.filename
+        : lectureData.id; // Use ID as fallback
 
-      setLectures(lectures.filter(lecture => lecture.fileName !== lectureFileName));
+      console.log('🗑️ Attempting to delete lecture:', {
+        title: lectureData.title,
+        identifier: deleteIdentifier,
+        filename: lectureData.filename,
+        slug: lectureData.slug,
+        fileName: lectureData.fileName,
+        displayName: lectureData.displayName,
+        titleMatchesFilename: lectureData.filename === lectureData.title
+      });
 
-      setSuccess('Lecture deleted successfully');
+      // CRITICAL: If filename is missing or invalid, log error
+      if (!lectureData.filename || lectureData.filename === 'No slug') {
+        console.error('❌ CRITICAL ERROR: No valid filename found!');
+        console.error('Lecture data:', lectureData);
+        return;
+      }
+
+      const response = await axios.delete(`/api/admin/lectures/${encodeURIComponent(deleteIdentifier)}`);
+
+      // Filter out the deleted lecture using proper matching logic
+      setLectures(prevLectures =>
+        prevLectures.filter(lecture => {
+          // Don't remove the lecture that matches the deleted one
+          const idMatch = lecture._id === lectureData.id || lecture.id === lectureData.id;
+          const filenameMatch = lecture.displayName === lectureData.filename || lecture.fileName === lectureData.filename;
+          const titleMatch = lecture.title === lectureData.title;
+
+          // Keep the lecture unless it matches the deleted one
+          return !(idMatch || filenameMatch || titleMatch);
+        })
+      );
+
+      setSuccess(`✅ Lecture "${lectureData.title}" deleted successfully`);
     } catch (err) {
-      console.error('Error deleting lecture:', err);
-      setError(err.response?.data?.message || 'Failed to delete lecture');
+      console.error('❌ Error deleting lecture:', err);
+      setError(err.response?.data?.message || 'Failed to delete lecture. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 

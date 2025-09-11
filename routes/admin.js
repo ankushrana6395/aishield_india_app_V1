@@ -367,11 +367,30 @@ router.post('/upload-lecture', firewallBypassMiddleware, auth, adminAuth, upload
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    const { category, title, description, courseId } = req.body;
+
+    const { category, title, description, courseId, parsedLectureData } = req.body;
 
     // Validate category
     if (!category) {
       return res.status(400).json({ message: 'Category is required' });
+    }
+
+    // Parse the structured lecture data if provided
+    let structuredLectureData = null;
+    if (parsedLectureData) {
+      try {
+        console.log('📤 RECEIVED PARSED LECTURE DATA FROM FRONTEND');
+        structuredLectureData = JSON.parse(parsedLectureData);
+        console.log('✅ PARSED STRUCTURAL DATA:', {
+          title: structuredLectureData.title,
+          sections: structuredLectureData.sections?.length,
+          quizQuestions: structuredLectureData.quizQuestions?.length,
+          slug: structuredLectureData.slug
+        });
+      } catch (parseError) {
+        console.warn('⚠️ Failed to parse structured lecture data:', parseError.message);
+        console.log('Raw parsedLectureData:', parsedLectureData);
+      }
     }
 
     // Check if category exists
@@ -442,7 +461,20 @@ router.post('/upload-lecture', firewallBypassMiddleware, auth, adminAuth, upload
 
     // Create or update file-category mapping with content
     const filename = req.file.filename;
+    console.log('🔧 FILECATEGORY CREATION DEBUG:', {
+      multerFilename: filename,
+      multerOriginalname: req.file.originalname,
+      filenameExists: !!filename,
+      filenameLength: filename ? filename.length : 0
+    });
+
     let fileCategory = await FileCategory.findOne({ filename });
+    console.log('🔧 EXISTING FILECATEGORY LOOKUP:', {
+      filename,
+      found: !!fileCategory,
+      existingId: fileCategory ? fileCategory._id : null,
+      existingFilename: fileCategory ? fileCategory.filename : null
+    });
 
     if (!title) {
       // Generate title from filename if not provided
@@ -495,12 +527,218 @@ router.post('/upload-lecture', firewallBypassMiddleware, auth, adminAuth, upload
       courseId: fileCategory.course,
       isAssignedToCourse: fileCategory.isAssignedToCourse,
       courseObjectId: fileCategory.course?.toString(),
-      courseExists: !!fileCategory.course
+      courseExists: !!fileCategory.course,
+      filename: fileCategory.filename
     });
 
+
+    // CRITICAL: Ensure fileCategory has the filename before using it
+    if (!fileCategory.filename) {
+      console.error('❌ CRITICAL ERROR: FileCategory missing filename!');
+      return res.status(500).json({ message: 'File category creation failed - missing filename' });
+    }
+
+    // 🔧 FIX: Store the filename immediately after saving to avoid race conditions
+    const lectureContentId = fileCategory.filename;
+    console.log('🔧 SECURED CONTENT ID:', lectureContentId);
+    console.log('🔧 FileCategory object details:', {
+      id: fileCategory._id,
+      filename: fileCategory.filename,
+      title: fileCategory.title,
+      hasFilename: !!fileCategory.filename,
+      filenameType: typeof fileCategory.filename,
+      filenameLength: fileCategory.filename ? fileCategory.filename.length : 0
+    });
+
+    // ====================
+    // CREATE LECTURE DOCUMENT (ENHANCED: Better processing and linking)
+    // ====================
+    let lectureDoc = null;
+    if (structuredLectureData) {
+      try {
+        console.log('🎯 CREATING STRUCTURED LECTURE DOCUMENT...');
+
+        // Check if lecture with this title already exists
+        const existingLecture = await Lecture.findOne({
+          title: structuredLectureData.title,
+          category: category
+        });
+
+        if (existingLecture) {
+          console.log('⚠️ Lecture already exists:', existingLecture.title);
+          lectureDoc = existingLecture;
+
+          // Update existing lecture with new data if needed
+          const updates = {};
+          if (!existingLecture.contentId) {
+            updates.contentId = lectureContentId;
+            console.log('🔄 Adding missing contentId to existing lecture:', lectureContentId);
+          }
+          if (!existingLecture.course && courseDoc) {
+            updates.course = courseDoc._id;
+            console.log('🔄 Adding missing course to existing lecture');
+          }
+
+          if (Object.keys(updates).length > 0) {
+            try {
+              const updateResult = await Lecture.updateOne(
+                { _id: existingLecture._id },
+                { $set: updates }
+              );
+              console.log('🔄 Updated existing lecture:', {
+                matched: updateResult.matchedCount,
+                modified: updateResult.modifiedCount,
+                contentId: updates.contentId || 'unchanged'
+              });
+            } catch (updateError) {
+              console.error('❌ Failed to update existing lecture:', updateError.message);
+              return res.status(500).json({ message: 'Failed to update existing lecture' });
+            }
+          }
+        } else {
+          // Create new Lecture document with structured data
+          console.log('🎯 CREATING STRUCTURED LECTURE with contentId:', lectureContentId);
+
+          if (!lectureContentId) {
+            console.error('❌ CRITICAL ERROR: No contentId for structured lecture!');
+            console.error('🔧 Debug info:', {
+              fileCategoryFilename: fileCategory.filename,
+              lectureContentId: lectureContentId,
+              reqFileFilename: req.file.filename,
+              fileCategoryId: fileCategory._id
+            });
+            return res.status(500).json({ message: 'Failed to generate contentId for lecture' });
+          }
+
+          const newLecture = new Lecture({
+            title: structuredLectureData.title,
+            subtitle: structuredLectureData.subtitle || `${structuredLectureData.title} - Interactive Learning Module`,
+            description: structuredLectureData.description || `Interactive guide on ${structuredLectureData.title}`,
+            slug: structuredLectureData.slug || fileCategory.filename.replace('.html', ''),
+            sections: structuredLectureData.sections || [],
+            quizQuestions: structuredLectureData.quizQuestions || [],
+            category: category,
+            course: courseDoc ? courseDoc._id : undefined,
+            isHinglish: structuredLectureData.isHinglish !== undefined ? structuredLectureData.isHinglish : true,
+            contentId: lectureContentId, // 🔧 FIXED: Points to the uploaded HTML file (secured)
+            createdAt: new Date(),
+            updatedAt: new Date()
+          });
+
+          await newLecture.save();
+          lectureDoc = newLecture;
+
+          console.log('✅ LECTURE DOCUMENT CREATED:', {
+            id: newLecture._id,
+            title: newLecture.title,
+            slug: newLecture.slug,
+            sections: newLecture.sections?.length,
+            quizQuestions: newLecture.quizQuestions?.length,
+            contentId: newLecture.contentId,
+            course: newLecture.course ? 'Linked' : 'Not linked'
+          });
+
+          // CRITICAL: Validate that contentId was properly set
+          if (!newLecture.contentId) {
+            console.error('❌ CRITICAL ERROR: Lecture created without contentId!');
+            return res.status(500).json({ message: 'Lecture creation failed - missing contentId' });
+          }
+        }
+      } catch (lectureError) {
+        console.error('❌ Error creating lecture document:', lectureError);
+        console.log('Continuing with FileCategory only...');
+      }
+    } else {
+      console.log('ℹ️ No structured lecture data provided - FileCategory only');
+
+      // Even without structured data, try to create a basic lecture
+      try {
+        console.log('🎯 CREATING BASIC LECTURE DOCUMENT...');
+
+        const basicTitle = title || fileCategory.title || fileCategory.filename.replace('.html', '').replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const basicSlug = fileCategory.filename.replace('.html', '');
+
+        const existingLecture = await Lecture.findOne({
+          slug: basicSlug,
+          category: category
+        });
+
+        if (!existingLecture) {
+          console.log('🎯 CREATING BASIC LECTURE with contentId:', lectureContentId);
+
+          if (!lectureContentId) {
+            console.error('❌ CRITICAL ERROR: No contentId for basic lecture!');
+            console.error('🔧 Debug info:', {
+              fileCategoryFilename: fileCategory.filename,
+              lectureContentId: lectureContentId,
+              reqFileFilename: req.file.filename,
+              fileCategoryId: fileCategory._id
+            });
+            return res.status(500).json({ message: 'Failed to generate contentId for basic lecture' });
+          }
+
+          const basicLecture = new Lecture({
+            title: basicTitle,
+            subtitle: `${basicTitle} - Learning Module`,
+            description: description || `Learn about ${basicTitle}`,
+            slug: basicSlug,
+            sections: [],
+            quizQuestions: [],
+            category: category,
+            course: courseDoc ? courseDoc._id : undefined,
+            isHinglish: true,
+            contentId: lectureContentId, // 🔧 FIXED: Always set contentId to HTML file (secured)
+            createdAt: new Date(),
+            updatedAt: new Date()
+          });
+
+          await basicLecture.save();
+          lectureDoc = basicLecture;
+
+          console.log('✅ BASIC LECTURE DOCUMENT CREATED:', {
+            id: basicLecture._id,
+            title: basicLecture.title,
+            contentId: basicLecture.contentId,
+            course: basicLecture.course ? 'Linked' : 'Not linked'
+          });
+
+          // CRITICAL: Validate that contentId was properly set
+          if (!basicLecture.contentId) {
+            console.error('❌ CRITICAL ERROR: Basic lecture created without contentId!');
+            return res.status(500).json({ message: 'Basic lecture creation failed - missing contentId' });
+          }
+        } else {
+          console.log('⚠️ Basic lecture already exists, skipping creation');
+          lectureDoc = existingLecture;
+
+          // Ensure existing lecture has contentId
+          if (!existingLecture.contentId) {
+            try {
+              const updateResult = await Lecture.updateOne(
+                { _id: existingLecture._id },
+                { $set: { contentId: lectureContentId } }
+              );
+              console.log('🔄 Updated existing basic lecture with contentId:', {
+                matched: updateResult.matchedCount,
+                modified: updateResult.modifiedCount,
+                contentId: lectureContentId
+              });
+            } catch (updateError) {
+              console.error('❌ Failed to update existing basic lecture:', updateError.message);
+              return res.status(500).json({ message: 'Failed to update existing basic lecture' });
+            }
+          }
+        }
+      } catch (basicLectureError) {
+        console.error('❌ Error creating basic lecture document:', basicLectureError);
+        console.log('Continuing with FileCategory only...');
+      }
+    }
+
     // Update category lecture count
-    const lectureCount = await FileCategory.countDocuments({ category });
-    categoryDoc.lectureCount = lectureCount;
+    const structuredLectureCount = await Lecture.countDocuments({ category });
+    const fileCategoryCount = await FileCategory.countDocuments({ category });
+    categoryDoc.lectureCount = structuredLectureCount + fileCategoryCount;
     await categoryDoc.save();
 
     // ====================
@@ -509,7 +747,7 @@ router.post('/upload-lecture', firewallBypassMiddleware, auth, adminAuth, upload
     let autoLinked = false;
     try {
       if (courseDoc) {
-        console.log('🔗 Attempting automatic lecture linking...');
+        console.log('� Attempting automatic lecture linking...');
 
         // Import the auto-linking function
         const { autoLinkContentToLectures } = require('../ensure-future-lecture-uploads');
@@ -540,16 +778,39 @@ router.post('/upload-lecture', firewallBypassMiddleware, auth, adminAuth, upload
       title: courseDoc.title,
       categoriesCount: courseDoc.categories?.length || 0
     } : 'No course document');
+    console.log('  - Lecture Document:', lectureDoc ? {
+      id: lectureDoc._id,
+      title: lectureDoc.title,
+      sections: lectureDoc.sections?.length,
+      quizQuestions: lectureDoc.quizQuestions?.length,
+      contentId: lectureDoc.contentId
+    } : 'No lecture document created');
+    console.log('  - FileCategory:', {
+      id: fileCategory._id,
+      filename: fileCategory.filename,
+      title: fileCategory.title
+    });
     console.log('  - Auto-linking result:', autoLinked);
     console.log('  - FileCategory assignment:', fileCategory.isAssignedToCourse);
 
     res.json({
-      message: 'Lecture uploaded and processed successfully',
+      message: lectureDoc
+        ? 'Lecture uploaded, processed, and structured successfully!'
+        : 'Lecture file uploaded successfully (basic processing only)',
       file: {
         filename: req.file.filename,
         size: content.length,
         title: fileCategory.title
       },
+      lecture: lectureDoc ? {
+        id: lectureDoc._id.toString(),
+        title: lectureDoc.title,
+        slug: lectureDoc.slug,
+        sections: lectureDoc.sections?.length || 0,
+        quizQuestions: lectureDoc.quizQuestions?.length || 0,
+        contentId: lectureDoc.contentId,
+        isStructured: true
+      } : null,
       courseAssignment: {
         courseId: courseDoc ? courseDoc._id.toString() : null,
         courseName: courseDoc ? courseDoc.title : null,
@@ -564,6 +825,12 @@ router.post('/upload-lecture', firewallBypassMiddleware, auth, adminAuth, upload
               ? 'Lecture automatically linked to course structure'
               : 'Could not link to course (may need manual intervention)')
           : 'No course specified for linking'
+      },
+      processing: {
+        structuredDataReceived: !!structuredLectureData,
+        lectureDocumentCreated: !!lectureDoc,
+        fileCategoryCreated: true,
+        contentProcessed: !!lectureDoc
       }
     });
   } catch (err) {

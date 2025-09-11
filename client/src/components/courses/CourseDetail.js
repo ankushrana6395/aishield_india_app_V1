@@ -1,38 +1,183 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
 const CourseDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const { user, isSubscribed } = useAuth();
+  const location = useLocation();
+  const { user, isSubscribed, getAuthHeaders } = useAuth();
   const [course, setCourse] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [lastRefreshed, setLastRefreshed] = useState(new Date());
+  const [justUploaded, setJustUploaded] = useState(false);
+  const [uploadedLectureInfo, setUploadedLectureInfo] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
+    // Check for navigation state indicating content was just uploaded
+    if (location.state?.justUploaded) {
+      console.log('🎯 DETECTED UPLOAD RETURN: Content was just uploaded');
+      console.log('Upload info:', location.state);
+
+      setJustUploaded(true);
+      setUploadedLectureInfo({
+        title: location.state.uploadedLectureTitle,
+        category: location.state.uploadedToCategory,
+        uploadTime: location.state.uploadTime
+      });
+
+      // Trigger immediate refresh with better feedback
+  
+
+      // Clear the navigation state to prevent re-triggering
+      window.history.replaceState(null, '');
+    }
+
     if (slug) {
       fetchCourseDetails();
     }
-  }, [slug]);
+
+    // Enhanced auto-refresh mechanisms
+    const handleFocus = () => {
+      console.log('🔄 AUTO-REFRESH: User focused back on course page');
+      if (!isRefreshing) {
+        refreshCourseData();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !isRefreshing) {
+        console.log('🔄 AUTO-REFRESH: Page became visible');
+        refreshCourseData();
+      }
+    };
+
+    // Listen for multiple refresh triggers
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [slug, refreshTrigger]);
 
   const fetchCourseDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/courses/${slug}`);
+      console.log('🔍 FETCHING COURSE DETAILS FOR:', slug);
+
+      const authHeaders = getAuthHeaders();
+      const response = await axios.get(`/api/courses/${slug}`, {
+        headers: authHeaders
+      });
+      console.log('📦 COURSE API RESPONSE:', {
+        status: response.status,
+        courseTitle: response.data.course.title,
+        totalLectures: response.data.course.totalLectures,
+        categoriesCount: response.data.course.categories?.length || 0,
+        access: response.data.course.access
+      });
+
       setCourse(response.data.course);
 
       // Select first category by default
       if (response.data.course.categories && response.data.course.categories.length > 0) {
+        console.log('🎯 SETTING FIRST CATEGORY:', response.data.course.categories[0].name);
         setSelectedCategory(response.data.course.categories[0]);
+      } else {
+        console.log('⚠️ NO CATEGORIES FOUND TO SELECT');
       }
+
+      // Update last refreshed timestamp
+      setLastRefreshed(new Date());
+      console.log('✅ COURSE DETAILS FETCHED SUCCESSFULLY');
     } catch (error) {
-      console.error('Error fetching course:', error);
-      setError('Failed to load course details');
+      console.error('❌ ERROR FETCHING COURSE:', error);
+      console.error('Error details:', error.response?.data);
+
+      // Provide more specific error messages
+      if (error.response?.status === 401) {
+        setError('Authentication failed. Please log in again.');
+      } else if (error.response?.status === 403) {
+        setError('Access denied. You may not have permission to view this course.');
+      } else if (error.response?.status === 404) {
+        setError('Course not found.');
+      } else {
+        setError(error.response?.data?.message || 'Failed to load course details. Please check your connection.');
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const refreshCourseData = async () => {
+    if (isRefreshing) {
+      console.log('🔄 REFRESH ALREADY IN PROGRESS, SKIPPING');
+      return;
+    }
+
+    console.log('🔄 REFRESHING COURSE DATA:', slug);
+    setIsRefreshing(true);
+    setError(''); // Clear any existing errors
+
+    try {
+      // Simulate network delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      setRefreshTrigger(prev => prev + 1);
+      setLastRefreshed(new Date());
+
+      // Clear upload notification after refresh
+      if (justUploaded) {
+        setTimeout(() => {
+          setJustUploaded(false);
+          setUploadedLectureInfo(null);
+        }, 3000);
+      }
+
+      console.log('✅ COURSE DATA REFRESHED SUCCESSFULLY');
+    } catch (error) {
+      console.error('❌ REFRESH ERROR:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Enhanced immediate refresh for upload returns
+  const handleUploadReturnRefresh = async () => {
+    console.log('🎯 IMMEDIATE REFRESH: Returning from upload');
+    setIsRefreshing(true);
+
+    try {
+      // Multiple refresh attempts with exponential backoff
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        console.log(`🔄 REFRESH ATTEMPT ${attempt}/3`);
+
+        await new Promise(resolve => setTimeout(resolve, attempt * 500));
+        setRefreshTrigger(prev => prev + 1);
+
+        // Wait for data to load
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        setLastRefreshed(new Date());
+
+        // Check if we have lectures now
+        if (course && course.totalLectures > 0) {
+          console.log('✅ LECTURES DETECTED: Auto-refresh successful');
+          break;
+        }
+      }
+    } catch (error) {
+      console.error('❌ IMMEDIATE REFRESH ERROR:', error);
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -47,14 +192,31 @@ const CourseDetail = () => {
     });
 
     // Validate course access before showing lectures
-    if (!course.access?.canEnroll || !isSubscribed) {
-      console.log('❌ LECTURE ACCESS DENIED: User not enrolled or subscribed');
+    const hasAccess = isSubscribed && course.access?.isSubscribed && course.access?.canEnroll;
+    if (!hasAccess) {
+      console.log('❌ LECTURE ACCESS DENIED:', {
+        isSubscribed,
+        courseAccess: course.access?.isSubscribed,
+        canEnroll: course.access?.canEnroll
+      });
       setError('You must be subscribed and enrolled in this course to access lectures');
       return;
     }
 
-    if (!lecture.contentId) {
-      console.log('❌ LECTURE ACCESS FAILED: No content ID for lecture');
+    // Improve contentId validation
+    const hasValidContent = lecture.contentId &&
+      (typeof lecture.contentId === 'string' ||
+       (typeof lecture.contentId === 'object' && lecture.contentId.filename));
+
+    console.log('📄 LECTURE CONTENT VALIDATION:', {
+      contentId: lecture.contentId,
+      type: typeof lecture.contentId,
+      hasValidContent,
+      filename: typeof lecture.contentId === 'object' ? lecture.contentId.filename : lecture.contentId
+    });
+
+    if (!hasValidContent) {
+      console.log('❌ LECTURE ACCESS FAILED: Invalid or missing content ID');
       setError('Lecture content is not available');
       return;
     }
@@ -68,8 +230,21 @@ const CourseDetail = () => {
     }
 
     console.log('✅ LECTURE ACCESS GRANTED: Navigating to lecture content');
-    // Navigate to lecture viewer using content ID
-    navigate(`/lecture/${lecture.contentId.filename}`);
+
+    // Handle different contentId formats (string vs object)
+    let lectureUrl;
+    if (typeof lecture.contentId === 'string') {
+      lectureUrl = lecture.contentId;
+    } else if (typeof lecture.contentId === 'object' && lecture.contentId.filename) {
+      lectureUrl = lecture.contentId.filename;
+    } else {
+      console.error('❌ INVALID CONTENT ID FORMAT:', lecture.contentId);
+      setError('Unable to navigate to lecture - invalid content format');
+      return;
+    }
+
+    console.log('🎯 NAVIGATING TO:', `/lecture/${lectureUrl}`);
+    navigate(`/lecture/${lectureUrl}`);
   };
 
   if (loading) {
@@ -101,7 +276,7 @@ const CourseDetail = () => {
             }
 
             .loading-text {
-              color: #e0e0e0;
+              color: '#e0e0e0';
               font-family: 'Orbitron', sans-serif;
               margin-top: 20px;
               text-align: center;
@@ -148,7 +323,17 @@ const CourseDetail = () => {
     );
   }
 
-  if (!isSubscribed || !course.access?.isSubscribed) {
+  // Improved access control: check both auth state and course permissions
+  const hasAccessToCourse = isSubscribed && course.access?.isSubscribed && course.access?.canEnroll;
+
+  console.log('🔐 COURSE ACCESS CHECK:', {
+    isSubscribed,
+    courseAccess: course.access?.isSubscribed,
+    canEnroll: course.access?.canEnroll,
+    finalAccess: hasAccessToCourse
+  });
+
+  if (!hasAccessToCourse) {
     return (
       <div style={{
         minHeight: '100vh',
@@ -203,6 +388,19 @@ const CourseDetail = () => {
       </div>
     );
   }
+
+  console.log('🎨 COMPONENT RENDER:', {
+    course: !!course,
+    courseTitle: course?.title,
+    selectedCategory: selectedCategory?.name,
+    totaleCategories: course?.categories?.length || 0,
+    totalLectures: course?.totalLectures || 0,
+    isSubscribed,
+    userAccess: course?.access?.isSubscribed,
+    userCanEnroll: course?.access?.canEnroll,
+    loading,
+    error
+  });
 
   return (
     <div style={{
@@ -378,17 +576,119 @@ const CourseDetail = () => {
             margin: 20px 0;
             text-align: center;
           }
+
+          @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+          }
         `}
       </style>
 
       <div className="course-container">
-        {/* Back Button */}
-        <button
-          className="back-button"
-          onClick={() => navigate('/dashboard')}
-        >
-          ← Back to Dashboard
-        </button>
+        {/* Back Button and Refresh Button */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+          <button
+            className="back-button"
+            onClick={() => navigate('/dashboard')}
+          >
+            ← Back to Dashboard
+          </button>
+          <button
+            onClick={refreshCourseData}
+            disabled={loading || isRefreshing}
+            style={{
+              background: '#111c30',
+              color: (loading || isRefreshing) ? '#666' : '#00ff88',
+              border: '1px solid #2a4060',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              fontFamily: 'Orbitron',
+              cursor: (loading || isRefreshing) ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              position: 'relative'
+            }}
+          >
+            {(loading || isRefreshing) ? '🔄' : '↻'}
+            {isRefreshing ? 'Auto-Refreshing...' : loading ? 'Loading...' : 'Refresh Course'}
+
+            {/* Animated loading indicator */}
+            {isRefreshing && (
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                transform: 'translateY(-50%)',
+                width: '12px',
+                height: '12px',
+                border: '2px solid #00ff88',
+                borderTop: '2px solid transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite'
+              }} />
+            )}
+          </button>
+          <div style={{
+            color: '#888',
+            fontSize: '0.8rem',
+            fontFamily: 'Roboto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}>
+            📅 Last updated: {lastRefreshed.toLocaleTimeString()}
+          </div>
+        </div>
+
+        {/* Upload Success Notification */}
+        {justUploaded && uploadedLectureInfo && (
+          <div style={{
+            padding: '15px',
+            marginBottom: '20px',
+            borderRadius: '8px',
+            backgroundColor: '#2d4a1e',
+            border: '1px solid #00ff88',
+            animation: 'fadeIn 0.5s ease-in-out',
+            position: 'relative'
+          }}>
+            <style>
+              {`
+                @keyframes fadeIn {
+                  from { opacity: 0; transform: translateY(-10px); }
+                  to { opacity: 1; transform: translateY(0); }
+                }
+              `}
+            </style>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '1.5rem' }}>🎉</span>
+              <div>
+                <h3 style={{ color: '#00ff88', margin: '0 0 5px 0', fontSize: '1.1rem' }}>
+                  Content Successfully Uploaded!
+                </h3>
+                <p style={{ color: '#cccccc', margin: '0', fontSize: '0.9rem' }}>
+                  "{uploadedLectureInfo.title}" has been added to the {uploadedLectureInfo.category} category.
+                  The content should now appear in the lecture list below.
+                </p>
+              </div>
+              <button
+                onClick={() => { setJustUploaded(false); setUploadedLectureInfo(null); }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#888',
+                  cursor: 'pointer',
+                  fontSize: '1.2rem',
+                  padding: '0',
+                  marginLeft: 'auto'
+                }}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Course Header */}
         <div className="course-header">
@@ -474,65 +774,89 @@ const CourseDetail = () => {
                 {selectedCategory.lectures
                   .filter(lecture => lecture && lecture.title) // Filter out invalid lectures
                   .sort((a, b) => (a.order || 0) - (b.order || 0)) // Sort by order if available
-                  .map((lecture, index) => (
-                  <div
-                    key={lecture._id || `lecture-${index}`}
-                    className="lecture-card"
-                    onClick={() => handleLectureClick(lecture)}
-                    style={
-                      !lecture.contentId ? {
-                        opacity: 0.6,
-                        cursor: 'not-allowed',
-                        border: '1px solid #ff4444'
-                      } : {}
-                    }
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
-                      <h4 className="lecture-title">{lecture.title}</h4>
-                      <div style={{ fontSize: '0.7rem', color: '#aaa' }}>
-                        #{index + 1}
+                  .map((lecture, index) => {
+                    // Enhanced content validation for logging
+                    const contentId = lecture.contentId;
+                    const contentInfo = {
+                      hasContentId: !!contentId,
+                      contentIdType: typeof contentId,
+                      filename: typeof contentId === 'string' ? contentId :
+                               (typeof contentId === 'object' ? contentId?.filename : 'N/A'),
+                      isValid: contentId && (typeof contentId === 'string' ||
+                              (typeof contentId === 'object' && contentId?.filename))
+                    };
+
+                    console.log(`📖 Lecture ${index + 1}: "${lecture.title}"`, contentInfo);
+
+                    return (
+                      <div
+                        key={lecture._id || `lecture-${index}`}
+                        className="lecture-card"
+                        onClick={() => handleLectureClick(lecture)}
+                        style={
+                          !lecture.contentId ||
+                          (typeof lecture.contentId !== 'string' &&
+                           !(lecture.contentId && lecture.contentId.filename)) ? {
+                            opacity: 0.6,
+                            cursor: 'not-allowed',
+                            border: '1px solid #ff4444'
+                          } : {}
+                        }
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+                          <h4 className="lecture-title">{lecture.title}</h4>
+                          <div style={{ fontSize: '0.7rem', color: '#aaa' }}>
+                            #{index + 1}
+                          </div>
+                        </div>
+
+                        <div className="lecture-type">
+                          {lecture.isRequired ? '✨ Required' : '📖 Optional'}
+                        </div>
+
+                        {lecture.duration && (
+                          <div style={{
+                            color: '#888',
+                            fontSize: '0.9rem',
+                            marginBottom: '10px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}>
+                            ⏱️ {lecture.duration} min
+                          </div>
+                        )}
+
+                        {(!lecture.contentId ||
+                          (typeof lecture.contentId !== 'string' &&
+                           !(lecture.contentId && lecture.contentId.filename))) && (
+                          <div style={{
+                            color: '#ff8888',
+                            fontSize: '0.8rem',
+                            marginBottom: '10px',
+                            padding: '4px 8px',
+                            border: '1px solid #ff4444',
+                            borderRadius: '4px',
+                            background: 'rgba(255, 68, 68, 0.1)'
+                          }}>
+                            Content Not Available
+                          </div>
+                        )}
+
+                        <button
+                          className="view-lecture-btn"
+                          disabled={!lecture.contentId ||
+                                   (typeof lecture.contentId !== 'string' &&
+                                    !(lecture.contentId && lecture.contentId.filename))}
+                        >
+                          {(lecture.contentId &&
+                            (typeof lecture.contentId === 'string' ||
+                             (typeof lecture.contentId === 'object' && lecture.contentId.filename)))
+                            ? 'View Lecture' : 'Content Missing'}
+                        </button>
                       </div>
-                    </div>
-
-                    <div className="lecture-type">
-                      {lecture.isRequired ? '✨ Required' : '📖 Optional'}
-                    </div>
-
-                    {lecture.duration && (
-                      <div style={{
-                        color: '#888',
-                        fontSize: '0.9rem',
-                        marginBottom: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}>
-                        ⏱️ {lecture.duration} min
-                      </div>
-                    )}
-
-                    {!lecture.contentId && (
-                      <div style={{
-                        color: '#ff8888',
-                        fontSize: '0.8rem',
-                        marginBottom: '10px',
-                        padding: '4px 8px',
-                        border: '1px solid #ff4444',
-                        borderRadius: '4px',
-                        background: 'rgba(255, 68, 68, 0.1)'
-                      }}>
-                        Content Not Available
-                      </div>
-                    )}
-
-                    <button
-                      className="view-lecture-btn"
-                      disabled={!lecture.contentId}
-                    >
-                      {lecture.contentId ? 'View Lecture' : 'Content Missing'}
-                    </button>
-                  </div>
-                ))}
+                    );
+                  })}
               </div>
             </div>
           ) : selectedCategory ? (

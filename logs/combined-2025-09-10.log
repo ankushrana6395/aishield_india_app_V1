@@ -4974,3 +4974,1646 @@
   "platform": "darwin",
   "pid": 33530
 }
+{
+  "timestamp": "2025-09-10 16:47:53.264",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 16:47:53.271",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 16:47:59.126",
+  "level": "INFO",
+  "message": "Allowing localhost origin in development",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:5002"
+}
+{
+  "timestamp": "2025-09-10 16:48:05.800",
+  "level": "INFO",
+  "message": "Allowing localhost origin in development",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:5002"
+}
+{
+  "timestamp": "2025-09-10 16:48:07.409",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:04.930",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ],
+  "hasRenderUrl": false
+}
+{
+  "timestamp": "2025-09-10 18:07:05.006",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 9
+}
+{
+  "timestamp": "2025-09-10 18:07:05.071",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 18:07:05.075",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 18:07:05.116",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:07:05.117",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:07:05.150",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 18:07:05.151",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 18:07:05.193",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 18:07:05.194",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 18:07:05.196",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 1532
+}
+{
+  "timestamp": "2025-09-10 18:07:36.621",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:41.991",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:41.992",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:41.993",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:41.994",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:41.995",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:42.000",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:42.006",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:43.068",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:43.068",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:43.068",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:43.258",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:45.737",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:07:45.930",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:08:41.313",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:08:50.994",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:08:50.995",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:08:50.997",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:08:51.001",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:08:54.885",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:09:43.889",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:11:54.273",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ],
+  "hasRenderUrl": false
+}
+{
+  "timestamp": "2025-09-10 18:11:54.331",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 9
+}
+{
+  "timestamp": "2025-09-10 18:11:54.351",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 18:11:54.356",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 18:11:54.393",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:11:54.394",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:11:54.428",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 18:11:54.429",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 18:11:54.440",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 18:11:54.440",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 18:11:54.442",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 2119
+}
+{
+  "timestamp": "2025-09-10 18:12:48.415",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.256",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.261",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.303",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.309",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.314",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.318",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.323",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.395",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.396",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.399",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.446",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:11.450",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:16:26.878",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:19:29.094",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:19:29.102",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:19:34.418",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:19:51.879",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ],
+  "hasRenderUrl": false
+}
+{
+  "timestamp": "2025-09-10 18:19:51.925",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 9
+}
+{
+  "timestamp": "2025-09-10 18:19:51.944",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 18:19:51.950",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 18:19:51.984",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:19:51.986",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:19:52.016",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 18:19:52.016",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 18:19:52.028",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 18:19:52.028",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 18:19:52.030",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 2460
+}
+{
+  "timestamp": "2025-09-10 18:20:24.020",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.023",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.042",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.043",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.109",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.110",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.113",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.114",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.119",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.120",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.123",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.123",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.130",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.159",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.160",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:24.160",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:20:46.720",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:21:32.589",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:21:41.877",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:25:44.986",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:26:09.248",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ],
+  "hasRenderUrl": false
+}
+{
+  "timestamp": "2025-09-10 18:26:09.297",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 9
+}
+{
+  "timestamp": "2025-09-10 18:26:09.317",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 18:26:09.323",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 18:26:09.358",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:26:09.359",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:26:09.392",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 18:26:09.393",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 18:26:09.405",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 18:26:09.406",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 18:26:09.408",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 3463
+}
+{
+  "timestamp": "2025-09-10 18:26:43.955",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:27:10.478",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:27:17.548",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:31:25.423",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:08.184",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:18.081",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:24.185",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:36.644",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:53.259",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:53.260",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:53.272",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:53.274",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:53.287",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:32:53.288",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:41:13.435",
+  "level": "WARN",
+  "message": "Operational Error Endpoint not found",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "code": "NOT_FOUND_ERROR",
+  "statusCode": 404,
+  "stack": "Error: Endpoint not found\n    at notFoundHandler (/Users/ankush/Pictures/aishieldindia/aishield_india_app/utils/errorHandler.js:185:17)\n    at Layer.handle [as handle_request] (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:328:13)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:286:9\n    at router.process_params (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:346:12)\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:280:10)\n    at /Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:646:15\n    at next (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:265:14)\n    at router.handle (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:175:3)\n    at router (/Users/ankush/Pictures/aishieldindia/aishield_india_app/node_modules/express/lib/router/index.js:47:12)",
+  "ip": "127.0.0.1",
+  "userAgent": "axios/1.11.0",
+  "url": "/api/auth/me",
+  "method": "GET"
+}
+{
+  "timestamp": "2025-09-10 18:49:31.139",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ],
+  "hasRenderUrl": false
+}
+{
+  "timestamp": "2025-09-10 18:49:31.188",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 9
+}
+{
+  "timestamp": "2025-09-10 18:49:31.206",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 18:49:31.210",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 18:49:31.245",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:49:31.246",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 18:49:31.273",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 18:49:31.274",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 18:49:31.286",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 18:49:31.286",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 18:49:31.288",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 7362
+}
+{
+  "timestamp": "2025-09-10 18:49:50.751",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:50:34.753",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:50:34.757",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:50:34.769",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:50:34.770",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:50:34.790",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 18:50:34.791",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:01:25.824",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:01:25.828",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:01:25.850",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:01:25.854",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:01:25.873",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:01:25.874",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}
+{
+  "timestamp": "2025-09-10 19:34:32.512",
+  "level": "INFO",
+  "message": "CORS Configuration",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "allowedOrigins": [
+    "http://localhost:3000"
+  ],
+  "hasRenderUrl": false
+}
+{
+  "timestamp": "2025-09-10 19:34:32.564",
+  "level": "INFO",
+  "message": "Route loaded: /api/auth",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/auth",
+  "hasLimiter": true,
+  "methodCount": 9
+}
+{
+  "timestamp": "2025-09-10 19:34:32.582",
+  "level": "INFO",
+  "message": "Route loaded: /api/admin",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/admin",
+  "hasLimiter": false,
+  "methodCount": 23
+}
+{
+  "timestamp": "2025-09-10 19:34:32.586",
+  "level": "INFO",
+  "message": "Route loaded: /api/content",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/content",
+  "hasLimiter": false,
+  "methodCount": 8
+}
+{
+  "timestamp": "2025-09-10 19:34:32.621",
+  "level": "INFO",
+  "message": "Route loaded: /api/courses",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/courses",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 19:34:32.622",
+  "level": "INFO",
+  "message": "Route loaded: /api/subscription-plans",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/subscription-plans",
+  "hasLimiter": false,
+  "methodCount": 13
+}
+{
+  "timestamp": "2025-09-10 19:34:32.649",
+  "level": "INFO",
+  "message": "Route loaded: /api/payment",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "module": "./routes/payment",
+  "hasLimiter": false,
+  "methodCount": 3
+}
+{
+  "timestamp": "2025-09-10 19:34:32.649",
+  "level": "INFO",
+  "message": "Attempting database connection (1/5)",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-10 19:34:32.658",
+  "level": "INFO",
+  "message": "Successfully connected to MongoDB",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "database": "penetration-testing-platform",
+  "host": "localhost",
+  "readyState": 1
+}
+{
+  "timestamp": "2025-09-10 19:34:32.659",
+  "level": "INFO",
+  "message": "Development environment - localhost binding",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "host": "127.0.0.1",
+  "port": 5002
+}
+{
+  "timestamp": "2025-09-10 19:34:32.661",
+  "level": "INFO",
+  "message": "Enterprise server started successfully",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "port": 5002,
+  "host": "127.0.0.1",
+  "nodeVersion": "v24.6.0",
+  "platform": "darwin",
+  "pid": 12582
+}
+{
+  "timestamp": "2025-09-10 19:44:09.275",
+  "level": "INFO",
+  "message": "OPTIONS preflight request",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0",
+  "origin": "http://localhost:3000",
+  "method": "OPTIONS"
+}

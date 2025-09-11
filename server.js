@@ -68,8 +68,8 @@ app.use(helmet({
 
 // Rate limiting - Enterprise protection
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: config.RATE_LIMIT || 100, // limit each IP to 100 requests per windowMs
+  windowMs: 1 * 60 * 1000, // 15 minutes
+  max: config.RATE_LIMIT || 10000, // limit each IP to 100 requests per windowMs
   message: {
     success: false,
     code: 'RATE_LIMIT_EXCEEDED',

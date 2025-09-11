@@ -65,6 +65,11 @@ const lectureSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  contentId: {
+    type: String,
+    required: true, // 🔧 FIXED: Added required contentId field
+    trim: true
+  },
   createdAt: {
     type: Date,
     default: Date.now

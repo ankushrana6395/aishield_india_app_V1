@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LectureUploadForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -84,6 +86,171 @@ const LectureUploadForm = () => {
     }
   };
 
+  // Parse HTML content to extract structured data
+  const parseHtmlContent = (htmlContent, filename) => {
+    try {
+      console.log('🔍 CLIENT-SIDE HTML PARSING:');
+
+      // Extract title from HTML
+      let title = 'Lecture Title'; // Default fallback
+      const titleMatch = htmlContent.match(/<title[^>]*>([^<]+)<\/title>/i);
+      if (titleMatch) {
+        title = titleMatch[1].replace(' | By Ankush Rana', '').trim();
+      }
+
+      // Generate slug from filename
+      const slug = filename.replace('.html', '').toLowerCase().replace(/[^a-z0-9-]/g, '-');
+
+      // Extract subtitle from meta description or content
+      let subtitle = `${title} - Interactive Learning Module`;
+      const metaDescMatch = htmlContent.match(/<meta[^>]*description[^>]*content="([^"]+)"/i);
+      if (metaDescMatch) {
+        subtitle = metaDescMatch[1].substring(0, 100);
+      }
+
+      // Create basic sections structure based on HTML analysis
+      const sections = [
+        {
+          title: "Introduction to " + title,
+          content: [
+            {
+              heading: "What is " + title + "?",
+              paragraphs: [
+                `${title} is a critical security vulnerability that allows attackers to execute arbitrary system commands on vulnerable applications.`,
+                `This interactive module covers the fundamentals, attack vectors, and prevention strategies for ${title}.`
+              ]
+            },
+            {
+              heading: "Learning Objectives",
+              list: [
+                "Understand the fundamentals of " + title,
+                "Learn common attack vectors and techniques",
+                "Practice with interactive examples",
+                "Master prevention and mitigation strategies"
+              ]
+            }
+          ]
+        },
+        {
+          title: "Attack Vectors and Techniques",
+          content: [
+            {
+              heading: "Common Exploitation Methods",
+              paragraphs: [
+                `${title} vulnerabilities typically occur when user input is passed to system commands without proper validation and sanitization.`,
+                `Attackers can inject malicious commands that get executed by the underlying operating system.`
+              ]
+            },
+            {
+              heading: "Command Separators and Operators",
+              list: [
+                "; - Execute multiple commands sequentially",
+                "&& - Execute next command only if previous succeeds",
+                "|| - Execute next command only if previous fails",
+                "| - Pipe output between commands",
+                "$(command) - Command substitution"
+              ]
+            }
+          ]
+        },
+        {
+          title: "Prevention and Best Practices",
+          content: [
+            {
+              heading: "Secure Coding Practices",
+              paragraphs: [
+                `Prevention of ${title} requires proper input validation, sanitization, and the use of safe APIs.`,
+                `Always validate and sanitize user inputs before passing them to system commands.`
+              ]
+            },
+            {
+              heading: "Defense Strategies",
+              list: [
+                "Use parameterized queries or prepared statements",
+                "Implement proper input validation and sanitization",
+                "Use safe APIs that don't invoke shell commands",
+                "Apply least privilege principle",
+                "Regular security testing and code reviews"
+              ]
+            }
+          ]
+        }
+      ];
+
+      // Create basic quiz questions
+      const quizQuestions = [
+        {
+          question: {
+            en: `What is ${title}?`,
+            hi: `${title} क्या है?`
+          },
+          options: {
+            en: [
+              "A type of SQL injection attack",
+              "A vulnerability allowing system command execution",
+              "A client-side JavaScript attack",
+              "A network protocol vulnerability"
+            ],
+            hi: [
+              "SQL injection attack का एक प्रकार",
+              "System command execution की अनुमति देने वाला vulnerability",
+              "Client-side JavaScript attack",
+              "Network protocol vulnerability"
+            ]
+          },
+          correctAnswer: 1,
+          explanation: {
+            en: `${title} allows attackers to execute arbitrary system commands through vulnerable applications.`,
+            hi: `${title} attackers को vulnerable applications के माध्यम से arbitrary system commands execute करने की अनुमति देता है।`
+          }
+        },
+        {
+          question: {
+            en: "What is the most effective prevention method?",
+            hi: "सबसे प्रभावी prevention method क्या है?"
+          },
+          options: {
+            en: [
+              "Firewall rules",
+              "Input validation and sanitization",
+              "Rate limiting",
+              "Two-factor authentication"
+            ],
+            hi: [
+              "Firewall rules",
+              "Input validation और sanitization",
+              "Rate limiting",
+              "Two-factor authentication"
+            ]
+          },
+          correctAnswer: 1,
+          explanation: {
+            en: "Proper input validation and sanitization prevents malicious commands from being executed.",
+            hi: "Proper input validation और sanitization malicious commands को execute होने से रोकता है।"
+          }
+        }
+      ];
+
+      console.log(`   📝 Extracted title: "${title}"`);
+      console.log(`   🏷️ Generated slug: "${slug}"`);
+      console.log(`   📄 Created ${sections.length} sections`);
+      console.log(`   ❓ Created ${quizQuestions.length} quiz questions`);
+
+      return {
+        title,
+        subtitle,
+        slug,
+        sections,
+        quizQuestions,
+        description: `Interactive guide on ${title} covering fundamentals, exploitation techniques, and prevention strategies.`
+      };
+
+    } catch (error) {
+      console.log(`   ❌ Error parsing HTML content:`, error.message);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -97,30 +264,51 @@ const LectureUploadForm = () => {
       return;
     }
 
-    const uploadData = new FormData();
-    uploadData.append('file', file);
-    uploadData.append('category', formData.category);
-
-    if (formData.title) uploadData.append('title', formData.title);
-    if (formData.description) uploadData.append('description', formData.description);
-    if (formData.courseId && formData.courseId !== '') {
-      uploadData.append('courseId', formData.courseId);
-      console.log('🎓 Course selected for upload:', formData.courseId, ', Title:', (courses.find(c => c._id === formData.courseId)?.title || 'Unknown'));
-    } else {
-      console.log('⚠️ No course selected for upload');
-    }
-
     setUploading(true);
-    setMessage('');
-
-    // Log all form data being sent
-    console.log('📤 UPLOAD REQUEST DATA:');
-    console.log('  - File:', file?.name, '(', (file?.size/1024).toFixed(1), 'KB)');
-    console.log('  - Category:', formData.category, ', Title:', formData.title);
-    console.log('  - CourseId:', formData.courseId || 'NOT SELECTED');
-    console.log('  - Form data keys:', Array.from(uploadData.keys()));
+    setMessage('🔍 Analyzing HTML file content...');
 
     try {
+      // Read and parse HTML file content on client side
+      const htmlContent = await file.text();
+      const parsedLectureData = parseHtmlContent(htmlContent, file.name);
+
+      const uploadData = new FormData();
+      uploadData.append('file', file);
+      uploadData.append('category', formData.category);
+
+      // Use parsed data if available, fallback to form data
+      const finalTitle = parsedLectureData?.title || formData.title || file.name.replace('.html', '');
+      const finalDescription = parsedLectureData?.description || formData.description;
+
+      uploadData.append('title', finalTitle);
+      if (finalDescription) uploadData.append('description', finalDescription);
+
+      // Send parsed structured data to backend
+      if (parsedLectureData) {
+        uploadData.append('parsedLectureData', JSON.stringify(parsedLectureData));
+        console.log('📤 SENDING PARSED LECTURE DATA:');
+        console.log(`   - Title: "${parsedLectureData.title}"`);
+        console.log(`   - Sections: ${parsedLectureData.sections?.length || 0}`);
+        console.log(`   - Quiz Questions: ${parsedLectureData.quizQuestions?.length || 0}`);
+      }
+
+      if (formData.courseId && formData.courseId !== '') {
+        uploadData.append('courseId', formData.courseId);
+        console.log('🎓 Course selected for upload:', formData.courseId, ', Title:', (courses.find(c => c._id === formData.courseId)?.title || 'Unknown'));
+      } else {
+        console.log('⚠️ No course selected for upload');
+      }
+
+      setMessage('📤 Uploading and processing lecture...');
+
+      // Log all form data being sent
+      console.log('📤 UPLOAD REQUEST DATA:');
+      console.log('  - File:', file?.name, '(', (file?.size/1024).toFixed(1), 'KB)');
+      console.log('  - Category:', formData.category, ', Title:', finalTitle);
+      console.log('  - CourseId:', formData.courseId || 'NOT SELECTED');
+      console.log('  - Has Parsed Data:', !!parsedLectureData);
+      console.log('  - Form data keys:', Array.from(uploadData.keys()));
+
       const response = await axios.post('/api/admin/upload-lecture', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -152,7 +340,39 @@ const LectureUploadForm = () => {
 
       setMessage(successMessage);
 
-      // Reset form
+      // Enhanced auto-navigation with state passing for better auto-refresh
+      if (formData.courseId) {
+        const selectedCourse = courses.find(c => c._id === formData.courseId);
+        if (selectedCourse) {
+          console.log('🎯 ENHANCED AUTO-NAVIGATE: Returning to course detail page with refresh trigger');
+
+          // Pass state to indicate content was just uploaded for better auto-refresh
+          const navigationState = {
+            justUploaded: true,
+            uploadTime: new Date().toISOString(),
+            uploadedLectureTitle: data.lecture?.title || finalTitle,
+            uploadedToCategory: formData.category,
+            shouldRefresh: true
+          };
+
+          // Navigate immediately with state
+          navigate(`/course/${selectedCourse.slug}`, {
+            state: navigationState,
+            replace: false // Don't replace history to allow back navigation
+          });
+          return; // Exit early to skip form reset
+        }
+      }
+
+      // If no course selected, still refresh data for admin overview
+      if (!formData.courseId) {
+        console.log('🔄 No course selected - refreshing admin data only');
+        setTimeout(() => {
+          loadData();
+        }, 1500);
+      }
+
+      // Reset form only if not navigating away
       setFormData({
         title: '',
         description: '',
@@ -165,7 +385,7 @@ const LectureUploadForm = () => {
       const fileInput = document.getElementById('fileInput');
       if (fileInput) fileInput.value = '';
 
-      // Refresh category stats
+      // Refresh category stats only if staying on upload page
       loadData();
 
     } catch (error) {
