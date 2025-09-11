@@ -51,18 +51,9 @@ const config = require('./config/environment');
 const app = express();
 const PORT = config.PORT;
 
-// Security middleware - Enterprise grade
+// Security middleware - Enterprise grade (CSP disabled for lecture content compatibility)
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      scriptSrc: ["'self'", "https://checkout.razorpay.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://checkout.razorpay.com"]
-    }
-  },
+  contentSecurityPolicy: false, // Disabled CSP to allow lecture content with external scripts
   hsts: { maxAge: 31536000, includeSubDomains: true, preload: true }
 }));
 

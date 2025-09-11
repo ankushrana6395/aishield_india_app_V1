@@ -9359,3 +9359,523 @@
   "environment": "development",
   "version": "1.0.0"
 }
+{
+  "timestamp": "2025-09-11 13:10:37.147",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:37 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:39.751",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:39 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:45.345",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:45 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:45.352",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:45 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:45.362",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:45 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:45.380",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:45 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:45.441",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:45 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:10:45.452",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:40:45 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:14.291",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:14 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:14.362",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:14 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:19.550",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:19 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:19.560",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:19 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:19.589",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:19 +0000] \"GET /api/subscription-plans/plans?limit=10 HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:19.595",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:19 +0000] \"GET /api/subscription-plans/plans?limit=10 HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:21.510",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:21 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 200 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:21.511",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:21 +0000] \"GET /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:21.528",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:21 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 304 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:21.529",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:21 +0000] \"GET /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:23.240",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:23 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:23.249",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:23 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:33.944",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:33 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:37.248",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:37 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:11:43.685",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:41:43 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:13:44.466",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:43:44 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:16:46.277",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:46:46 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:26:56.714",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:07:56:56 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:30:54.050",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:00:54 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:30:54.058",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:00:54 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:31:09.044",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:01:09 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:31:09.102",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:01:09 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:31:14.342",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:01:14 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:32:33.851",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:02:33 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 13:32:33.858",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:02:33 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:21:49.352",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:51:49 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:21:49.496",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:51:49 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:21:50.836",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:51:50 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:21:50.849",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:51:50 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:22:49.943",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:52:49 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:22:49.956",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:52:49 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:06.619",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:06 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:06.627",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:06 +0000] \"GET /api/courses/c-programing HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:08.626",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:08 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 304 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:08.630",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:08 +0000] \"GET /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:08.671",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:08 +0000] \"GET /api/subscription-plans/my-subscription HTTP/1.1\" 304 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:08.672",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:08 +0000] \"GET /api/courses HTTP/1.1\" 200 - \"http://localhost:3000/courses\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:09.873",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:09 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:09.886",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:09 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:12.103",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:12 +0000] \"GET /api/content/lecture-content/web-cache-deception.html HTTP/1.1\" 304 - \"http://localhost:3000/lecture/web-cache-deception.html\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:12.104",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:12 +0000] \"GET /api/content/lecture-content/web-cache-deception.html HTTP/1.1\" 200 - \"http://localhost:3000/lecture/web-cache-deception.html\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:19.012",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:19 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:19.015",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:19 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:19.023",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:19 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:19.024",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:19 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:19.075",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:19 +0000] \"GET /api/content/lecture-content/web-cache-deception.html HTTP/1.1\" 304 - \"http://localhost:3000/lecture/web-cache-deception.html\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:19.151",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:19 +0000] \"GET /api/content/lecture-content/web-cache-deception.html HTTP/1.1\" 200 - \"http://localhost:3000/lecture/web-cache-deception.html\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:25.315",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:25 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:25.316",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:25 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:26.395",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:26 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:26.397",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:26 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:26.402",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:26 +0000] \"GET /api/auth/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:26.404",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:26 +0000] \"GET /api/auth/profile HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:26.419",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:26 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:26.420",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:26 +0000] \"GET /api/courses/webapp-pentesting HTTP/1.1\" 200 - \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:27.460",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:27 +0000] \"GET /api/content/lecture-content/commandinjection.html HTTP/1.1\" 304 - \"http://localhost:3000/lecture/commandinjection.html\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
+{
+  "timestamp": "2025-09-11 14:25:27.461",
+  "level": "HTTP",
+  "message": "127.0.0.1 - - [11/Sep/2025:08:55:27 +0000] \"GET /api/content/lecture-content/commandinjection.html HTTP/1.1\" 200 - \"http://localhost:3000/lecture/commandinjection.html\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0\"",
+  "service": "ai-shield-learning",
+  "environment": "development",
+  "version": "1.0.0"
+}
